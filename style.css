@@ -94,3 +94,7 @@ footer {
 .back-btn:hover {
   text-decoration: underline;
 }
+
+span[class*="_embed_pin"] .PIN_footer {
+    display: none;
+}
