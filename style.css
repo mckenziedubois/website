@@ -97,4 +97,6 @@ footer {
 
 span[class*="_embed_pin"] .PIN_footer {
     display: none;
+    height: 0px;
+    padding: 0px;
 }
