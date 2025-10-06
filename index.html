@@ -58,28 +58,25 @@
 <script src="js/scripts.js"></script>
 
 <script>
-  // Determine path for partials folder
-  const navPath = window.location.pathname.includes('/posts/')
-    ? '../partials/nav.html'
-    : 'partials/nav.html';
+  // Load navbar partial
+  const navPath = new URL('../partials/nav.html', window.location.href).href;
 
   fetch(navPath)
-    .then(response => response.text())
-    .then(data => {
-      // Determine root prefix
-      const isSubPage = window.location.pathname.includes('/posts/');
+    .then(res => res.text())
+    .then(html => {
+      // Determine if we are in a subpage (e.g., /posts/)
+      const pathParts = window.location.pathname.split('/');
+      const isSubPage = pathParts.includes('posts'); 
       const rootPrefix = isSubPage ? '../' : '';
 
-      // Replace {ROOT} in nav.html with the correct prefix
-      const htmlWithCorrectPaths = data.replace(/{ROOT}/g, rootPrefix);
-
-      console.log('Navbar HTML:', htmlWithCorrectPaths);
+      // Replace {ROOT} placeholder with the correct prefix
+      const htmlWithRoot = html.replace(/{ROOT}/g, rootPrefix);
 
       // Inject navbar
-      document.getElementById('navbar-placeholder').innerHTML = htmlWithCorrectPaths;
+      document.getElementById('navbar-placeholder').innerHTML = htmlWithRoot;
 
       // Highlight active link
-      const currentPage = window.location.pathname.split('/').pop();
+      const currentPage = pathParts.pop() || 'index.html';
       document.querySelectorAll('#navbar-placeholder .nav-link').forEach(link => {
         const linkPage = link.getAttribute('href').split('/').pop();
         if (linkPage === currentPage) {
@@ -87,8 +84,9 @@
         }
       });
     })
-    .catch(err => console.error('Error loading navbar:', err));
+    .catch(err => console.error('Navbar fetch error:', err));
 </script>
+
 
     </body>
 </html>
