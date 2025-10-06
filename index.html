@@ -73,6 +73,8 @@
       // Replace {ROOT} in nav.html with the correct prefix
       const htmlWithCorrectPaths = data.replace(/{ROOT}/g, rootPrefix);
 
+      console.log('Navbar HTML:', htmlWithCorrectPaths);
+
       // Inject navbar
       document.getElementById('navbar-placeholder').innerHTML = htmlWithCorrectPaths;
 
