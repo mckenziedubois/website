@@ -10823,3 +10823,9 @@ header.masthead .post-heading .meta a {
     font-size: 2.25rem;
   }
 }
+
+.nav-link.active {
+  text-decoration: underline;
+  color: #0056b3 !important;
+  font-weight: bold;
+}
