@@ -61,6 +61,8 @@
   // Load navbar partial
   const navPath = new URL('../partials/nav.html', window.location.href).href;
 
+  console.log('Fetching navbar from:', navPath);
+
   fetch(navPath)
     .then(res => res.text())
     .then(html => {
