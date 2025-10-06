@@ -64,6 +64,8 @@
     ? '../partials/nav.html'
     : 'partials/nav.html';
 
+    console.log('navPath', navPath);
+
   // Load and insert navbar
   fetch(navPath)
     .then(response => response.text())
