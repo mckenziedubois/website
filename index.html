@@ -63,25 +63,30 @@
     ? '../partials/nav.html'
     : 'partials/nav.html';
 
-    console.log('navPath', navPath);
-
-  // Load and insert navbar
   fetch(navPath)
     .then(response => response.text())
     .then(data => {
-      document.getElementById('navbar-placeholder').innerHTML = data;
+      // Determine root prefix
+      const isSubPage = window.location.pathname.includes('/posts/');
+      const rootPrefix = isSubPage ? '../' : '';
 
-      // Once navbar is inserted, highlight the active link
-      const currentPath = window.location.pathname;
+      // Replace {ROOT} in nav.html with the correct prefix
+      const htmlWithCorrectPaths = data.replace(/{ROOT}/g, rootPrefix);
+
+      // Inject navbar
+      document.getElementById('navbar-placeholder').innerHTML = htmlWithCorrectPaths;
+
+      // Highlight active link
+      const currentPage = window.location.pathname.split('/').pop();
       document.querySelectorAll('#navbar-placeholder .nav-link').forEach(link => {
-        // Normalize the link's href (remove domain, keep only path)
-        const linkPath = new URL(link.href).pathname;
-
-        if (linkPath === currentPath) {
+        const linkPage = link.getAttribute('href').split('/').pop();
+        if (linkPage === currentPage) {
           link.classList.add('active');
         }
       });
-    });
+    })
+    .catch(err => console.error('Error loading navbar:', err));
 </script>
+
     </body>
 </html>
