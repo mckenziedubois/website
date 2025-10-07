@@ -32,5 +32,34 @@
   <footer>
     <p>© 2025 McKenzie DuBois</p>
   </footer>
+
+<script>
+  // Load navbar partial
+  fetch('partials/nav.html')
+    .then(res => res.text())
+    .then(html => {
+      // Determine if we are in a subpage (e.g., /posts/)
+      const pathParts = window.location.pathname.split('/');
+      const isSubPage = pathParts.includes('posts'); 
+      const rootPrefix = isSubPage ? '../' : '';
+
+      // Replace {ROOT} placeholder with the correct prefix
+      const htmlWithRoot = html.replace(/{ROOT}/g, rootPrefix);
+
+      // Inject navbar
+      document.getElementById('navbar-placeholder').innerHTML = htmlWithRoot;
+
+      // Highlight active link
+      const currentPage = pathParts.pop() || 'index.html';
+      document.querySelectorAll('#navbar-placeholder .nav-link').forEach(link => {
+        const linkPage = link.getAttribute('href').split('/').pop();
+        if (linkPage === currentPage) {
+          link.classList.add('active');
+        }
+      });
+    })
+    .catch(err => console.error('Navbar fetch error:', err));
+</script>
+
 </body>
 </html>
