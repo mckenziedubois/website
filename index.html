@@ -59,11 +59,7 @@
 
 <script>
   // Load navbar partial
-  const navPath = new URL('../partials/nav.html', window.location.href).href;
-
-  console.log('Fetching navbar from:', navPath);
-
-  fetch(navPath)
+  fetch('partials/nav.html')
     .then(res => res.text())
     .then(html => {
       // Determine if we are in a subpage (e.g., /posts/)
