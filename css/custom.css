@@ -149,6 +149,8 @@ footer {
 /* =============================
    Contact Page Social Icons
 ============================= */
+/* Rounded social buttons for contact page */
+
 #contact-icons {
   display: flex;
   justify-content: center;

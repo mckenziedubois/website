@@ -66,31 +66,33 @@
       .catch(err => console.error('Navbar fetch error:', err));
     </script>
 
-    <!-- Recent posts fetch -->
     <script>
-    fetch('data/posts.json')
-      .then(res => res.json())
-      .then(posts => {
-        posts.sort((a, b) => new Date(b.date) - new Date(a.date));
-        const recent = posts.slice(0, 6); // show 6 most recent posts
+      fetch('data/posts.json')
+        .then(res => res.json())
+        .then(posts => {
+          posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+          const recent = posts.slice(0, 6); // show 6 most recent posts
 
-        const container = document.getElementById('recent-posts');
-        container.innerHTML = recent.map(post => `
-          <div class="col-md-12 col-lg-4 mb-4">
-            <div class="card card-horizontal h-100 shadow-sm">
-              <img src="${post.image}" class="card-img-left" alt="${post.title}">
-              <div class="card-body d-flex flex-column">
-                <h5 class="card-title">${post.title}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">${post.subtitle}</h6>
-                <p class="card-text mt-auto">${post.excerpt || ''}</p>
-                <small class="text-muted">Posted on ${new Date(post.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</small>
+          const container = document.getElementById('recent-posts');
+          container.innerHTML = recent.map(post => `
+            <div class="col-md-12 col-lg-4 mb-4">
+              <div class="post-preview shadow-sm bg-white rounded overflow-hidden h-100 d-flex flex-column">
+                <img src="${post.image}" alt="${post.title}" class="post-img">
+                <div class="post-content p-3 d-flex flex-column flex-grow-1">
+                  <a href="posts/${post.slug}.html" class="text-decoration-none text-dark flex-grow-1">
+                    <h2 class="post-title mb-1">${post.title}</h2>
+                    <h3 class="post-subtitle text-muted fs-6">${post.subtitle}</h3>
+                  </a>
+                  <p class="post-meta small text-muted mb-0">
+                    Posted on ${new Date(post.date).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' })}
+                  </p>
+                </div>
               </div>
-              <a href="posts/${post.slug}.html" class="stretched-link"></a>
             </div>
-          </div>
-        `).join('');
-      })
-      .catch(err => console.error('Error loading posts:', err));
+          `).join('');
+        })
+        .catch(err => console.error('Error loading posts:', err));
     </script>
+
 </body>
 </html>

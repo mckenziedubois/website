@@ -1,7 +1,7 @@
 [
   {
     "slug": "kyoto",
-    "title": "Japan",
+    "title": "Kyoto, Japan",
     "subtitle": "Snow, temples, and matcha",
     "date": "2025-02-07",
     "image": "../assets/img/japan_kyoto.jpg",
@@ -10,7 +10,7 @@
   {
     "slug": "seoul",
     "title": "Seoul, Korea",
-    "subtitle": "Palace hopping in Seoul",
+    "subtitle": "Palace ",
     "date": "2025-02-25",
     "image": "../assets/img/korea_palace.jpg",
     "author": "McKenzie DuBois"  
@@ -19,7 +19,7 @@
   {
     "slug": "angkorwat",
     "title": "Angkor Wat",
-    "subtitle": "Tips for catching the sunrise at Angkor Wat",
+    "subtitle": "The sunrise and temple hopping in Cambodia",
     "date": "2025-03-20",
     "image": "../assets/img/cambodia_angkor.jpg",
     "author": "McKenzie DuBois"  
