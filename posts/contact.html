@@ -7,8 +7,9 @@
   <link href="../css/styles.css" rel="stylesheet" />
 </head>
 <body>
-  <!-- Navigation (same as About page) -->
-  <!-- ... -->
+
+<div id="navbar-placeholder"></div>
+
 
   <!-- Page Header -->
   <header class="masthead" style="background-image: url('../assets/img/contact-bg.jpg')">
@@ -38,32 +39,35 @@
   </footer>
 
 <script>
-  // Load navbar partial
-  fetch('partials/nav.html')
-    .then(res => res.text())
-    .then(html => {
-      // Determine if we are in a subpage (e.g., /posts/)
-      const pathParts = window.location.pathname.split('/');
-      const isSubPage = pathParts.includes('posts'); 
-      const rootPrefix = isSubPage ? '../' : '';
 
-      // Replace {ROOT} placeholder with the correct prefix
-      const htmlWithRoot = html.replace(/{ROOT}/g, rootPrefix);
+const pathParts = window.location.pathname.split('/');
+const isSubPage = pathParts.includes('posts');
+const rootPrefix = isSubPage ? '../' : '';
 
-      // Inject navbar
-      document.getElementById('navbar-placeholder').innerHTML = htmlWithRoot;
+fetch(`${rootPrefix}partials/nav.html`)
+  .then(res => res.text())
+  .then(html => {
+    const htmlWithRoot = html.replace(/{ROOT}/g, rootPrefix);
+    document.getElementById('navbar-placeholder').innerHTML = htmlWithRoot;
 
-      // Highlight active link
-      const currentPage = pathParts.pop() || 'index.html';
-      document.querySelectorAll('#navbar-placeholder .nav-link').forEach(link => {
-        const linkPage = link.getAttribute('href').split('/').pop();
-        if (linkPage === currentPage) {
-          link.classList.add('active');
-        }
-      });
-    })
-    .catch(err => console.error('Navbar fetch error:', err));
+    // highlight current link
+    const currentPage = pathParts.pop() || 'index.html';
+    document.querySelectorAll('#navbar-placeholder .nav-link').forEach(link => {
+      const linkPage = link.getAttribute('href').split('/').pop();
+      if (linkPage === currentPage) {
+        link.classList.add('active');
+      }
+    });
+  })
+  .catch(err => console.error('Navbar fetch error:', err));
+
 </script>
+
+
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
 
 </body>
 </html>
