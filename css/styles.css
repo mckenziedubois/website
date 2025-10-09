@@ -10851,3 +10851,47 @@ header.masthead .post-heading .meta a {
   color: #6c757d;
   font-weight: 400;
 }
+
+/* Rounded social buttons for contact page */
+#contact-icons a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  margin: 0 10px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  color: #333;
+  font-size: 1.5rem;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+#contact-icons a:hover {
+  transform: scale(1.2);
+  color: #fff;
+}
+
+#contact-icons a.pinterest:hover { background-color: #E60023; }
+#contact-icons a.email:hover { background-color: #6c757d; }
+#contact-icons a.linkedin:hover { background-color: #0077b5; }
+
+/* Responsive adjustments for social icons */
+@media (max-width: 768px) {
+  #contact-icons a {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    margin: 0 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  #contact-icons a {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+    margin: 0 4px;
+  }
+}
