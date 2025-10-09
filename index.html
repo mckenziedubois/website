@@ -18,19 +18,19 @@
     <link href="css/custom.css" rel="stylesheet" />
 </head>
 
-<body>
-    <!-- Navbar -->
-    <div id="navbar-placeholder"></div>
+  <body>
 
-    <!-- Header -->
-    <header class="masthead" style="background-image: url('assets/img/japan_fuji.jpg')"></header>
+  <!-- Navbar -->
+  <div id="navbar-placeholder"></div>
 
-    <!-- Recent Posts -->
-    <main class="container px-4 px-lg-5 my-5">
-        <div class="row gx-4 gx-lg-5" id="recent-posts">
-            <!-- Recent posts injected here -->
-        </div>
-    </main>
+  <header class="masthead" style="background-image: url('../assets/img/japan_fuji.jpg')"></header>
+
+  <!-- Recent Posts -->
+  <main class="container px-4 px-lg-5 my-5">
+    <div class="row gx-4 gx-lg-5" id="recent-posts">
+      <!-- REcent posts injected here -->
+    </div>
+  </main>
 
     <!-- Footer -->
     <footer class="py-4 text-center text-muted small">
@@ -77,7 +77,7 @@ fetch('data/posts.json')
     const rootPrefix = ''; // index.html is at root
     container.innerHTML = latest.map(post => `
       <div class="col-md-12 col-lg-4 mb-4">
-        <div class="post-preview-card shadow-sm bg-white rounded overflow-hidden h-100 d-flex flex-column">
+        <div class="post-preview shadow-sm bg-white rounded overflow-hidden h-100 d-flex flex-column">
           <img src="${rootPrefix}${post.image}" alt="${post.title}" class="post-img">
           <div class="post-content p-3 d-flex flex-column flex-grow-1">
             <a href="posts/${post.slug}.html" class="text-decoration-none text-dark flex-grow-1">
