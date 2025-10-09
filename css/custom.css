@@ -1,0 +1,215 @@
+/* =============================
+   General Body & Typography
+============================= */
+body {
+  font-family: 'Open Sans', sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Lora', serif;
+  font-weight: 700;
+}
+
+a {
+  text-decoration: none;
+}
+
+/* =============================
+   Navbar
+============================= */
+.navbar {
+  padding: 1rem 0;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.5rem;
+}
+
+.nav-link.active {
+  font-weight: bold;
+  color: #007bff !important;
+}
+
+/* =============================
+   Header / Masthead
+============================= */
+.masthead {
+  position: relative;
+  width: 100%;
+  height: 50vh;
+  min-height: 300px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+}
+
+.page-heading {
+  text-align: center;
+  color: #fff;
+}
+
+.page-heading h1 {
+  font-size: 2.5rem;
+}
+
+.page-heading .subheading {
+  font-size: 1.25rem;
+}
+
+/* =============================
+   Blog Post Cards - Blog Home & Index
+============================= */
+.post-preview {
+  margin-bottom: 2rem;
+}
+
+.post-img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.post-content h2,
+.post-content h3 {
+  margin: 0;
+}
+
+/* Horizontal cards for index page recent posts */
+.card {
+  display: flex;
+  flex-direction: row;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 0.25rem;
+  overflow: hidden;
+  transition: transform 0.2s;
+  height: 100%;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card-img-left {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-top-left-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+}
+
+.card-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.card h5, .card h6 {
+  margin-bottom: 0.5rem;
+}
+
+.card-footer {
+  font-size: 0.8rem;
+  color: #888;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) { /* Medium & smaller screens */
+  .card {
+    flex-direction: column;
+  }
+  .card-img-left {
+    width: 100%;
+    height: 200px;
+    border-radius: 0.25rem 0.25rem 0 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .card-body {
+    padding: 0.75rem;
+  }
+}
+
+/* =============================
+   Footer
+============================= */
+footer {
+  background-color: #f8f9fa;
+  padding: 1rem 0;
+  color: #666;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* =============================
+   Contact Page Social Icons
+============================= */
+#contact-icons {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+#contact-icons a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  margin: 0 10px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  color: #333;
+  font-size: 1.5rem;
+  transition: all 0.3s;
+  text-decoration: none;
+}
+
+#contact-icons a:hover {
+  transform: scale(1.2);
+  color: #fff;
+}
+
+#contact-icons a.pinterest:hover { background-color: #E60023; }
+#contact-icons a.email:hover { background-color: #6c757d; }
+#contact-icons a.linkedin:hover { background-color: #0077b5; }
+
+/* Responsive adjustments for social icons */
+@media (max-width: 768px) {
+  #contact-icons a {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+    margin: 0 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  #contact-icons a {
+    width: 35px;
+    height: 35px;
+    font-size: 1rem;
+    margin: 0 4px;
+  }
+}
+
+/* =============================
+   Utility Spacing
+============================= */
+.my-4 {
+  margin-top: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.mb-4 {
+  margin-bottom: 1.5rem !important;
+}
+
+.mt-auto {
+  margin-top: auto !important;
+}

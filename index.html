@@ -10,10 +10,12 @@
     <!-- Font Awesome icons -->
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <!-- Google fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" type="text/css" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css" />
-    <!-- Core theme CSS (includes Bootstrap) -->
+    <link href="https://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" />
+    <!-- Core theme CSS (Bootstrap + Clean Blog) -->
     <link href="css/styles.css" rel="stylesheet" />
+    <!-- Custom overrides -->
+    <link href="css/custom.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -23,10 +25,10 @@
     <!-- Header -->
     <header class="masthead" style="background-image: url('assets/img/japan_fuji.jpg')"></header>
 
-    <!-- Recent posts grid -->
+    <!-- Recent Posts -->
     <main class="container px-4 px-lg-5 my-5">
         <div class="row gx-4 gx-lg-5" id="recent-posts">
-            <!-- Posts will be injected here -->
+            <!-- Recent posts injected here -->
         </div>
     </main>
 
@@ -35,37 +37,12 @@
         © 2025 McKenzie DuBois — All Rights Reserved
     </footer>
 
-    <!-- Scripts -->
+    <!-- Bootstrap core JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS -->
+    <script src="js/scripts.js"></script>
 
-    <!-- Load recent posts -->
-    <script>
-    fetch('data/posts.json')
-      .then(res => res.json())
-      .then(posts => {
-        posts.sort((a, b) => new Date(b.date) - new Date(a.date));
-        const recent = posts.slice(0, 6); // show up to 6 posts
-
-        const container = document.getElementById('recent-posts');
-        container.innerHTML = recent.map(post => `
-          <div class="col-md-4 mb-4">
-            <div class="card h-100 shadow-sm">
-              <img src="${post.image}" class="card-img-top" alt="${post.title}" style="height: 200px; object-fit: cover;">
-              <div class="card-body d-flex flex-column">
-                <h5 class="card-title">${post.title}</h5>
-                <h6 class="card-subtitle mb-2 text-muted">${post.subtitle}</h6>
-              </div>
-              <div class="card-footer text-muted small">
-                ${new Date(post.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
-              </div>
-              <a href="posts/${post.slug}.html" class="stretched-link"></a>
-            </div>
-          </div>
-        `).join('');
-      })
-      .catch(err => console.error('Error loading posts:', err));
-    </script>
-
-    <!-- Load navbar -->
+    <!-- Navbar fetch -->
     <script>
     const pathParts = window.location.pathname.split('/');
     const isSubPage = pathParts.includes('posts');
@@ -77,19 +54,43 @@
         const htmlWithRoot = html.replace(/{ROOT}/g, rootPrefix);
         document.getElementById('navbar-placeholder').innerHTML = htmlWithRoot;
 
-        // Highlight active link
+        // Highlight current link
         const currentPage = pathParts.pop() || 'index.html';
         document.querySelectorAll('#navbar-placeholder .nav-link').forEach(link => {
           const linkPage = link.getAttribute('href').split('/').pop();
-          if (linkPage === currentPage) link.classList.add('active');
+          if (linkPage === currentPage) {
+            link.classList.add('active');
+          }
         });
       })
       .catch(err => console.error('Navbar fetch error:', err));
     </script>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS -->
-    <script src="js/scripts.js"></script>
+    <!-- Recent posts fetch -->
+    <script>
+    fetch('data/posts.json')
+      .then(res => res.json())
+      .then(posts => {
+        posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+        const recent = posts.slice(0, 6); // show 6 most recent posts
+
+        const container = document.getElementById('recent-posts');
+        container.innerHTML = recent.map(post => `
+          <div class="col-md-12 col-lg-4 mb-4">
+            <div class="card card-horizontal h-100 shadow-sm">
+              <img src="${post.image}" class="card-img-left" alt="${post.title}">
+              <div class="card-body d-flex flex-column">
+                <h5 class="card-title">${post.title}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">${post.subtitle}</h6>
+                <p class="card-text mt-auto">${post.excerpt || ''}</p>
+                <small class="text-muted">Posted on ${new Date(post.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</small>
+              </div>
+              <a href="posts/${post.slug}.html" class="stretched-link"></a>
+            </div>
+          </div>
+        `).join('');
+      })
+      .catch(err => console.error('Error loading posts:', err));
+    </script>
 </body>
 </html>
