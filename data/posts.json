@@ -4,7 +4,6 @@
     "title": "Kyoto, Japan",
     "subtitle": "Snow, temples, and matcha",
     "date": "2025-02-07",
-    "home_image": "../assets/img/japan_kyoto.jpg",
     "image": "assets/img/japan_kyoto.jpg",
     "author": "McKenzie DuBois"  
   },
@@ -13,7 +12,6 @@
     "title": "Seoul, Korea",
     "subtitle": "Palace ",
     "date": "2025-02-25",
-    "home_image": "../assets/img/korea_palace.jpg",
     "image": "assets/img/korea_palace.jpg",
     "author": "McKenzie DuBois"  
 
@@ -23,7 +21,6 @@
     "title": "Angkor Wat",
     "subtitle": "The sunrise and temple hopping in Cambodia",
     "date": "2025-03-20",
-    "home_image": "../assets/img/cambodia_angkor.jpg",
     "image": "assets/img/cambodia_angkor.jpg",
     "author": "McKenzie DuBois"  
 
@@ -33,7 +30,6 @@
     "title": "Tokyo, Japan",
     "subtitle": "Eating your way through Japan",
     "date": "2025-03-20",
-    "home_image": "../assets/img/japan_fuji.jpg",
     "image": "assets/img/japan_fuji.jpg",
     "author": "McKenzie DuBois"  
 

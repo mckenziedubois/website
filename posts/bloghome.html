@@ -69,7 +69,7 @@ fetch('../data/posts.json')
     container.innerHTML = posts.map(post => `
       <div class="col-md-12 col-lg-4 mb-4">
         <div class="post-preview shadow-sm bg-white rounded overflow-hidden h-100 d-flex flex-column">
-          <img src="${post.image}" alt="${post.title}" class="post-img">
+          <img src="${rootPrefix}${post.image}" alt="${post.title}" class="post-img mt-2 mb-2">
           <div class="post-content p-3 d-flex flex-column flex-grow-1">
             <a href="${post.slug}.html" class="text-decoration-none text-dark flex-grow-1">
               <h2 class="post-title mb-1">${post.title}</h2>
