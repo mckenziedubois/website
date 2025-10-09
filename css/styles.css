@@ -10829,3 +10829,25 @@ header.masthead .post-heading .meta a {
   color: #0056b3 !important;
   font-weight: bold;
 }
+.post-preview img {
+  width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.post-preview img:hover {
+  transform: scale(1.02);
+}
+
+.post-preview h2 {
+  font-size: 1.75rem;
+  margin-top: 0.75rem;
+}
+
+.post-preview h3 {
+  font-size: 1.25rem;
+  color: #6c757d;
+  font-weight: 400;
+}
