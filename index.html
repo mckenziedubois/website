@@ -71,7 +71,7 @@
         .then(res => res.json())
         .then(posts => {
           posts.sort((a, b) => new Date(b.date) - new Date(a.date));
-          const recent = posts.slice(0, 6); // show 6 most recent posts
+          const recent = posts.slice(0, 3); // show 6 most recent posts
 
           const container = document.getElementById('recent-posts');
           container.innerHTML = recent.map(post => `

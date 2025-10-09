@@ -6,7 +6,7 @@
     "date": "2025-02-07",
     "image": "../assets/img/japan_kyoto.jpg",
     "author": "McKenzie DuBois"  
-},
+  },
   {
     "slug": "seoul",
     "title": "Seoul, Korea",
@@ -22,6 +22,15 @@
     "subtitle": "The sunrise and temple hopping in Cambodia",
     "date": "2025-03-20",
     "image": "../assets/img/cambodia_angkor.jpg",
+    "author": "McKenzie DuBois"  
+
+  },
+    {
+    "slug": "tokyo",
+    "title": "Tokyo, Japan",
+    "subtitle": "Eating your way through Japan",
+    "date": "2025-03-20",
+    "image": "../assets/img/japan_fuji.jpg",
     "author": "McKenzie DuBois"  
 
   }

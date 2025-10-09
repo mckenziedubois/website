@@ -47,16 +47,16 @@ a {
   align-items: center;
 }
 
-.page-heading {
+.page-heading, .post-heading {
   text-align: center;
   color: #fff;
 }
 
-.page-heading h1 {
+.page-heading h1, .post-heading h1 {
   font-size: 2.5rem;
 }
 
-.page-heading .subheading {
+.page-heading .subheading, .post-heading .subheading {
   font-size: 1.25rem;
 }
 
@@ -79,9 +79,9 @@ a {
 }
 
 /* Horizontal cards for index page recent posts */
-.card {
+.card, .post-preview-card {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 0.25rem;
@@ -90,7 +90,7 @@ a {
   height: 100%;
 }
 
-.card:hover {
+.card:hover, .post-preview-card:hover {
   transform: translateY(-5px);
 }
 
@@ -102,7 +102,7 @@ a {
   border-bottom-left-radius: 0.25rem;
 }
 
-.card-body {
+.card-body, .post-content {
   padding: 1rem;
   display: flex;
   flex-direction: column;
@@ -117,9 +117,53 @@ a {
   color: #888;
 }
 
+/* Post Content Styling */
+article.post-content {
+  max-width: 800px;
+  margin: 0 auto 3rem auto;
+  line-height: 1.8;
+}
+
+article.post-content p {
+  margin-bottom: 1.25rem;
+}
+
+article.post-content img {
+  width: 100%;
+  height: auto;
+  margin-bottom: 1.5rem;
+  border-radius: 0.25rem;
+}
+
+article.post-content h2, article.post-content h3 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+article.post-content blockquote {
+  padding: 1rem 1.5rem;
+  background: #f8f9fa;
+  border-left: 5px solid #007bff;
+  margin: 1.5rem 0;
+  font-style: italic;
+}
+
+article.post-content pre {
+  background: #f0f0f0;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+
+/* Related Posts Section */
+.related-posts .post-preview {
+  margin-bottom: 2rem;
+}
+
 /* Responsive adjustments */
 @media (max-width: 992px) { /* Medium & smaller screens */
-  .card {
+  .card, .post-preview-card {
     flex-direction: column;
   }
   .card-img-left {
@@ -130,7 +174,7 @@ a {
 }
 
 @media (max-width: 768px) {
-  .card-body {
+  .card-body, .post-content {
     padding: 0.75rem;
   }
 }
@@ -149,8 +193,6 @@ footer {
 /* =============================
    Contact Page Social Icons
 ============================= */
-/* Rounded social buttons for contact page */
-
 #contact-icons {
   display: flex;
   justify-content: center;
