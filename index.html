@@ -18,35 +18,35 @@
     <link href="css/custom.css" rel="stylesheet" />
 </head>
 
-  <body>
+<body>
 
   <!-- Navbar -->
   <div id="navbar-placeholder"></div>
 
+  <!-- Masthead -->
   <header class="masthead" style="background-image: url('assets/img/japan_fuji.jpg')"></header>
 
   <!-- Recent Posts -->
   <main class="container px-4 px-lg-5 my-5">
     <div class="row gx-4 gx-lg-5" id="recent-posts">
-      <!-- REcent posts injected here -->
+      <!-- Recent posts injected here -->
     </div>
   </main>
 
-    <!-- Footer -->
-    <footer class="py-4 text-center text-muted small">
-        © 2025 McKenzie DuBois — All Rights Reserved
-    </footer>
+  <!-- Footer -->
+  <footer class="py-4 text-center text-muted small">
+      © 2025 McKenzie DuBois — All Rights Reserved
+  </footer>
 
-    <!-- Bootstrap core JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS -->
-    <script src="js/scripts.js"></script>
+  <!-- Bootstrap core JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Core theme JS -->
+  <script src="js/scripts.js"></script>
 
-    <!-- Navbar fetch -->
-    <script>
+  <!-- Navbar fetch -->
+  <script>
     const pathParts = window.location.pathname.split('/');
-    const isSubPage = pathParts.includes('posts');
-    const rootPrefix = isSubPage ? '../' : '';
+    const rootPrefix = '';
 
     fetch(`${rootPrefix}partials/nav.html`)
       .then(res => res.text())
@@ -58,43 +58,41 @@
         const currentPage = pathParts.pop() || 'index.html';
         document.querySelectorAll('#navbar-placeholder .nav-link').forEach(link => {
           const linkPage = link.getAttribute('href').split('/').pop();
-          if (linkPage === currentPage) {
-            link.classList.add('active');
-          }
+          if (linkPage === currentPage) link.classList.add('active');
         });
       })
       .catch(err => console.error('Navbar fetch error:', err));
-    </script>
+  </script>
 
-    <script>
-fetch('data/posts.json')
-  .then(res => res.json())
-  .then(posts => {
-    posts.sort((a,b) => new Date(b.date) - new Date(a.date));
-    const latest = posts.slice(0,3);
+  <!-- Fetch latest 3 posts -->
+  <script>
+    fetch('posts/posts.json')
+      .then(res => res.json())
+      .then(posts => {
+        // Sort by newest first
+        posts.sort((a,b) => new Date(b.date) - new Date(a.date));
+        const latest = posts.slice(0,3);
 
-    const container = document.getElementById('recent-posts');
-    const rootPrefix = ''; // index.html is at root
-    container.innerHTML = latest.map(post => `
-      <div class="col-md-12 col-lg-4 mb-4">
-        <div class="post-preview shadow-sm bg-white rounded overflow-hidden h-100 d-flex flex-column">
-          <img src="${rootPrefix}${post.image}" alt="${post.title}" class="post-img">
-          <div class="post-content p-3 d-flex flex-column flex-grow-1">
-            <a href="posts/${post.slug}.html" class="text-decoration-none text-dark flex-grow-1">
-              <h2 class="post-title mb-1">${post.title}</h2>
-              <h3 class="post-subtitle text-muted fs-6">${post.subtitle}</h3>
-            </a>
-            <p class="post-meta small text-muted mb-0">
-              Posted on ${new Date(post.date).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' })}
-            </p>
+        const container = document.getElementById('recent-posts');
+        container.innerHTML = latest.map(post => `
+          <div class="col-md-12 col-lg-4 mb-4">
+            <div class="post-preview-card shadow-sm bg-white rounded overflow-hidden h-100 d-flex flex-column">
+              <img src="${post.image}" alt="${post.title}" class="post-img">
+              <div class="post-content p-3 d-flex flex-column flex-grow-1">
+                <a href="posts/post.html?slug=${post.slug}" class="text-decoration-none text-dark flex-grow-1">
+                  <h2 class="post-title mb-1">${post.title}</h2>
+                  <h3 class="post-subtitle text-muted fs-6">${post.subtitle}</h3>
+                </a>
+                <p class="post-meta small text-muted mb-0">
+                  Posted on ${new Date(post.date).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' })}
+                </p>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    `).join('');
-  })
-  .catch(err => console.error('Posts fetch error:', err));
-
-    </script>
+        `).join('');
+      })
+      .catch(err => console.error('Posts fetch error:', err));
+  </script>
 
 </body>
 </html>
