@@ -5,16 +5,19 @@
     "subtitle": "Snow, temples, and matcha",
     "date": "2025-02-07",
     "image": "assets/img/japan_kyoto.jpg",
-    "author": "McKenzie DuBois"  
+    "author": "McKenzie DuBois",
+    "tags": ["Japan", "Asia", "Winter"],
+    "md_file": "kyoto.md"
   },
   {
     "slug": "seoul",
     "title": "Seoul, Korea",
-    "subtitle": "Palace ",
+    "subtitle": "Palace",
     "date": "2025-02-25",
     "image": "assets/img/korea_palace.jpg",
-    "author": "McKenzie DuBois"  
-
+    "author": "McKenzie DuBois",
+    "tags": ["Korea", "Asia", "Winter"],
+    "md_file": "seoul.md"
   },
   {
     "slug": "angkorwat",
@@ -22,8 +25,9 @@
     "subtitle": "The sunrise and temple hopping in Cambodia",
     "date": "2025-03-20",
     "image": "assets/img/cambodia_angkor.jpg",
-    "author": "McKenzie DuBois"  
-
+    "author": "McKenzie DuBois",
+    "tags": ["Cambodia", "Asia"],
+    "md_file": "angkorwat.md"
   },
   {
     "slug": "tokyo",
@@ -31,8 +35,9 @@
     "subtitle": "Eating your way through Japan",
     "date": "2025-03-20",
     "image": "assets/img/japan_fuji.jpg",
-    "author": "McKenzie DuBois"  
-
+    "author": "McKenzie DuBois",
+    "tags": ["Japan", "Asia", "Winter"],
+    "md_file": "tokyo.md"
   },
   {
     "slug": "mendocino",
@@ -40,8 +45,9 @@
     "subtitle": "A perfect weekend",
     "date": "2024-10-20",
     "image": "assets/img/mendo_1.jpg",
-    "author": "McKenzie DuBois"  
-
+    "author": "McKenzie DuBois",
+    "tags": ["California", "USA", "West Coast"],
+    "md_file": "mendocino.md"
   },
   {
     "slug": "redwood_nationalpark",
@@ -49,7 +55,8 @@
     "subtitle": "Least visited national park in California",
     "date": "2024-11-24",
     "image": "assets/img/redwood_1.jpg",
-    "author": "McKenzie DuBois"  
-
+    "author": "McKenzie DuBois",
+    "tags": ["California", "USA", "West Coast", "National Parks"],
+    "md_file": "redwood_nationalpark.md"
   }
 ]

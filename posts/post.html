@@ -31,8 +31,8 @@
   <!-- Post Content -->
   <main class="container px-4 px-lg-5 my-5">
     <article class="post-content">
-      <!-- Write your post content manually here -->
-      <p>Your post content goes here. You can include images, paragraphs, blockquotes, etc.</p>
+      <!-- Add individual post content here -->
+      <p>Your post content goes here. You can include paragraphs, images, blockquotes, etc.</p>
     </article>
 
     <!-- Related Posts -->
@@ -89,21 +89,31 @@
           .toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
         document.getElementById('page-title').textContent = `${post.title} | McKenzie DuBois`;
 
-        // Populate related posts (excluding current)
-        const related = posts.filter(p => p.slug !== currentSlug).slice(0,3);
+        // Populate related posts based on shared tags
+        const related = posts
+          .filter(p => p.slug !== currentSlug)
+          .map(p => {
+            const sharedTags = p.tags.filter(tag => post.tags.includes(tag));
+            return { ...p, sharedTagsCount: sharedTags.length };
+          })
+          .filter(p => p.sharedTagsCount > 0)
+          .sort((a,b) => b.sharedTagsCount - a.sharedTagsCount)
+          .slice(0,3);
+
         const container = document.getElementById('related-posts');
         container.innerHTML = related.map(p => `
           <div class="col-md-12 col-lg-4 mb-4">
-            <div class="post-preview-card shadow-sm bg-white rounded overflow-hidden h-100 d-flex flex-column">
-              <img src="${p.image}" alt="${p.title}" class="post-img">
+            <div class="post-preview shadow-sm bg-white rounded overflow-hidden h-100 d-flex flex-column">
+              <img src="../${p.image}" alt="${p.title}" class="post-img">
               <div class="post-content p-3 d-flex flex-column flex-grow-1">
                 <a href="${p.slug}.html" class="text-decoration-none text-dark flex-grow-1">
                   <h2 class="post-title mb-1">${p.title}</h2>
                   <h3 class="post-subtitle text-muted fs-6">${p.subtitle}</h3>
                 </a>
-                <p class="post-meta small text-muted mb-0">
+                <p class="post-meta small text-muted mb-1">
                   Posted on ${new Date(p.date).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' })}
                 </p>
+                ${p.tags && p.tags.length ? `<p class="post-tags small text-muted">Tags: ${p.tags.join(', ')}</p>` : ''}
               </div>
             </div>
           </div>
