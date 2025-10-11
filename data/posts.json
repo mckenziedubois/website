@@ -25,12 +25,30 @@
     "author": "McKenzie DuBois"  
 
   },
-    {
+  {
     "slug": "tokyo",
     "title": "Tokyo, Japan",
     "subtitle": "Eating your way through Japan",
     "date": "2025-03-20",
     "image": "assets/img/japan_fuji.jpg",
+    "author": "McKenzie DuBois"  
+
+  },
+  {
+    "slug": "mendocino",
+    "title": "Mendocino, California",
+    "subtitle": "A perfect weekend",
+    "date": "2024-10-20",
+    "image": "assets/img/mendo_img1.jpg",
+    "author": "McKenzie DuBois"  
+
+  },
+  {
+    "slug": "redwood_nationalpark",
+    "title": "Redwood National Park, California",
+    "subtitle": "Least visited national park in California",
+    "date": "2024-11-24",
+    "image": "assets/img/redwood_img1.jpg",
     "author": "McKenzie DuBois"  
 
   }
