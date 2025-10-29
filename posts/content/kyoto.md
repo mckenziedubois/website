@@ -1,0 +1,3 @@
+### Kyoto
+
+[map id="kyoto"]
