@@ -74,9 +74,10 @@
     fetch('posts/posts.json')
       .then(res => res.json())
       .then(posts => {
-        // Sort by newest first
-        posts.sort((a,b) => new Date(b.date) - new Date(a.date));
-        const latest = posts.slice(0,3);
+        
+        const publishedPosts = posts.filter(post => post.active);
+        publishedPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+        const latest = publishedPosts.slice(0, 3);
 
         const container = document.getElementById('recent-posts');
         container.innerHTML = latest.map(post => `

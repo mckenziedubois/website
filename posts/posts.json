@@ -7,7 +7,8 @@
     "image": "https://res.cloudinary.com/dsxlralvu/image/upload/v1761167320/kyoto1.jpg",
     "author": "McKenzie DuBois",
     "tags": ["Japan", "Asia", "Winter"],
-    "md_file": "kyoto.md"
+    "md_file": "kyoto.md", 
+    "active": false
   },
   {
     "slug": "seoul",
@@ -17,7 +18,8 @@
     "image": "https://res.cloudinary.com/dsxlralvu/image/upload/v1761167308/seoul1.jpg",
     "author": "McKenzie DuBois",
     "tags": ["Korea", "Asia", "Winter"],
-    "md_file": "seoul.md"
+    "md_file": "seoul.md",
+    "active": false
   },
   {
     "slug": "tokyo",
@@ -27,7 +29,8 @@
     "image": "https://res.cloudinary.com/dsxlralvu/image/upload/v1761167323/tokyo1.jpg",
     "author": "McKenzie DuBois",
     "tags": ["Japan", "Asia", "Winter"],
-    "md_file": "tokyo.md"
+    "md_file": "tokyo.md",
+    "active": false
   },
   {
     "slug": "mendocino",
@@ -37,7 +40,8 @@
     "image": "https://res.cloudinary.com/dsxlralvu/image/upload/v1760309575/mendocino1.jpg",
     "author": "McKenzie DuBois",
     "tags": ["California", "USA", "West Coast"],
-    "md_file": "mendocino.md"
+    "md_file": "mendocino.md",
+    "active": true
   },
   {
     "slug": "redwood_nationalpark",
@@ -47,6 +51,7 @@
     "image": "https://res.cloudinary.com/dsxlralvu/image/upload/v1760309575/redwood1.jpg",
     "author": "McKenzie DuBois",
     "tags": ["California", "USA", "West Coast", "National Parks"],
-    "md_file": "redwood_nationalpark.md"
+    "md_file": "redwood_nationalpark.md",
+    "active": true
   }
 ]

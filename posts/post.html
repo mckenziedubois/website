@@ -89,7 +89,8 @@
     fetch('../posts/posts.json')
       .then(res => res.json())
       .then(posts => {
-        const post = posts.find(p => p.slug === currentSlug);
+        const publishedPosts = posts.filter(post => post.active);
+        const post = publishedPosts.find(p => p.slug === currentSlug);
         if (!post) return;
 
         // Set post header info
@@ -107,7 +108,9 @@
           window.initMaps();
         });
 
-        const related = posts.filter(p => p.slug !== currentSlug).slice(0,3);
+        const related = publishedPosts
+          .filter(p => p.slug !== currentSlug)
+          .slice(0, 3);      
         const container = document.getElementById('related-posts');
         container.innerHTML = related.map(p => `
           <div class="col-md-12 col-lg-4 mb-4">

@@ -63,10 +63,12 @@
     fetch('../posts/posts.json')
       .then(res => res.json())
       .then(posts => {
-        posts.sort((a,b) => new Date(b.date) - new Date(a.date));
+
+        const publishedPosts = posts.filter(post => post.active);
+        publishedPosts.sort((a,b) => new Date(b.date) - new Date(a.date));
 
         const container = document.getElementById('all-posts');
-        container.innerHTML = posts.map(p => `
+        container.innerHTML = publishedPosts.map(p => `
           <div class="col-md-12 col-lg-4 mb-4">
             <div class="post-preview-card shadow-sm bg-white rounded overflow-hidden h-100 d-flex flex-column">
               <img src="${p.image}" alt="${p.title}" class="post-img">
