@@ -1,0 +1,28 @@
+{
+  "mendocino": {
+    "center": [39.3077, -123.7995],
+    "zoom": 13,
+    "markers": [
+      {
+        "coords": [39.299937,-123.790562],
+        "message": "Stanford Inn By the Sea",
+        "pintype": "hotel"
+      },
+      {
+        "coords": [39.300938,-123.791938],
+        "message": "Catch a Canoe",
+        "pintype": "activity"
+      },
+      {
+        "coords": [39.306466, -123.809534],
+        "message": "Mendocino Cliffs Trail",
+        "pintype": "activity"
+      },
+      {
+        "coords": [39.3231, -123.8103],
+        "message": "Russian Gulch State Park",
+        "pintype": "activity"
+      }
+    ]
+  }
+}

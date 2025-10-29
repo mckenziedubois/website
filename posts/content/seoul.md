@@ -1,0 +1,3 @@
+### Seoul
+
+[map id="seoul"]
