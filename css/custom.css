@@ -37,8 +37,9 @@ a {
    Header / Masthead
 ============================= */
 .masthead {
-  min-height: 60vh;                 /* 60% of viewport height */
+  min-height: 50vh;                 /* 60% of viewport height */
   background-image: url('https://res.cloudinary.com/dsxlralvu/image/upload/v1761168364/header.jpg');
+  margin-bottom: 25px;
   background-size: cover;
   background-position: center;
   display: flex;
@@ -75,7 +76,6 @@ a {
     padding-right: 3rem;
   }
 }
-
 
 .page-heading h1, .post-heading h1 {
   font-size: 2.5rem;
@@ -293,22 +293,36 @@ footer {
   margin: 2rem 0;
 }
 
-/* Gallery container: responsive grid */
+
+/* =============================
+   Portfolio Gallery
+============================= */
+
 #gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(5, 1fr); /* max 5 portrait images per row */
   gap: 16px;
   padding: 16px;
 }
 
-/* Images inside the gallery */
+/* Base image style */
 .post-img {
   width: 100%;
-  height: auto;       /* natural height based on image aspect ratio */
-  object-fit: contain; /* ensure full image is visible without cropping */
+  height: 300px; /* same height for all */
+  object-fit: cover;
   border-radius: 8px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
+}
+
+/* Portraits */
+.post-img.portrait {
+  grid-column: span 1;
+}
+
+/* Landscapes: take up 2 portrait widths */
+.post-img.landscape {
+  grid-column: span 2;
 }
 
 /* Hover effect */
@@ -316,3 +330,49 @@ footer {
   transform: scale(1.05);
   box-shadow: 0 8px 16px rgba(0,0,0,0.2);
 }
+
+
+/* Responsive tweak for smaller screens */
+@media (max-width: 900px) {
+  #gallery {
+    grid-template-columns: repeat(3, 1fr); /* fewer columns on small screens */
+  }
+}
+
+/* =============================
+   Filter Bar for Portfolio
+============================= */
+
+/* Filter bar container */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end; /* Right-align buttons */
+  margin-right: 1rem; /* small space */
+
+}
+
+/* Style buttons as plain text */
+.filter-btn {
+  background: none;
+  border: none;
+  padding: 8px;
+  font: inherit;
+  cursor: pointer;
+  font-size: 1rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #333; /* Adjust color */
+  transition: color 0.2s;
+  letter-spacing: 0.0625em;
+}
+
+.filter-btn:hover {
+  color: hsl(211, 10%, 40%); /* Highlight on hover */
+}
+
+.filter-btn.active {
+  font-weight: bold;
+  color: #007BFF;
+}
+
