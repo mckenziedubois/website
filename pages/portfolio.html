@@ -60,10 +60,26 @@
       .catch(err => console.error('Navbar fetch error:', err));
   </script>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+
+  <script>
+    // --- CSV PATH ---
+    const CSV_PATH = "image_metadata.csv"; // same folder
+
+    // --- Load CSV ---
+    d3.csv(CSV_PATH)
+      .then(data => {
+        console.log("CSV loaded successfully:", data);
+      })
+      .catch(err => {
+        console.error("Error loading CSV:", err);
+      });
+  </script>
+
+
     <!-- Gallery script with Lightbox -->
     <script>
     const galleryEl = document.getElementById("gallery");
-    const CSV_PATH = "/pages/image_metadata.csv";
 
     async function fetchCsvData(path) {
         try {
