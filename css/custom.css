@@ -292,3 +292,27 @@ footer {
   border-radius: 12px;
   margin: 2rem 0;
 }
+
+/* Gallery container: responsive grid */
+#gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+/* Images inside the gallery */
+.post-img {
+  width: 100%;
+  height: auto;       /* natural height based on image aspect ratio */
+  object-fit: contain; /* ensure full image is visible without cropping */
+  border-radius: 8px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+/* Hover effect */
+.post-img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
