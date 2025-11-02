@@ -19,7 +19,7 @@
   <div id="navbar-placeholder"></div>
 
   <!-- Masthead -->
-  <header class="masthead" style="background-image: url('https://res.cloudinary.com/dsxlralvu/image/upload/v1761168364/header.jpg')">
+  <header class="masthead" >
     <div class="container position-relative px-4 px-lg-5">
       <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-7">
@@ -30,8 +30,9 @@
       </div>
     </div>
   </header>
-
-  <main class="gallery" id="gallery"></main>
+  
+    <div id="countryFilterBar" class="filter-bar"></div>
+    <main class="gallery" id="gallery"></main>
 
   <!-- Footer -->
   <footer class="border-top text-center py-4">
@@ -59,31 +60,39 @@
       .catch(err => console.error('Navbar fetch error:', err));
   </script>
 
-  <!-- Gallery script with Lightbox -->
-  <script>
+    <!-- Gallery script with Lightbox -->
+    <script>
     const galleryEl = document.getElementById("gallery");
-    const CSV_PATH = "/pages/portfolio_image_urls.csv";
+    const CSV_PATH = "/pages/image_metadata.csv";
 
-    async function fetchCsvUrls(path) {
-      try {
+    async function fetchCsvData(path) {
+        try {
         const res = await fetch(path);
         if (!res.ok) throw new Error(`Failed to fetch CSV: ${res.status}`);
         const text = await res.text();
-        return text
-          .split("\n")
-          .map(line => line.trim())
-          .filter(line => line && !line.startsWith("url")); // skip header
-      } catch (err) {
-        console.error(err);
+        const lines = text
+            .split("\n")
+            .map(line => line.trim())
+            .filter(line => line && !line.startsWith("url")); // skip header
+
+        // Parse into array of objects [{ url, orientation }]
+        return lines.map(line => {
+            const [url, orientation] = line.split(",");
+            return { url: url.trim(), orientation: (orientation || "portrait").trim() };
+        });
+        } catch (err) {
+            console.error(err);
         return [];
-      }
+        }
     }
 
     async function loadGallery() {
-      const urls = await fetchCsvUrls(CSV_PATH);
-      const fragment = document.createDocumentFragment();
+        const images = await fetchCsvData(CSV_PATH);
+        const fragment = document.createDocumentFragment();
 
-      urls.forEach((url, index) => {
+        images.forEach((imgData, index) => {
+        const { url, orientation } = imgData;
+
         // Wrap image in a link for Lightbox
         const link = document.createElement("a");
         link.href = url;
@@ -93,25 +102,27 @@
         const img = document.createElement("img");
         img.src = url;
         img.alt = `Image ${index + 1}`;
-        img.className = "post-img";
+        img.className = `post-img ${orientation}`; // add orientation class
         img.loading = "lazy";
 
         link.appendChild(img);
         fragment.appendChild(link);
-      });
+        });
 
-      galleryEl.appendChild(fragment);
+        galleryEl.appendChild(fragment);
     }
 
     loadGallery();
-  </script>
+    </script>
 
-  <!-- Bootstrap core JS-->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Lightbox JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
-  <!-- Core theme JS-->
-  <script src="js/scripts.js"></script>
+<!-- Lightbox JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+
+<!-- Your gallery script -->
+<script src="js/portfolio_filter.js"></script>
+
+<!-- Optional: Bootstrap / theme scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
