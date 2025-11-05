@@ -63,7 +63,7 @@ function addColoredMarker(map, marker) {
     L.popup({ autoClose: false, closeOnClick: false })
         .setLatLng(marker.coords)
         .setContent(marker.message)
-        .openOn(map);
+        //.openOn(map);
     }
 
 }
