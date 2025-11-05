@@ -34,7 +34,7 @@ function renderGallery(list) {
 
         const link = document.createElement("a");
         link.href = url;
-        link.setAttribute("data-lightbox", "portfolio");
+        link.setAttribute("data-lightbox", "gallery");
         link.setAttribute("data-title", `Country: ${country}, Orientation: ${orientation}`);
 
         const img = document.createElement("img");
