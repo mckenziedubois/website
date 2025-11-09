@@ -298,32 +298,42 @@ footer {
   Gallery
 ============================= */
 
-#gallery {
+.gallery {
   display: grid;
-  grid-template-columns: repeat(5, 1fr); /* max 5 portrait images per row */
+  grid-template-columns: repeat(5, 1fr);
   gap: 16px;
   padding: 16px;
+}
+
+.gallery-item {
+  position: relative;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.2s ease-in-out, opacity 0.2s;
+}
+
+.gallery-item:hover img {
+  transform: scale(1.03);
+  opacity: 0.95;
 }
 
 /* Base image style */
 .post-img {
   width: 100%;
-  height: 300px; /* same height for all */
+  height: 300px;
   object-fit: cover;
   border-radius: 8px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
 }
 
-/* Portraits */
-.post-img.portrait {
-  grid-column: span 1;
-}
-
-/* Landscapes: take up 2 portrait widths */
-.post-img.landscape {
-  grid-column: span 2;
-}
+/* Portraits & landscapes */
+.post-img.portrait { grid-column: span 1; }
+.post-img.landscape { grid-column: span 2; }
 
 /* Hover effect */
 .post-img:hover {
@@ -331,11 +341,37 @@ footer {
   box-shadow: 0 8px 16px rgba(0,0,0,0.2);
 }
 
+/* Pinterest button overlay */
+.pinterest-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  background-color: rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
+  padding: 6px;
+  font-size: 18px;
+  color: #BD081C;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 1;
+}
 
-/* Responsive tweak for smaller screens */
+.gallery-item:hover .pinterest-btn {
+  opacity: 1; /* visible on hover */
+}
+
+.pinterest-btn:hover {
+  transform: scale(1.2);
+  background-color: rgba(255, 255, 255, 1);
+}
+
+/* Responsive tweaks */
 @media (max-width: 900px) {
-  #gallery {
-    grid-template-columns: repeat(3, 1fr); /* fewer columns on small screens */
+  .gallery {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -375,4 +411,3 @@ footer {
   font-weight: bold;
   color: #007BFF;
 }
-
