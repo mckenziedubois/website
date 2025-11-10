@@ -418,15 +418,13 @@ footer {
   width: 100%;
 }
 
-/* Portrait: 2:3 aspect ratio (standard photo portrait) */
 .gallery-item.portrait {
   aspect-ratio: 2 / 3;
 }
 
-/* Landscape: 3:2 aspect ratio (standard photo landscape), spans 2 columns */
 .gallery-item.landscape {
   grid-column: span 2;
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 1.37 / 1;
 }
 
 /* Link fills container - but Pinterest button should be on top */
