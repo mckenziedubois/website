@@ -1,5 +1,7 @@
 let images = [];
 const filterBarEl = document.getElementById("countryFilterBar");
+const CSV_PATH = window.CSV_PATH || "image_metadata.csv";
+const galleryEl = window.galleryEl || document.getElementById("gallery");
 
 async function fetchCsvData(path) {
     try {
@@ -12,11 +14,12 @@ async function fetchCsvData(path) {
             .filter(line => line && !line.toLowerCase().startsWith("url")); // skip header
 
         return lines.map(line => {
-            const [url, orientation, country] = line.split(",");
+            const [url, orientation, country, pinurl] = line.split(",");
             return { 
                 url: url?.trim() || "", 
                 orientation: (orientation || "portrait").trim(),
-                country: (country || "Remove Filter").trim()
+                country: (country || "Remove Filter").trim(),
+                pinurl: pinurl ? pinurl.trim() : ""
             };
         });
     } catch (err) {
@@ -30,13 +33,19 @@ function renderGallery(list) {
     const fragment = document.createDocumentFragment();
 
     list.forEach((imgData, index) => {
-        const { url, orientation, country } = imgData;
+        const { url, orientation, country, pinurl } = imgData;
 
+        // Container for image + overlay
+        const container = document.createElement("div");
+        container.className = `gallery-item ${orientation}`;
+
+        // Use same URL for both thumbnail and lightbox - browser will cache it
         const link = document.createElement("a");
         link.href = url;
         link.setAttribute("data-lightbox", "gallery");
         link.setAttribute("data-title", `Country: ${country}, Orientation: ${orientation}`);
 
+        // Use the same image - CSS constrains display size, browser caches for lightbox
         const img = document.createElement("img");
         img.src = url;
         img.alt = `Image ${index + 1}`;
@@ -44,7 +53,20 @@ function renderGallery(list) {
         img.loading = "lazy";
 
         link.appendChild(img);
-        fragment.appendChild(link);
+        container.appendChild(link);
+
+        // Pinterest overlay button
+        if (pinurl) {
+            const pinBtn = document.createElement("a");
+            pinBtn.href = pinurl;
+            pinBtn.target = "_blank";
+            pinBtn.rel = "noopener noreferrer";
+            pinBtn.className = "pinterest-btn";
+            pinBtn.innerHTML = `<i class="fab fa-pinterest"></i>`;
+
+            container.appendChild(pinBtn);
+        }
+        fragment.appendChild(container);
     });
 
     galleryEl.appendChild(fragment);
