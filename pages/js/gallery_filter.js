@@ -1,12 +1,97 @@
+/**
+ * Gallery Filter and Rendering System
+ * Handles loading, filtering, and displaying gallery images
+ */
+
+// ============================================================================
+// Constants & DOM Elements
+// ============================================================================
+
 let images = [];
 const filterBarEl = document.getElementById("countryFilterBar");
 const CSV_PATH = window.CSV_PATH || "image_metadata.csv";
 const galleryEl = window.galleryEl || document.getElementById("gallery");
 
+// ============================================================================
+// Utility Functions
+// ============================================================================
+
+/**
+ * Capitalizes country name properly
+ * Keeps acronyms (USA, UK) uppercase, capitalizes others normally
+ */
+function capitalizeCountry(country) {
+    if (country === country.toUpperCase() && country.length > 1) {
+        // Keep acronyms like USA, UK, etc. as uppercase
+        return country;
+    }
+    // Normal capitalization: first letter uppercase, rest lowercase
+    return country.charAt(0).toUpperCase() + country.slice(1).toLowerCase();
+}
+
+/**
+ * Creates a Pinterest button element
+ */
+function createPinterestButton(pinurl) {
+    const pinBtn = document.createElement("a");
+    pinBtn.href = pinurl;
+    pinBtn.target = "_blank";
+    pinBtn.rel = "noopener noreferrer";
+    pinBtn.className = "pinterest-btn";
+    pinBtn.innerHTML = `<i class="fab fa-pinterest"></i>`;
+    return pinBtn;
+}
+
+/**
+ * Creates a gallery item element with image and optional Pinterest button
+ */
+function createGalleryItem(imgData, index) {
+    const { url, orientation, country, pinurl } = imgData;
+
+    // Container for image + overlay
+    const container = document.createElement("div");
+    container.className = `gallery-item ${orientation}`;
+
+    // Lightbox link
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("data-lightbox", "gallery");
+    link.setAttribute("data-title", capitalizeCountry(country));
+    
+    if (pinurl) {
+        link.setAttribute("data-pinurl", pinurl);
+    }
+
+    // Image element
+    const img = document.createElement("img");
+    img.src = url;
+    img.alt = `Image ${index + 1}`;
+    img.className = `post-img ${orientation}`;
+    img.loading = "lazy";
+
+    link.appendChild(img);
+    container.appendChild(link);
+
+    // Pinterest overlay button (if pinurl exists)
+    if (pinurl) {
+        container.appendChild(createPinterestButton(pinurl));
+    }
+
+    return container;
+}
+
+// ============================================================================
+// Data Loading
+// ============================================================================
+
+/**
+ * Fetches and parses CSV data from the specified path
+ */
 async function fetchCsvData(path) {
     try {
         const res = await fetch(path);
         if (!res.ok) throw new Error(`Failed to fetch CSV: ${res.status}`);
+        
         const text = await res.text();
         const lines = text
             .split("\n")
@@ -23,99 +108,97 @@ async function fetchCsvData(path) {
             };
         });
     } catch (err) {
-        console.error(err);
+        console.error("Error fetching CSV data:", err);
         return [];
     }
 }
 
+// ============================================================================
+// Gallery Rendering
+// ============================================================================
+
+/**
+ * Renders the gallery with the provided list of images
+ */
 function renderGallery(list) {
     galleryEl.innerHTML = "";
     const fragment = document.createDocumentFragment();
 
     list.forEach((imgData, index) => {
-        const { url, orientation, country, pinurl } = imgData;
-
-        // Container for image + overlay
-        const container = document.createElement("div");
-        container.className = `gallery-item ${orientation}`;
-
-        // Use same URL for both thumbnail and lightbox - browser will cache it
-        const link = document.createElement("a");
-        link.href = url;
-        link.setAttribute("data-lightbox", "gallery");
-        link.setAttribute("data-title", `Country: ${country}, Orientation: ${orientation}`);
-
-        // Use the same image - CSS constrains display size, browser caches for lightbox
-        const img = document.createElement("img");
-        img.src = url;
-        img.alt = `Image ${index + 1}`;
-        img.className = `post-img ${orientation}`;
-        img.loading = "lazy";
-
-        link.appendChild(img);
-        container.appendChild(link);
-
-        // Pinterest overlay button
-        if (pinurl) {
-            const pinBtn = document.createElement("a");
-            pinBtn.href = pinurl;
-            pinBtn.target = "_blank";
-            pinBtn.rel = "noopener noreferrer";
-            pinBtn.className = "pinterest-btn";
-            pinBtn.innerHTML = `<i class="fab fa-pinterest"></i>`;
-
-            container.appendChild(pinBtn);
-        }
-        fragment.appendChild(container);
+        fragment.appendChild(createGalleryItem(imgData, index));
     });
 
     galleryEl.appendChild(fragment);
 }
 
-function populateCountryFilter() {
-    filterBarEl.innerHTML = ""; // clear existing buttons
+// ============================================================================
+// Filter Functionality
+// ============================================================================
 
-    // Unique countries (excluding "all")
-    const countries = [...new Set(images.map(img => img.country).filter(c => c.toLowerCase() !== "all"))];
-
-    // Add country buttons first
-    countries.forEach(country => {
-        const btn = document.createElement("button");
-        btn.className = "filter-btn";
-        btn.dataset.country = country;
-        btn.textContent = country;
-        filterBarEl.appendChild(btn);
-
-        btn.addEventListener("click", () => {
-            setActiveButton(btn);
-            const filteredImages = images.filter(img => img.country === country);
-            renderGallery(filteredImages);
-        });
-    });
-
-    // "Remove Filter" button at the end
-    const removeBtn = document.createElement("button");
-    removeBtn.className = "filter-btn active";
-    removeBtn.dataset.country = "all";
-    removeBtn.textContent = "All";
-    filterBarEl.appendChild(removeBtn);
-
-    removeBtn.addEventListener("click", () => {
-        setActiveButton(removeBtn);
-        renderGallery(images);
-    });
-}
-
-
+/**
+ * Sets the active filter button and removes active class from others
+ */
 function setActiveButton(activeBtn) {
     filterBarEl.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
     activeBtn.classList.add("active");
 }
 
+/**
+ * Creates and sets up a country filter button
+ */
+function createFilterButton(country) {
+    const btn = document.createElement("button");
+    btn.className = "filter-btn";
+    btn.dataset.country = country;
+    btn.textContent = country;
+    
+    btn.addEventListener("click", () => {
+        setActiveButton(btn);
+        const filteredImages = images.filter(img => img.country === country);
+        renderGallery(filteredImages);
+    });
+    
+    return btn;
+}
+
+/**
+ * Populates the country filter bar with buttons
+ */
+function populateCountryFilter() {
+    filterBarEl.innerHTML = "";
+
+    // Get unique countries (excluding "all")
+    const countries = [...new Set(images.map(img => img.country).filter(c => c.toLowerCase() !== "all"))];
+
+    // Add country filter buttons
+    countries.forEach(country => {
+        filterBarEl.appendChild(createFilterButton(country));
+    });
+
+    // Add "All" button at the end
+    const removeBtn = document.createElement("button");
+    removeBtn.className = "filter-btn active";
+    removeBtn.dataset.country = "all";
+    removeBtn.textContent = "All";
+    removeBtn.addEventListener("click", () => {
+        setActiveButton(removeBtn);
+        renderGallery(images);
+    });
+    filterBarEl.appendChild(removeBtn);
+}
+
+// ============================================================================
+// Initialization
+// ============================================================================
+
+/**
+ * Initializes the gallery by loading data and setting up filters
+ */
 async function loadGallery() {
     images = await fetchCsvData(CSV_PATH);
     populateCountryFilter();
     renderGallery(images);
 }
 
+// Start the gallery
 loadGallery();
