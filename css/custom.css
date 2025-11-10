@@ -1,15 +1,22 @@
 /* =============================
    General Body & Typography
 ============================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
 body {
-  font-family: 'Open Sans', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   line-height: 1.6;
   color: #333;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Lora', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 a {
@@ -26,6 +33,7 @@ a {
 .navbar-brand {
   font-weight: 700;
   font-size: 1.5rem;
+  letter-spacing: -0.02em;
 }
 
 .nav-link.active {
@@ -38,7 +46,6 @@ a {
 ============================= */
 .masthead {
   min-height: 50vh;                 /* 60% of viewport height */
-  background-image: url('https://res.cloudinary.com/dsxlralvu/image/upload/v1761168364/header.jpg');
   margin-bottom: 25px;
   background-size: cover;
   background-position: center;
@@ -47,11 +54,31 @@ a {
   justify-content: center;
   text-align: center;
   color: white;
+  position: relative;
+  /* Background image is set inline for faster loading */
+}
+
+.masthead::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
+
+.masthead .container {
+  position: relative;
+  z-index: 2;
 }
 
 .page-heading, .post-heading {
   text-align: center;
   color: #fff;
+  padding: 3rem 0;
+  margin: 0;
 }
 
 /* Post preview cards */
@@ -78,11 +105,31 @@ a {
 }
 
 .page-heading h1, .post-heading h1 {
-  font-size: 2.5rem;
+  font-size: 3.5rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  line-height: 1.1;
+  margin: 0;
+  padding-bottom: 0.5rem;
+  opacity: 0.5;
 }
 
 .page-heading .subheading, .post-heading .subheading {
-  font-size: 1.25rem;
+  font-size: 1.375rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.3);
+  opacity: 0.95;
+}
+
+@media (max-width: 768px) {
+  .page-heading h1, .post-heading h1 {
+    font-size: 2.5rem;
+  }
+  
+  .page-heading, .post-heading {
+    padding: 2rem 0;
+  }
 }
 
 /* =============================
@@ -94,8 +141,13 @@ a {
 
 .post-img {
   width: 100%;
-  height: 220px;
+  height: 240px;
   object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.post-preview-card:hover .post-img {
+  transform: scale(1.05);
 }
 
 .post-content h2,
@@ -108,15 +160,18 @@ a {
   display: flex;
   flex-direction: column;
   background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 0.25rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.5rem;
   overflow: hidden;
-  transition: transform 0.2s;
+  transition: all 0.3s ease;
   height: 100%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .card:hover, .post-preview-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  border-color: #d1d5db;
 }
 
 .card-img-left {
@@ -128,9 +183,52 @@ a {
 }
 
 .card-body, .post-content {
-  padding: 1rem;
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
+}
+
+/* Post preview card specific styles */
+.post-preview-card .post-content {
+  padding: 1.5rem;
+}
+
+.post-preview-card .post-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+  color: #1f2937;
+  letter-spacing: -0.01em;
+}
+
+.post-preview-card .post-subtitle {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #6b7280;
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.post-preview-card .post-meta {
+  font-size: 0.875rem;
+  color: #9ca3af;
+  margin-top: auto;
+  padding-top: 1rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.post-preview-card a {
+  transition: color 0.2s ease;
+}
+
+.post-preview-card:hover .post-title {
+  color: #111827;
+}
+
+.post-preview-card:hover .post-subtitle {
+  color: #4b5563;
 }
 
 .card h5, .card h6 {
@@ -146,11 +244,14 @@ a {
 article.post-content {
   max-width: 800px;
   margin: 0 auto 3rem auto;
-  line-height: 1.8;
+  line-height: 1.75;
+  font-size: 1.0625rem;
+  color: #2d3748;
 }
 
 article.post-content p {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+  font-weight: 400;
 }
 
 article.post-content img {
@@ -161,8 +262,11 @@ article.post-content img {
 }
 
 article.post-content h2, article.post-content h3 {
-  margin-top: 2rem;
+  margin-top: 2.5rem;
   margin-bottom: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
 }
 
 article.post-content blockquote {
@@ -300,45 +404,56 @@ footer {
 
 .gallery {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
-  padding: 16px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 8px;
+  align-items: start;
 }
 
 .gallery-item {
   position: relative;
-}
-
-.gallery-item img {
+  overflow: hidden;
+  border-radius: 8px;
+  background: #f8f9fa;
   width: 100%;
-  height: auto;
+}
+
+/* Portrait: 2:3 aspect ratio (standard photo portrait) */
+.gallery-item.portrait {
+  aspect-ratio: 2 / 3;
+}
+
+/* Landscape: 3:2 aspect ratio (standard photo landscape), spans 2 columns */
+.gallery-item.landscape {
+  grid-column: span 2;
+  aspect-ratio: 3 / 2;
+}
+
+/* Link fills container - but Pinterest button should be on top */
+.gallery-item > a[data-lightbox] {
   display: block;
-  transition: transform 0.2s ease-in-out, opacity 0.2s;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
 }
 
-.gallery-item:hover img {
-  transform: scale(1.03);
-  opacity: 0.95;
-}
-
-/* Base image style */
+/* Base image style - fills container and crops to maintain aspect ratio */
 .post-img {
   width: 100%;
-  height: 300px;
-  object-fit: cover;
+  height: 100%;
+  display: block;
   border-radius: 8px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
+  object-fit: cover;
+  object-position: center;
 }
 
-/* Portraits & landscapes */
-.post-img.portrait { grid-column: span 1; }
-.post-img.landscape { grid-column: span 2; }
-
 /* Hover effect */
-.post-img:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+.gallery-item:hover .post-img {
+  transform: scale(1.02);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
 }
 
 /* Pinterest button overlay */
@@ -355,8 +470,10 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
-  opacity: 1;
+  z-index: 10;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.2s ease;
+  pointer-events: auto;
 }
 
 .gallery-item:hover .pinterest-btn {
@@ -368,10 +485,53 @@ footer {
   background-color: rgba(255, 255, 255, 1);
 }
 
-/* Responsive tweaks */
-@media (max-width: 900px) {
+/* Responsive tweaks - scales up proportionally on larger screens */
+
+/* Tablet and small desktop: 4 columns (4 portraits or 2 landscapes) */
+@media (min-width: 600px) {
   .gallery {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding: 12px;
+  }
+  
+  .gallery-item.landscape {
+    grid-column: span 2;
+  }
+}
+
+/* Medium desktop: 5 columns (5 portraits or 2-3 landscapes) */
+@media (min-width: 900px) {
+  .gallery {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    padding: 16px;
+  }
+  
+  .gallery-item.landscape {
+    grid-column: span 2;
+  }
+}
+
+/* Large desktop: 6 columns (6 portraits or 3 landscapes) */
+@media (min-width: 1200px) {
+  .gallery {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 12px;
+    padding: 20px;
+  }
+  
+  .gallery-item.landscape {
+    grid-column: span 2;
+  }
+}
+
+/* Extra large screens: 7-8 columns */
+@media (min-width: 1600px) {
+  .gallery {
+    grid-template-columns: repeat(7, 1fr);
+    gap: 14px;
+    padding: 24px;
   }
 }
 

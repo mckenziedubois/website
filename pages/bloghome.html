@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -7,14 +8,15 @@
   <link href="../css/styles.css" rel="stylesheet" />
   <link href="../css/custom.css" rel="stylesheet" />
   <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
 </head>
-<body>
 
+<body>
   <!-- Navbar -->
   <div id="navbar-placeholder"></div>
 
   <!-- Masthead -->
-  <header class="masthead" >
+  <header class="masthead" style="background-image: url('https://res.cloudinary.com/dsxlralvu/image/upload/v1761168364/header.jpg')">
     <div class="container position-relative px-4 px-lg-5">
       <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-7">
@@ -26,62 +28,48 @@
     </div>
   </header>
 
-  <!-- Blog Post List -->
+  <!-- Main Content -->
   <main class="container px-4 px-lg-5 my-5">
-    <div class="row gx-4 gx-lg-5" id="all-posts"></div>
+    <div class="row gx-4 gx-lg-5" id="blog-posts">
+      <!-- Posts will be loaded here -->
+    </div>
   </main>
 
   <!-- Footer -->
-  <footer class="border-top text-center py-4">
-    <div class="small text-muted fst-italic">Copyright &copy; McKenzie DuBois 2025</div>
-  </footer>
+  <div id="footer-placeholder"></div>
 
-  <!-- Scripts -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../js/scripts.js"></script>
+  <!-- Common Scripts -->
+  <div id="scripts-placeholder"></div>
 
- <!-- Load navbar dynamically -->
+  <!-- Load partials -->
+  <script src="../js/load-partials.js"></script>
   <script>
-    const pathParts = window.location.pathname.split('/');
-    const rootPrefix = '../';
+    initPage({
+      pageTitle: 'Guides',
+      rootPrefix: '../',
+      currentPage: 'bloghome.html',
+      loadMasthead: false  // Already loaded inline for faster rendering
+    });
 
-    fetch(`${rootPrefix}partials/nav.html`)
-      .then(res => res.text())
-      .then(html => {
-        const htmlWithRoot = html.replace(/{ROOT}/g, rootPrefix);
-        document.getElementById('navbar-placeholder').innerHTML = htmlWithRoot;
-
-        // Highlight current link
-        const currentPage = pathParts.pop() || 'index.html';
-        document.querySelectorAll('#navbar-placeholder .nav-link').forEach(link => {
-          const linkPage = link.getAttribute('href').split('/').pop();
-          if (linkPage === currentPage) link.classList.add('active');
-        });
-      })
-      .catch(err => console.error('Navbar fetch error:', err));
-  </script>
-
-  <!-- Posts JSON fetch -->
-  <script>
+    // Load blog posts
     fetch('../posts/posts.json')
       .then(res => res.json())
       .then(posts => {
-
         const publishedPosts = posts.filter(post => post.active);
-        publishedPosts.sort((a,b) => new Date(b.date) - new Date(a.date));
-
-        const container = document.getElementById('all-posts');
-        container.innerHTML = publishedPosts.map(p => `
+        publishedPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        const container = document.getElementById('blog-posts');
+        container.innerHTML = publishedPosts.map(post => `
           <div class="col-md-12 col-lg-4 mb-4">
             <div class="post-preview-card shadow-sm bg-white rounded overflow-hidden h-100 d-flex flex-column">
-              <img src="${p.image}" alt="${p.title}" class="post-img">
+              <img src="${post.image}" alt="${post.title}" class="post-img">
               <div class="post-content p-3 d-flex flex-column flex-grow-1">
-                <a href="../posts/post.html?slug=${p.slug}" class="text-decoration-none text-dark flex-grow-1">
-                  <h2 class="post-title mb-1">${p.title}</h2>
-                  <h3 class="post-subtitle text-muted fs-6">${p.subtitle}</h3>
+                <a href="../posts/post.html?slug=${post.slug}" class="text-decoration-none text-dark flex-grow-1">
+                  <h2 class="post-title mb-1">${post.title}</h2>
+                  <h3 class="post-subtitle text-muted fs-6">${post.subtitle}</h3>
                 </a>
                 <p class="post-meta small text-muted mb-0">
-                  Posted on ${new Date(p.date).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' })}
+                  Posted on ${new Date(post.date).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' })}
                 </p>
               </div>
             </div>
@@ -90,6 +78,5 @@
       })
       .catch(err => console.error('Posts fetch error:', err));
   </script>
-
 </body>
 </html>
