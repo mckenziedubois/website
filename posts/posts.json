@@ -8,7 +8,8 @@
     "author": "McKenzie DuBois",
     "tags": ["Japan", "Asia", "Winter"],
     "md_file": "kyoto.md", 
-    "active": false
+    "active": true, 
+    "google_maps_embed_link": ""
   },
   {
     "slug": "seoul",
@@ -19,7 +20,8 @@
     "author": "McKenzie DuBois",
     "tags": ["Korea", "Asia", "Winter"],
     "md_file": "seoul.md",
-    "active": false
+    "active": true,
+    "google_maps_embed_link": ""
   },
   {
     "slug": "tokyo",
@@ -30,7 +32,8 @@
     "author": "McKenzie DuBois",
     "tags": ["Japan", "Asia", "Winter"],
     "md_file": "tokyo.md",
-    "active": false
+    "active": false,
+    "google_maps_embed_link": ""
   },
   {
     "slug": "mendocino",
@@ -41,7 +44,8 @@
     "author": "McKenzie DuBois",
     "tags": ["California", "USA", "West Coast"],
     "md_file": "mendocino.md",
-    "active": true
+    "active": true,
+    "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1HTaRwqyEuulYsqfDx-95g-tBqkbiBlc&ehbc=2E312F&noprof=1"
   },
   {
     "slug": "redwood_nationalpark",
@@ -52,6 +56,7 @@
     "author": "McKenzie DuBois",
     "tags": ["California", "USA", "West Coast", "National Parks"],
     "md_file": "redwood_nationalpark.md",
-    "active": true
+    "active": true,
+    "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1OuOwMe_lMZoObZp8K9PFOyQv8ak-sjI&hl=en&ehbc=2E312F&noprof=1"
   }
 ]
