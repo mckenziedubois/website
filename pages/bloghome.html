@@ -30,8 +30,33 @@
 
   <!-- Main Content -->
   <main class="container px-4 px-lg-5 my-5">
-    <div class="row gx-4 gx-lg-5" id="blog-posts">
-      <!-- Posts will be loaded here -->
+    <div class="row gx-4 gx-lg-5">
+      <!-- Sidebar filter -->
+      <aside class="col-12 col-lg-3 mb-4">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">Filter Guides</h5>
+            <div class="mb-3">
+              <label for="search-input" class="form-label small">Search</label>
+              <input id="search-input" type="search" class="form-control" placeholder="Search title, subtitle..." />
+            </div>
+            <div class="mb-3">
+              <label class="form-label small">Tags</label>
+              <div id="tags-list" class="d-flex flex-column" style="max-height:220px; overflow:auto;"></div>
+            </div>
+            <div class="d-grid">
+              <button id="clear-filters" class="btn btn-outline-secondary btn-sm">Clear filters</button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Posts grid -->
+      <section id="posts-column" class="col-12 col-lg-9">
+        <div class="row gx-4 gx-lg-5" id="blog-posts">
+          <!-- Posts will be loaded here -->
+        </div>
+      </section>
     </div>
   </main>
 
@@ -49,17 +74,19 @@
       rootPrefix: '../',
       currentPage: 'bloghome.html',
       loadMasthead: false  // Already loaded inline for faster rendering
-    });
+    }).then(() => {
+      // After partials load, fetch and render posts with full filter UI (search + tags)
+      const searchInput = document.getElementById('search-input');
+      const tagsList = document.getElementById('tags-list');
+      const clearBtn = document.getElementById('clear-filters');
+      const postsContainer = document.getElementById('blog-posts');
 
-    // Load blog posts
-    fetch('../posts/posts.json')
-      .then(res => res.json())
-      .then(posts => {
-        const publishedPosts = posts.filter(post => post.active);
-        publishedPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
-        
-        const container = document.getElementById('blog-posts');
-        container.innerHTML = publishedPosts.map(post => `
+      let allPosts = [];
+      let activeTags = new Set();
+      let searchTerm = '';
+
+      function renderPostCard(post) {
+        return `
           <div class="col-md-12 col-lg-4 mb-4">
             <div class="post-preview-card shadow-sm bg-white rounded overflow-hidden h-100 d-flex flex-column">
               <img src="${post.image}" alt="${post.title}" class="post-img">
@@ -74,9 +101,82 @@
               </div>
             </div>
           </div>
+        `;
+      }
+
+      function filterAndRender() {
+        const term = (searchTerm || '').trim().toLowerCase();
+        let filtered = allPosts.filter(p => p.active);
+
+        if (term) {
+          filtered = filtered.filter(p => (
+            p.title.toLowerCase().includes(term) ||
+            (p.subtitle || '').toLowerCase().includes(term) ||
+            (p.tags || []).some(t => t.toLowerCase().includes(term))
+          ));
+        }
+
+        if (activeTags.size > 0) {
+          filtered = filtered.filter(p => {
+            const postTags = (p.tags || []).map(t => t.toLowerCase());
+            for (const t of activeTags) if (!postTags.includes(t)) return false;
+            return true;
+          });
+        }
+
+        filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+        postsContainer.innerHTML = filtered.map(renderPostCard).join('') || '<div class="col-12"><p class="text-muted">No guides found.</p></div>';
+      }
+
+      function buildTagList(posts) {
+        const tags = new Map();
+        posts.forEach(p => (p.tags || []).forEach(t => tags.set(t, (tags.get(t) || 0) + 1)));
+        const sorted = [...tags.keys()].sort((a, b) => a.localeCompare(b));
+
+        tagsList.innerHTML = sorted.map(tag => `
+          <label class="form-check mb-1">
+            <input class="form-check-input tag-checkbox" type="checkbox" value="${tag}"> 
+            <span class="form-check-label small">${tag} <span class="text-muted">(${tags.get(tag)})</span></span>
+          </label>
         `).join('');
-      })
-      .catch(err => console.error('Posts fetch error:', err));
+
+        tagsList.querySelectorAll('.tag-checkbox').forEach(cb => {
+          cb.addEventListener('change', (e) => {
+            const v = e.target.value.toLowerCase();
+            if (e.target.checked) activeTags.add(v);
+            else activeTags.delete(v);
+            filterAndRender();
+          });
+        });
+      }
+
+      function debounce(fn, wait = 200) {
+        let t;
+        return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), wait); };
+      }
+
+      const onSearch = debounce((v) => { searchTerm = v; filterAndRender(); }, 180);
+
+      // wire up search and clear
+      if (searchInput) searchInput.addEventListener('input', (e) => onSearch(e.target.value));
+      if (clearBtn) clearBtn.addEventListener('click', () => {
+        searchTerm = '';
+        activeTags.clear();
+        if (searchInput) searchInput.value = '';
+        tagsList.querySelectorAll('.tag-checkbox').forEach(cb => cb.checked = false);
+        filterAndRender();
+      });
+
+      // initial fetch
+      fetch('../posts/posts.json')
+        .then(res => res.json())
+        .then(posts => {
+          allPosts = posts;
+          buildTagList(allPosts.filter(p => p.active));
+          filterAndRender();
+        })
+        .catch(err => console.error('Posts fetch error:', err));
+    });
   </script>
 </body>
 </html>
