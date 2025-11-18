@@ -6,19 +6,13 @@
   <title id="page-title">Loading… | McKenzie DuBois</title>
   <link href="../css/styles.css" rel="stylesheet" />
   <link href="../css/custom.css" rel="stylesheet" />
-  <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
-
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-     integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-     crossorigin=""/>
-
 </head>
 <body>
 
   <!-- Navbar -->
   <div id="navbar-placeholder"></div>
 
+  <!-- Masthead -->
   <header class="masthead" style="background-image: url('https://res.cloudinary.com/dsxlralvu/image/upload/v1761168364/header.jpg')">
     <div class="container position-relative px-4 px-lg-5">
       <div class="row gx-4 gx-lg-5 justify-content-center">
@@ -33,53 +27,36 @@
     </div>
   </header>
 
-  <!-- Post Content -->
   <main class="container px-4 px-lg-5 my-5">
-    <article class="post-content" id="post-content">
-    </article>
-
-    <!-- Related Posts -->
+    <div class="post-map-container">
+      <article class="post-content-column" id="post-content"></article>
+      <div class="post-map-column" id="post-map"></div>
+    </div>
+  
+  <div class="container px-4 px-lg-5 my-5">
     <section class="related-posts mt-5">
-      <h3 class="mb-4">Related Posts</h3>
       <div class="row gx-4 gx-lg-5" id="related-posts"></div>
     </section>
   </main>
 
   <!-- Footer -->
-  <footer class="py-4 text-center text-muted small">
-    © 2025 McKenzie DuBois — All Rights Reserved
-  </footer>
+  <div id="footer-placeholder"></div> 
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../js/scripts.js"></script>
+  <!-- Common Scripts -->
+  <div id="scripts-placeholder"></div>
 
-  <!-- Leaflet JS -->
- <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-     crossorigin=""></script>
-
-  <!-- Navbar fetch -->
+  <!-- Load partials -->
+  <script src="../js/load-partials.js"></script>
   <script>
-    const pathParts = window.location.pathname.split('/');
-    const rootPrefix = '../';
-
-    fetch(`${rootPrefix}partials/nav.html`)
-      .then(res => res.text())
-      .then(html => {
-        const htmlWithRoot = html.replace(/{ROOT}/g, rootPrefix);
-        document.getElementById('navbar-placeholder').innerHTML = htmlWithRoot;
-
-        const currentPage = pathParts.pop() || 'index.html';
-        document.querySelectorAll('#navbar-placeholder .nav-link').forEach(link => {
-          const linkPage = link.getAttribute('href').split('/').pop();
-          if (linkPage === currentPage) link.classList.add('active');
-        });
-      })
-      .catch(err => console.error('Navbar fetch error:', err));
+    initPage({
+      pageTitle: document.getElementById('post-title').textContent || 'Post',
+      rootPrefix: '../',
+      currentPage: 'post.html',
+      loadMasthead: false 
+    });
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-  <script src="js/maps-init.js"></script>
 
   <!-- Post data fetch -->  
   <script>
@@ -100,36 +77,55 @@
         .toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
         document.getElementById('page-title').textContent = `${post.title} | McKenzie DuBois`;
 
-      fetch(`content/${post.slug}.md`)
-        .then(res => res.text())
-        .then(md => {
-          const replacedMD = md.replace(/\[map id="(.*?)"\]/g, '<div id="$1" class="leaflet-map"></div>');
-          document.getElementById('post-content').innerHTML = marked.parse(replacedMD);
-          window.initMaps();
-        });
+      fetch(`../posts/content/${post.slug}.md`)
+      .then(res => res.text())
+      .then(md => {
+        const html = marked.parse(md);
 
-        const related = publishedPosts
-          .filter(p => p.slug !== currentSlug)
-          .slice(0, 3);      
-        const container = document.getElementById('related-posts');
-        container.innerHTML = related.map(p => `
-          <div class="col-md-12 col-lg-4 mb-4">
-            <div class="post-preview-card shadow-sm bg-white rounded overflow-hidden h-100 d-flex flex-column">
-              <img src="${p.image}" alt="${p.title}" class="post-img">
-              <div class="post-content p-3 d-flex flex-column flex-grow-1">
-                <a href="post.html?slug=${p.slug}" class="text-decoration-none text-dark flex-grow-1">
-                  <h2 class="post-title mb-1">${p.title}</h2>
-                  <h3 class="post-subtitle text-muted fs-6">${p.subtitle}</h3>
-                </a>
-                <p class="post-meta small text-muted mb-0">
-                  Posted on ${new Date(p.date).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' })}
-                </p>
-              </div>
-            </div>
-          </div>
-        `).join('');
+        // Render markdown
+        const postContent = document.getElementById('post-content');
+        postContent.innerHTML = html;
+
+        // Add Google Map below markdown
+        if (post.google_maps_embed_link) {
+          const mapContainer = document.createElement('div');
+          mapContainer.className = 'map-container';
+          mapContainer.style = 'position:relative; padding-bottom:56.25%; height:0; overflow:hidden; margin-top:1rem;';
+          mapContainer.innerHTML = `
+            <iframe
+              src="${post.google_maps_embed_link}"
+              style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;"
+              allowfullscreen
+              loading="lazy">
+            </iframe>
+          `;
+          document.getElementById('post-map').appendChild(mapContainer);
+        }
       })
       .catch(err => console.error(err));
+
+      const related = publishedPosts
+        .filter(p => p.slug !== currentSlug)
+        .slice(0, 3);      
+      const container = document.getElementById('related-posts');
+      container.innerHTML = related.map(p => `
+        <div class="col-md-12 col-lg-4 mb-4">
+          <div class="post-preview-card shadow-sm bg-white rounded overflow-hidden h-100 d-flex flex-column">
+            <img src="${p.image}" alt="${p.title}" class="post-img">
+            <div class="post-content p-3 d-flex flex-column flex-grow-1">
+              <a href="post.html?slug=${p.slug}" class="text-decoration-none text-dark flex-grow-1">
+                <h2 class="post-title mb-1">${p.title}</h2>
+                <h3 class="post-subtitle text-muted fs-6">${p.subtitle}</h3>
+              </a>
+              <p class="post-meta small text-muted mb-0">
+                Posted on ${new Date(p.date).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' })}
+              </p>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    })
+    .catch(err => console.error(err));
   </script>
 
 </body>
