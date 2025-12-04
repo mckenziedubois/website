@@ -4,11 +4,9 @@
 
 - **Gold Beach**  
   <small>*Charming home with ocean views and easy access to local trails.*</small>  
-  [![Home in Gold Beach](https://a0.muscache.com/im/pictures/hosting/Hosting-884932061898654225/original/d84c7117-47ae-4c0f-8866-5ff024e57345.jpeg?im_w=1440)](https://www.airbnb.com/rooms/884932061898654225)
 
 - **Trinidad**  
   <small>*Cozy cabin near the coast, perfect for exploring nearby beaches and parks.*</small>  
-  [![Cabin in Trinidad](https://a0.muscache.com/im/pictures/miso/Hosting-2636400/original/6e4c1b14-6d1f-4a10-9b52-f8693f668e46.jpeg?im_w=1440)](https://www.airbnb.com/rooms/2636400)
 
 ### What to do
 

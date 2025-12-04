@@ -1,5 +1,7 @@
 # Mendocino
 
+Located 2.5 hours north of San Francisco, Mendocino is a cozy coastal town with lots of outdoor activities.  
+
 ### Where to Stay
 
 - **Stanford Inn By the Sea**  

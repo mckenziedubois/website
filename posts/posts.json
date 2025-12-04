@@ -57,6 +57,16 @@
     "tags": ["California", "USA", "West Coast", "National Parks"],
     "md_file": "redwood_nationalpark.md",
     "active": true,
-    "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1OuOwMe_lMZoObZp8K9PFOyQv8ak-sjI&hl=en&ehbc=2E312F&noprof=1"
+    "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1OuOwMe_lMZoObZp8K9PFOyQv8ak-sjI&hl=en&ehbc=2E312F&noprof=1",
+    "airbnbs": [
+      {
+        "label": "goldbeach",
+        "id": "884932061898654225"
+      },
+      {
+        "label": "trinidad",
+        "id": "2636400"
+      }
+    ]
   }
 ]

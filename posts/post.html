@@ -6,7 +6,13 @@
   <title id="page-title">Loading… | McKenzie DuBois</title>
   <link href="../css/styles.css" rel="stylesheet" />
   <link href="../css/custom.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+
 </head>
+
+<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+<script async src="https://www.airbnb.com/embeddable/airbnb_jssdk"></script>
+
 <body>
 
   <!-- Navbar -->
@@ -28,15 +34,34 @@
   </header>
 
   <main class="container px-4 px-lg-5 my-5">
-    <div class="post-map-container">
-      <article class="post-content-column" id="post-content"></article>
-      <div class="post-map-column" id="post-map"></div>
+
+    <div class="post-layout">
+      <div class="post-left">
+        <div id="markdown-content"></div>
+      </div>
+
+      <div class="post-right">
+        <div class="return-button-container">
+        <a href="../pages/bloghome.html" class="return-button">← Back to Guides</a>
+        </div>
+        <div class="mySwiper swiper">
+          <div class="swiper-wrapper" id="gallery-wrapper"></div>
+          <div class="swiper-pagination"></div>
+        </div>
+        <div id="airbnb-section"></div>
+      </div>
     </div>
-  
-  <div class="container px-4 px-lg-5 my-5">
-    <section class="related-posts mt-5">
-      <div class="row gx-4 gx-lg-5" id="related-posts"></div>
-    </section>
+
+    <!-- MAP -->
+    <div id="post-map"></div>
+
+    <!-- Related posts -->
+    <div class="container px-4 px-lg-5 my-5">
+      <section class="related-posts mt-5">
+        <div class="row gx-4 gx-lg-5" id="related-posts"></div>
+      </section>
+    </div>
+    
   </main>
 
   <!-- Footer -->
@@ -63,10 +88,23 @@
     const urlParams = new URLSearchParams(window.location.search);
     const currentSlug = urlParams.get('slug');
 
-    fetch('../posts/posts.json')
-      .then(res => res.json())
-      .then(posts => {
-        const publishedPosts = posts.filter(post => post.active);
+    async function loadCSV(url) {
+      const text = await fetch(url).then(r => r.text());
+      const [headerLine, ...lines] = text.trim().split("\n");
+      const headers = headerLine.split(",");
+
+      return lines.map(line => {
+        const cols = line.split(",");
+        return Object.fromEntries(headers.map((h, i) => [h.trim(), cols[i]?.trim()]));
+      });
+    }
+
+    async function initPost() {
+        const posts = await 
+        fetch('../posts/posts.json').
+        then(res => res.json());
+
+        const publishedPosts = posts.filter(p => p.active);
         const post = publishedPosts.find(p => p.slug === currentSlug);
         if (!post) return;
 
@@ -77,14 +115,63 @@
         .toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
         document.getElementById('page-title').textContent = `${post.title} | McKenzie DuBois`;
 
-      fetch(`../posts/content/${post.slug}.md`)
-      .then(res => res.text())
-      .then(md => {
-        const html = marked.parse(md);
+      const mdRaw = await fetch(`../posts/content/${post.slug}.md`)
+        .then(res => res.text());
+      
+      let html = marked.parse(mdRaw);
+      document.getElementById('markdown-content').innerHTML = html;
 
-        // Render markdown
-        const postContent = document.getElementById('post-content');
-        postContent.innerHTML = html;
+      if (post.airbnbs && post.airbnbs.length > 0) {
+        const airbnb_container = document.getElementById('airbnb-section');
+        post.airbnbs.forEach(listing => {
+          const embedHTML = `
+            <div class="airbnb-embed-frame" 
+                data-id="${listing.id}" 
+                data-view="home"
+                data-hide-price="true"
+                style="width:450px; height:300px; margin:auto;">
+              
+            <a href="https://www.airbnb.com/rooms/${listing.id}?source=embed_widget">
+              View On Airbnb
+            </a>
+
+            <a href="https://www.airbnb.com/rooms/${listing.id}?source=embed_widget" rel="nofollow">
+              ${listing.text || ""}
+            </a>
+
+            </div>
+          `;
+
+        const wrapper = document.createElement("div");
+        wrapper.innerHTML = embedHTML;
+        airbnb_container.appendChild(wrapper);
+
+        // VERY IMPORTANT — reinitialize the Airbnb widget
+        if (window.AirbnbEmbedWidget) {
+          window.AirbnbEmbedWidget.init();
+        }
+      });
+    }
+
+      // LOAD GALLERY IMAGES
+      const metadata = await loadCSV('../pages/image_metadata.csv');
+      const galleryImages = metadata.filter(img => img.slug === currentSlug);
+
+      // Build Swiper slides
+      const wrapper = document.getElementById('gallery-wrapper');
+      galleryImages.forEach(img => {
+        wrapper.innerHTML += `
+          <div class="swiper-slide">
+            <img src="${img.url}" alt="${img.alt || ''}">
+            ${img.caption ? `<div class="slide-caption">${img.caption}</div>` : ''}
+          </div>`;
+      });
+
+      // Initialize Swiper
+      const swiper = new Swiper(".mySwiper", {
+        pagination: { el: ".swiper-pagination", clickable: true },
+        spaceBetween: 10,
+      });
 
         // Add Google Map below markdown
         if (post.google_maps_embed_link) {
@@ -101,8 +188,6 @@
           `;
           document.getElementById('post-map').appendChild(mapContainer);
         }
-      })
-      .catch(err => console.error(err));
 
       const related = publishedPosts
         .filter(p => p.slug !== currentSlug)
@@ -124,9 +209,11 @@
           </div>
         </div>
       `).join('');
-    })
-    .catch(err => console.error(err));
-  </script>
+  }
+
+  initPost();
+
+</script>
 
 </body>
 </html>
