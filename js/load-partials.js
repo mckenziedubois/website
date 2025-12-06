@@ -17,6 +17,33 @@ async function loadPartial(placeholderId, partialPath, replacements = {}) {
     const element = document.getElementById(placeholderId);
     if (element) {
       element.innerHTML = html;
+
+      const scripts = Array.from(element.querySelectorAll('script'));
+      const loadPromises = scripts.map(s => {
+        return new Promise((resolve) => {
+          const newScript = document.createElement('script');
+          if (s.src) {
+            newScript.src = s.src;
+            newScript.async = false;
+            newScript.onload = () => resolve();
+            newScript.onerror = () => {
+              console.error('Failed to load script', s.src);
+              resolve();
+            };
+            document.body.appendChild(newScript);
+          } else {
+            newScript.text = s.innerHTML;
+            document.body.appendChild(newScript);
+            resolve();
+          }
+        });
+      });
+
+      // Remove original script tags from the partial node to avoid duplicate execution
+      scripts.forEach(s => s.parentNode && s.parentNode.removeChild(s));
+
+      // Wait for all external scripts to load before returning
+      await Promise.all(loadPromises);
     }
   } catch (error) {
     console.error(`Error loading partial ${partialPath}:`, error);
