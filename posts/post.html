@@ -11,7 +11,6 @@
 </head>
 
 <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-<script async src="https://www.airbnb.com/embeddable/airbnb_jssdk"></script>
 
 <body>
 
@@ -56,11 +55,9 @@
     <div id="post-map"></div>
 
     <!-- Related posts -->
-    <div class="container px-4 px-lg-5 my-5">
-      <section class="related-posts mt-5">
-        <div class="row gx-4 gx-lg-5" id="related-posts"></div>
-      </section>
-    </div>
+    <section class="related-posts mt-5">
+      <div class="row gx-4 gx-lg-5" id="related-posts"></div>
+    </section>
     
   </main>
 
@@ -87,6 +84,29 @@
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const currentSlug = urlParams.get('slug');
+
+    // Function to load the Airbnb SDK dynamically
+    function loadAirbnbSDK() {
+      return new Promise((resolve) => {
+        // If already loaded, resolve immediately
+        if (window.AirbnbEmbedWidget) {
+          resolve();
+          return;
+        }
+        
+        // Remove any existing Airbnb script tags to force reload
+        const existingScripts = document.querySelectorAll('script[src*="airbnb_jssdk"]');
+        existingScripts.forEach(script => script.remove());
+        
+        // Create and append new script
+        const script = document.createElement('script');
+        script.src = 'https://www.airbnb.com/embeddable/airbnb_jssdk';
+        script.async = true;
+        script.onload = () => resolve();
+        script.onerror = () => resolve(); // Resolve even if it fails, retry later
+        document.body.appendChild(script);
+      });
+    }
 
     async function loadCSV(url) {
       const text = await fetch(url).then(r => r.text());
@@ -145,12 +165,50 @@
         const wrapper = document.createElement("div");
         wrapper.innerHTML = embedHTML;
         airbnb_container.appendChild(wrapper);
-
-        // VERY IMPORTANT — reinitialize the Airbnb widget
-        if (window.AirbnbEmbedWidget) {
-          window.AirbnbEmbedWidget.init();
-        }
       });
+
+      // Load Airbnb SDK and initialize with retries
+      let airbnbInitialized = false;
+      
+      const initAirbnbWidget = (attempts = 0) => {
+        if (window.AirbnbEmbedWidget && !airbnbInitialized) {
+          try {
+            window.AirbnbEmbedWidget.init();
+            airbnbInitialized = true;
+            console.log('✓ Airbnb widget initialized successfully');
+          } catch (e) {
+            console.warn('Airbnb widget init error:', e);
+          }
+        } else if (!airbnbInitialized && attempts < 200) {
+          // Retry up to 200 times (20 seconds total) with 100ms intervals
+          setTimeout(() => initAirbnbWidget(attempts + 1), 100);
+        } else if (!airbnbInitialized) {
+          console.warn('✗ Airbnb widget failed to load after 20 seconds');
+        }
+      };
+      
+      // Load SDK first, then start initialization
+      loadAirbnbSDK().then(() => {
+        // Small delay to let SDK fully initialize
+        setTimeout(() => initAirbnbWidget(0), 100);
+      });
+
+      // Parallel watcher that checks every 300ms for widget availability
+      const airbnbLoadWatcher = setInterval(() => {
+        if (window.AirbnbEmbedWidget && !airbnbInitialized) {
+          try {
+            window.AirbnbEmbedWidget.init();
+            airbnbInitialized = true;
+            clearInterval(airbnbLoadWatcher);
+            console.log('✓ Airbnb widget initialized by watcher');
+          } catch (e) {
+            // Widget loaded but init failed, continue watching
+          }
+        }
+      }, 300);
+      
+      // Stop watcher after 25 seconds to avoid memory leak
+      setTimeout(() => clearInterval(airbnbLoadWatcher), 25000);
     }
 
       // LOAD GALLERY IMAGES
@@ -193,22 +251,25 @@
         .filter(p => p.slug !== currentSlug)
         .slice(0, 3);      
       const container = document.getElementById('related-posts');
-      container.innerHTML = related.map(p => `
-        <div class="col-md-12 col-lg-4 mb-4">
-          <div class="post-preview-card shadow-sm bg-white rounded overflow-hidden h-100 d-flex flex-column">
-            <img src="${p.image}" alt="${p.title}" class="post-img">
-            <div class="post-content p-3 d-flex flex-column flex-grow-1">
-              <a href="post.html?slug=${p.slug}" class="text-decoration-none text-dark flex-grow-1">
-                <h2 class="post-title mb-1">${p.title}</h2>
-                <h3 class="post-subtitle text-muted fs-6">${p.subtitle}</h3>
-              </a>
-              <p class="post-meta small text-muted mb-0">
-                Posted on ${new Date(p.date).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' })}
-              </p>
+      // Render related posts using the magazine-style card (same size as bloghome)
+      container.innerHTML = related.map((p, index) => {
+        // Hide 3rd related post on mobile (index 2)
+        const hideOnMobile = index === 2 ? 'hide-on-mobile' : '';
+        return `
+        <div class="col-6 col-md-6 col-lg-4 mb-4 ${hideOnMobile}">
+          <article class="card-magazine">
+            <a class="card-media" href="post.html?slug=${p.slug}">
+              <img src="${p.image}" alt="${p.title}" loading="lazy">
+            </a>
+            <div class="card-body">
+              <a href="post.html?slug=${p.slug}" class="card-title">${p.title}</a>
+              <p class="card-excerpt">${p.subtitle || ''}</p>
+              <div class="card-meta">${new Date(p.date).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' })}</div>
             </div>
-          </div>
+          </article>
         </div>
-      `).join('');
+      `;
+      }).join('');
   }
 
   initPost();
