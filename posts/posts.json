@@ -1,7 +1,7 @@
 [
   {
     "slug": "kyoto",
-    "title": "Kyoto, Japan",
+    "title": "Kyoto",
     "subtitle": "Snow, temples, and matcha",
     "date": "2025-02-07",
     "image": "https://res.cloudinary.com/dsxlralvu/image/upload/v1761167320/kyoto1.jpg",
@@ -13,7 +13,7 @@
   },
   {
     "slug": "seoul",
-    "title": "Seoul, Korea",
+    "title": "Seoul",
     "subtitle": "Palace",
     "date": "2025-02-25",
     "image": "https://res.cloudinary.com/dsxlralvu/image/upload/v1761167308/seoul1.jpg",
@@ -25,19 +25,19 @@
   },
   {
     "slug": "tokyo",
-    "title": "Tokyo, Japan",
+    "title": "Tokyo",
     "subtitle": "Eating your way through Japan",
     "date": "2025-03-20",
     "image": "https://res.cloudinary.com/dsxlralvu/image/upload/v1761167323/tokyo1.jpg",
     "author": "McKenzie DuBois",
     "tags": ["Japan", "Asia", "Winter"],
     "md_file": "tokyo.md",
-    "active": false,
+    "active": true,
     "google_maps_embed_link": ""
   },
   {
     "slug": "mendocino",
-    "title": "Mendocino, California",
+    "title": "Mendocino",
     "subtitle": "A perfect weekend",
     "date": "2024-10-20",
     "image": "https://res.cloudinary.com/dsxlralvu/image/upload/v1760309575/mendocino1.jpg",
@@ -49,7 +49,7 @@
   },
   {
     "slug": "redwood_nationalpark",
-    "title": "Redwood National Park, California",
+    "title": "Redwood National Park",
     "subtitle": "Big trees, ocean views, and scenic drives",
     "date": "2024-11-24",
     "image": "https://res.cloudinary.com/dsxlralvu/image/upload/v1760309575/redwood1.jpg",
