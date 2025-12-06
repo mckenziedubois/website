@@ -6,7 +6,6 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>McKenzie DuBois</title>
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <!-- Font Awesome icons -->
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <!-- Google fonts -->
@@ -33,11 +32,17 @@
     </div>
   </header>
   
-  <!-- Recent Posts -->
-  <main class="container px-4 px-lg-5 my-5">
-    <div class="row gx-4 gx-lg-5" id="recent-posts">
-    </div>
+  <!-- Intro / About section (editable) -->
+  <main class="container px-4 px-lg-5 my-5 text-center">
+    <h2 class="mb-4">Welcome</h2>
+    <p class="lead mb-4">Thanks for visiting my site. I have spent the past year traveling the world and wanted to create a site to document the favorite places I've visited and share my photography.</p>
   </main>
+
+  <!-- Recent Posts -->
+  <section class="container px-4 px-lg-5 mb-5">
+    <div class="row gx-2 gx-lg-3" id="recent-posts">
+    </div>
+  </section>
 
   <!-- Footer -->
   <footer class="border-top text-center py-4">
@@ -46,7 +51,6 @@
 
   <!-- Bootstrap core JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="js/scripts.js"></script>
 
   <!-- Navbar fetch -->
   <script>
@@ -69,7 +73,7 @@
       .catch(err => console.error('Navbar fetch error:', err));
   </script>
 
-  <!-- Fetch latest 3 posts -->
+  <!-- Fetch latest posts (3 desktop, 2 mobile) -->
   <script>
     fetch('posts/posts.json')
       .then(res => res.json())
@@ -77,25 +81,29 @@
         
         const publishedPosts = posts.filter(post => post.active);
         publishedPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
-        const latest = publishedPosts.slice(0, 3);
+        
+        // Get all posts, will limit display with CSS
+        const allPosts = publishedPosts.slice(0, 3);
 
         const container = document.getElementById('recent-posts');
-        container.innerHTML = latest.map(post => `
-          <div class="col-md-12 col-lg-4 mb-4">
-            <div class="post-preview-card shadow-sm bg-white rounded overflow-hidden h-100 d-flex flex-column">
-              <img src="${post.image}" alt="${post.title}" class="post-img">
-              <div class="post-content p-3 d-flex flex-column flex-grow-1">
-                <a href="posts/post.html?slug=${post.slug}" class="text-decoration-none text-dark flex-grow-1">
-                  <h2 class="post-title mb-1">${post.title}</h2>
-                  <h3 class="post-subtitle text-muted fs-6">${post.subtitle}</h3>
-                </a>
-                <p class="post-meta small text-muted mb-0">
-                  Posted on ${new Date(post.date).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' })}
-                </p>
+        container.innerHTML = allPosts.map((post, index) => {
+          // Hide 3rd post on mobile (index 2)
+          const hideOnMobile = index === 2 ? 'hide-on-mobile' : '';
+          return `
+          <div class="col-6 col-md-6 col-lg-4 mb-4 ${hideOnMobile}">
+            <article class="card-magazine">
+              <a class="card-media" href="posts/post.html?slug=${post.slug}">
+                <img src="${post.image}" alt="${post.title}" loading="lazy" />
+              </a>
+              <div class="card-body">
+                <a href="posts/post.html?slug=${post.slug}" class="card-title">${post.title}</a>
+                <p class="card-excerpt">${post.subtitle || ''}</p>
+                <div class="card-meta">Posted on ${new Date(post.date).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' })}</div>
               </div>
-            </div>
+            </article>
           </div>
-        `).join('');
+        `;
+        }).join('');
       })
       .catch(err => console.error('Posts fetch error:', err));
   </script>
