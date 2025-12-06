@@ -1,3 +1,1 @@
 ### Seoul
-
-[map id="seoul"]
