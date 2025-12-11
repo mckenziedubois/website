@@ -650,9 +650,8 @@ footer {
 
   .post-left,
   .post-right {
-    flex: 1 1 100%;
+    width: 100% !important;
     max-width: 100%;
-    width: 100%;
   }
 
   /* Move any right-column spacing to the top of the right column when stacked */
@@ -875,6 +874,19 @@ footer {
   text-decoration: underline !important;
 }
 
+/* Make Airbnb embeds responsive */
+.airbnb-embed-frame {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+}
+
+.airbnb-embed-frame iframe,
+.airbnb-embed-frame > div {
+  width: 100% !important;
+  height: auto !important;
+}
+
 /* Index page — slightly larger text for improved readability
    Targets the intro block and recent-posts card copy only (index-specific selectors). */
 #site-intro .site-intro-copy {
@@ -954,3 +966,18 @@ footer {
   }
 }
 
+/* =============================
+   Google Maps
+============================= */
+
+#post-map,
+.map-container {
+  width: 100%;
+  max-width: 100%;
+}
+
+@media (max-width: 768px) {
+  .map-container {
+    padding-bottom: 70%; /* taller map on mobile */
+  }
+}
