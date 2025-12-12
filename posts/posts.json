@@ -61,11 +61,19 @@
     "airbnbs": [
       {
         "label": "goldbeach",
-        "id": "884932061898654225"
+        "url": "https://www.airbnb.com/rooms/884932061898654225",
+        "image": "https://res.cloudinary.com/dsxlralvu/image/upload/v1765420183/a2o1tko8apvx7trrwhfg.jpg",
+        "title": "Gold Beach Oceanfront Stay",
+        "location": "Gold Beach, Oregon",
+        "info": "1 bed/ 1 bath"
       },
       {
         "label": "trinidad",
-        "id": "2636400"
+        "url": "https://www.airbnb.com/rooms/2636400",
+        "image": "https://res.cloudinary.com/dsxlralvu/image/upload/v1765420254/r5z4xw0tunexheqd3sbr.jpg",
+        "title": "Trinidad Redwood Cottage",
+        "location": "Trinidad, California",
+        "info": "1 bed/ 1 bath"
       }
     ]
   }

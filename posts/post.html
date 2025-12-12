@@ -9,9 +9,6 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
 
 </head>
-
-<script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
-
 <body>
 
   <!-- Navbar -->
@@ -41,13 +38,13 @@
 
       <div class="post-right">
         <div class="return-button-container">
-        <a href="../pages/bloghome.html" class="return-button">← Back to Guides</a>
+          <a href="../pages/bloghome.html" class="return-button">← Back to Guides</a>
         </div>
+        <div id="airbnb-section" class="airbnb-listings"></div>
         <div class="mySwiper swiper">
           <div class="swiper-wrapper" id="gallery-wrapper"></div>
           <div class="swiper-pagination"></div>
         </div>
-        <div id="airbnb-section"></div>
       </div>
     </div>
 
@@ -58,17 +55,22 @@
     <section class="related-posts mt-5">
       <div class="row gx-4 gx-lg-5" id="related-posts"></div>
     </section>
-    
+
   </main>
 
   <!-- Footer -->
   <div id="footer-placeholder"></div> 
 
-  <!-- Common Scripts -->
-  <div id="scripts-placeholder"></div>
-
   <!-- Load partials -->
   <script src="../js/load-partials.js"></script>
+
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Markdown Parser -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- Init Page -->
   <script>
     initPage({
       pageTitle: document.getElementById('post-title').textContent || 'Post',
@@ -78,35 +80,10 @@
     });
   </script>
 
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
-  <!-- Post data fetch -->  
+  <!-- Post data fetch -->
   <script>
     const urlParams = new URLSearchParams(window.location.search);
     const currentSlug = urlParams.get('slug');
-
-    // Function to load the Airbnb SDK dynamically
-    function loadAirbnbSDK() {
-      return new Promise((resolve) => {
-        // If already loaded, resolve immediately
-        if (window.AirbnbEmbedWidget) {
-          resolve();
-          return;
-        }
-        
-        // Remove any existing Airbnb script tags to force reload
-        const existingScripts = document.querySelectorAll('script[src*="airbnb_jssdk"]');
-        existingScripts.forEach(script => script.remove());
-        
-        // Create and append new script
-        const script = document.createElement('script');
-        script.src = 'https://www.airbnb.com/embeddable/airbnb_jssdk';
-        script.async = true;
-        script.onload = () => resolve();
-        script.onerror = () => resolve(); // Resolve even if it fails, retry later
-        document.body.appendChild(script);
-      });
-    }
 
     async function loadCSV(url) {
       const text = await fetch(url).then(r => r.text());
@@ -120,98 +97,41 @@
     }
 
     async function initPost() {
-        const posts = await 
-        fetch('../posts/posts.json').
-        then(res => res.json());
+      const posts = await
+      fetch('../posts/posts.json').
+      then(res => res.json());
 
-        const publishedPosts = posts.filter(p => p.active);
-        const post = publishedPosts.find(p => p.slug === currentSlug);
-        if (!post) return;
+      const publishedPosts = posts.filter(p => p.active);
+      const post = publishedPosts.find(p => p.slug === currentSlug);
+      if (!post) return;
 
-        // Set post header info
-        document.getElementById('post-title').textContent = post.title;
-        document.getElementById('post-subtitle').textContent = post.subtitle;
-        document.getElementById('post-date').textContent = new Date(post.date)
+      // Set post header info
+      document.getElementById('post-title').textContent = post.title;
+      document.getElementById('post-subtitle').textContent = post.subtitle;
+      document.getElementById('post-date').textContent = new Date(post.date)
         .toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
-        document.getElementById('page-title').textContent = `${post.title} | McKenzie DuBois`;
+      document.getElementById('page-title').textContent = `${post.title} | McKenzie DuBois`;
 
-      const mdRaw = await fetch(`../posts/content/${post.slug}.md`)
-        .then(res => res.text());
-      
-      let html = marked.parse(mdRaw);
-      document.getElementById('markdown-content').innerHTML = html;
+      // Load markdown content
+      const mdRaw = await fetch(`../posts/content/${post.slug}.md`).then(res => res.text());
+      document.getElementById('markdown-content').innerHTML = marked.parse(mdRaw);
 
-      if (post.airbnbs && post.airbnbs.length > 0) {
-        const airbnb_container = document.getElementById('airbnb-section');
-        post.airbnbs.forEach(listing => {
-          const embedHTML = `
-            <div class="airbnb-embed-frame" 
-                data-id="${listing.id}" 
-                data-view="home"
-                data-hide-price="true"
-                style="width:100%; max-width:450px; height:300px; margin:auto;">
-              
-            <a href="https://www.airbnb.com/rooms/${listing.id}?source=embed_widget">
-              View On Airbnb
-            </a>
-
-            <a href="https://www.airbnb.com/rooms/${listing.id}?source=embed_widget" rel="nofollow">
-              ${listing.text || ""}
-            </a>
-
+      // Render Airbnb cards
+      if (post.airbnbs?.length) {
+        document.getElementById('airbnb-section').innerHTML = post.airbnbs.map(a => `
+          <a class="airbnb-card" href="${a.url}" target="_blank">
+            <div class="airbnb-image">
+              <img src="${a.image}" alt="${a.title}">
             </div>
-          `;
+            <div class="airbnb-info">
+              <h3>${a.title}</h3>
+              <p>${a.info}</p>
+            </div>
+          </a>
+        `).join('');
+      }
 
-        const wrapper = document.createElement("div");
-        wrapper.innerHTML = embedHTML;
-        airbnb_container.appendChild(wrapper);
-      });
-
-      // Load Airbnb SDK and initialize with retries
-      let airbnbInitialized = false;
-      
-      const initAirbnbWidget = (attempts = 0) => {
-        if (window.AirbnbEmbedWidget && !airbnbInitialized) {
-          try {
-            window.AirbnbEmbedWidget.init();
-            airbnbInitialized = true;
-            console.log('✓ Airbnb widget initialized successfully');
-          } catch (e) {
-            console.warn('Airbnb widget init error:', e);
-          }
-        } else if (!airbnbInitialized && attempts < 200) {
-          // Retry up to 200 times (20 seconds total) with 100ms intervals
-          setTimeout(() => initAirbnbWidget(attempts + 1), 100);
-        } else if (!airbnbInitialized) {
-          console.warn('✗ Airbnb widget failed to load after 20 seconds');
-        }
-      };
-      
-      // Load SDK first, then start initialization
-      loadAirbnbSDK().then(() => {
-        // Small delay to let SDK fully initialize
-        setTimeout(() => initAirbnbWidget(0), 100);
-      });
-
-      // Parallel watcher that checks every 300ms for widget availability
-      const airbnbLoadWatcher = setInterval(() => {
-        if (window.AirbnbEmbedWidget && !airbnbInitialized) {
-          try {
-            window.AirbnbEmbedWidget.init();
-            airbnbInitialized = true;
-            clearInterval(airbnbLoadWatcher);
-            console.log('✓ Airbnb widget initialized by watcher');
-          } catch (e) {
-            // Widget loaded but init failed, continue watching
-          }
-        }
-      }, 300);
-      
-      // Stop watcher after 25 seconds to avoid memory leak
-      setTimeout(() => clearInterval(airbnbLoadWatcher), 25000);
-    }
-
-      // LOAD GALLERY IMAGES
+      // Load gallery images
       const metadata = await loadCSV('../pages/image_metadata.csv');
       const galleryImages = metadata.filter(img => img.slug === currentSlug);
 
@@ -220,8 +140,9 @@
       galleryImages.forEach(img => {
         wrapper.innerHTML += `
           <div class="swiper-slide">
-            <img src="${img.url}" alt="${img.alt || ''}">
-            ${img.caption ? `<div class="slide-caption">${img.caption}</div>` : ''}
+            <div class="swiper-img-container">
+              <img src="${img.url}" alt="${img.alt || ''}">
+              ${img.caption ? `<div class="slide-caption">${img.caption}</div>` : ''}
           </div>`;
       });
 
@@ -229,27 +150,25 @@
       const swiper = new Swiper(".mySwiper", {
         pagination: { el: ".swiper-pagination", clickable: true },
         spaceBetween: 10,
+        keyboard: { enabled: true, onlyInViewport: true }
       });
 
         // Add Google Map below markdown
-        if (post.google_maps_embed_link) {
-          const mapContainer = document.createElement('div');
-          mapContainer.className = 'map-container';
-          mapContainer.style = 'position:relative; padding-bottom:56.25%; height:0; overflow:hidden; margin-top:1rem;';
-          mapContainer.innerHTML = `
-            <iframe
+      if (post.google_maps_embed_link) {
+        document.getElementById('post-map').innerHTML = `
+          <div class="map-container">
+            <iframe 
               src="${post.google_maps_embed_link}"
-              style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;"
               allowfullscreen
               loading="lazy">
-            </iframe>
-          `;
-          document.getElementById('post-map').appendChild(mapContainer);
-        }
+              </iframe>
+          </div>
+        `;
+      }
 
       const related = publishedPosts
         .filter(p => p.slug !== currentSlug)
-        .slice(0, 3);      
+        .slice(0, 3);
       const container = document.getElementById('related-posts');
       // Render related posts using the magazine-style card (same size as bloghome)
       container.innerHTML = related.map((p, index) => {
@@ -268,13 +187,13 @@
             </div>
           </article>
         </div>
-      `;
+        `;
       }).join('');
-  }
+    }
 
-  initPost();
+    initPost();
 
-</script>
+  </script>
 
 </body>
 </html>
