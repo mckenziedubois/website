@@ -169,6 +169,10 @@ p {
   margin-bottom: 1rem;
 }
 
+#markdown-content > *:first-child {
+  margin-top: 2rem;
+}
+
 abbr[title] {
   -webkit-text-decoration: underline dotted;
           text-decoration: underline dotted;
