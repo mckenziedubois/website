@@ -16,7 +16,7 @@
   <div id="navbar-placeholder"></div>
 
   <!-- Masthead -->
-  <header class="masthead" style="background-image: url('https://res.cloudinary.com/dsxlralvu/image/upload/v1761168364/header.jpg')">
+  <header class="masthead">
     <div class="container position-relative px-4 px-lg-5">
       <div class="row gx-4 gx-lg-5 justify-content-center">
         <div class="col-md-10 col-lg-8 col-xl-7">
@@ -39,8 +39,9 @@
 
       <div class="post-right">
         <div class="return-button-container">
-          <a href="../pages/bloghome.html" class="return-button">← Back to Guides</a>
+        <a href="../pages/bloghome.html" class="return-button">← Back to Guides</a>
         </div>
+        <div id="airbnb-section-label" class="section-label"></div>
         <div id="airbnb-section" class="airbnb-listings"></div>
         <div class="mySwiper swiper">
           <div class="swiper-wrapper" id="gallery-wrapper"></div>
@@ -54,6 +55,7 @@
 
     <!-- Related posts -->
     <section class="related-posts mt-5">
+      <h3 class="section-label">You May Also Like</h3>
       <div class="row gx-4 gx-lg-5" id="related-posts"></div>
     </section>
 
@@ -104,8 +106,20 @@
 
       const publishedPosts = posts.filter(p => p.active);
       const post = publishedPosts.find(p => p.slug === currentSlug);
+      
       if (!post) return;
 
+      const masthead = document.querySelector('.masthead');
+
+      if (post.image && masthead) {
+        masthead.style.backgroundImage = `url(${post.image})`;
+        masthead.style.backgroundPosition = post.imagePosition || 'center';
+        masthead.style.setProperty(
+          '--masthead-overlay',
+          post.overlay || '0.6'
+        );
+      }
+                
       // Set post header info
       document.getElementById('post-title').textContent = post.title;
       document.getElementById('post-subtitle').textContent = post.subtitle;
@@ -119,6 +133,11 @@
 
       // Render Airbnb cards
       if (post.airbnbs?.length) {
+        if (post.airbnbs.length === 1) {
+          document.getElementById('airbnb-section-label').innerHTML = `<h3 class="section-label">Airbnb Recommendation</h3>`;
+        } else {
+          document.getElementById('airbnb-section-label').innerHTML = `<h3 class="section-label">Airbnb Recomendations</h3>`;
+        }
         document.getElementById('airbnb-section').innerHTML = post.airbnbs.map(a => `
           <a class="airbnb-card" href="${a.url}" target="_blank">
             <div class="airbnb-image">
@@ -167,9 +186,31 @@
         `;
       }
 
-      const related = publishedPosts
-        .filter(p => p.slug !== currentSlug)
-        .slice(0, 3);
+    const currentTags = post.tags || [];
+
+    const related = publishedPosts
+      .filter(p => p.slug !== currentSlug)
+      .map(p => {
+        const sharedTags = (p.tags || []).filter(tag =>
+          currentTags.includes(tag)
+        );
+
+        return {
+          ...p,
+          relevanceScore: sharedTags.length
+        };
+      })
+      .sort((a, b) => {
+        // Higher tag overlap first
+        if (b.relevanceScore !== a.relevanceScore) {
+          return b.relevanceScore - a.relevanceScore;
+        }
+
+        // Secondary sort: newest first
+        return new Date(b.date) - new Date(a.date);
+      })
+      .slice(0, 3);
+
       const container = document.getElementById('related-posts');
       // Render related posts using the magazine-style card (same size as bloghome)
       container.innerHTML = related.map((p, index) => {
