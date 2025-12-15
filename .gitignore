@@ -1,5 +1,6 @@
 # Development files
 todolist.html
+pull_cloudinary_images_posts.py
 *.log
 .DS_Store
 
