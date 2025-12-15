@@ -33,7 +33,7 @@
     "tags": ["Japan", "Asia", "Winter"],
     "md_file": "tokyo.md",
     "active": true,
-    "google_maps_embed_link": ""
+    "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1DYL1E3ByooR7djoSCZjhl1LjcXpTk5k&ehbc=2E312F"
   },
   {
     "slug": "mendocino",
@@ -45,7 +45,7 @@
     "tags": ["California", "USA", "West Coast"],
     "md_file": "mendocino.md",
     "active": true,
-    "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1HTaRwqyEuulYsqfDx-95g-tBqkbiBlc&ehbc=2E312F&noprof=1"
+    "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1HTaRwqyEuulYsqfDx-95g-tBqkbiBlc&ehbc=2E312F"
   },
   {
     "slug": "redwood_nationalpark",
@@ -57,7 +57,7 @@
     "tags": ["California", "USA", "West Coast", "National Parks"],
     "md_file": "redwood_nationalpark.md",
     "active": true,
-    "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1OuOwMe_lMZoObZp8K9PFOyQv8ak-sjI&hl=en&ehbc=2E312F&noprof=1",
+    "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1OuOwMe_lMZoObZp8K9PFOyQv8ak-sjI&hl=en&ehbc=2E312F",
     "airbnbs": [
       {
         "label": "goldbeach",
