@@ -1,37 +1,81 @@
 /**
- * Gallery Filter and Rendering System
- * Handles loading, filtering, and displaying gallery images
+ * Gallery Filter, Rendering, and Pagination System
+ * - CSV-backed image gallery
+ * - Country filtering
+ * - Responsive pagination by portrait-equivalent units
  */
 
 // ============================================================================
-// Constants & DOM Elements
+// State & DOM
 // ============================================================================
 
 let images = [];
+let filteredImages = [];
+let pages = [];
+let currentPageIndex = 0;
+
+const galleryEl = window.galleryEl || document.getElementById("gallery");
 const filterBarEl = document.getElementById("countryFilterBar");
 const CSV_PATH = window.CSV_PATH || "image_metadata.csv";
-const galleryEl = window.galleryEl || document.getElementById("gallery");
+
+// Pagination UI
+const prevBtn = document.getElementById("prevPage");
+const nextBtn = document.getElementById("nextPage");
+const pageIndicator = document.getElementById("pageIndicator");
 
 // ============================================================================
-// Utility Functions
+// Pagination Rules
 // ============================================================================
 
-/**
- * Capitalizes country name properly
- * Keeps acronyms (USA, UK) uppercase, capitalizes others normally
- */
+function getPageCapacity() {
+    // Mobile vs desktop breakpoint
+    return window.innerWidth < 768 ? 12 : 14;
+}
+
+function getImageWeight(img) {
+    // Landscape / horizontal images count as 2 portraits
+    return img.orientation === "landscape" || img.orientation === "horizontal"
+        ? 2
+        : 1;
+}
+
+function buildPages(imageList) {
+    const pages = [];
+    let currentPage = [];
+    let currentWeight = 0;
+    const capacity = getPageCapacity();
+
+    imageList.forEach(img => {
+        const weight = getImageWeight(img);
+
+        if (currentWeight + weight > capacity) {
+            pages.push(currentPage);
+            currentPage = [];
+            currentWeight = 0;
+        }
+
+        currentPage.push(img);
+        currentWeight += weight;
+    });
+
+    if (currentPage.length) {
+        pages.push(currentPage);
+    }
+
+    return pages;
+}
+
+// ============================================================================
+// Utilities
+// ============================================================================
+
 function capitalizeCountry(country) {
     if (country === country.toUpperCase() && country.length > 1) {
-        // Keep acronyms like USA, UK, etc. as uppercase
         return country;
     }
-    // Normal capitalization: first letter uppercase, rest lowercase
     return country.charAt(0).toUpperCase() + country.slice(1).toLowerCase();
 }
 
-/**
- * Creates a Pinterest button element
- */
 function createPinterestButton(pinurl) {
     const pinBtn = document.createElement("a");
     pinBtn.href = pinurl;
@@ -42,27 +86,21 @@ function createPinterestButton(pinurl) {
     return pinBtn;
 }
 
-/**
- * Creates a gallery item element with image and optional Pinterest button
- */
 function createGalleryItem(imgData, index) {
     const { url, orientation, country, pinurl } = imgData;
 
-    // Container for image + overlay
     const container = document.createElement("div");
     container.className = `gallery-item ${orientation}`;
 
-    // Lightbox link
     const link = document.createElement("a");
     link.href = url;
     link.setAttribute("data-lightbox", "gallery");
     link.setAttribute("data-title", capitalizeCountry(country));
-    
+
     if (pinurl) {
         link.setAttribute("data-pinurl", pinurl);
     }
 
-    // Image element
     const img = document.createElement("img");
     img.src = url;
     img.alt = `Image ${index + 1}`;
@@ -72,7 +110,6 @@ function createGalleryItem(imgData, index) {
     link.appendChild(img);
     container.appendChild(link);
 
-    // Pinterest overlay button (if pinurl exists)
     if (pinurl) {
         container.appendChild(createPinterestButton(pinurl));
     }
@@ -84,121 +121,159 @@ function createGalleryItem(imgData, index) {
 // Data Loading
 // ============================================================================
 
-/**
- * Fetches and parses CSV data from the specified path
- */
 async function fetchCsvData(path) {
     try {
         const res = await fetch(path);
         if (!res.ok) throw new Error(`Failed to fetch CSV: ${res.status}`);
-        
+
         const text = await res.text();
         const lines = text
             .split("\n")
-            .map(line => line.trim())
-            .filter(line => line && !line.toLowerCase().startsWith("url")); // skip header
+            .map(l => l.trim())
+            .filter(l => l && !l.toLowerCase().startsWith("url"));
 
         return lines.map(line => {
             const [url, orientation, country, pinurl] = line.split(",");
-            return { 
-                url: url?.trim() || "", 
+            return {
+                url: url?.trim() || "",
                 orientation: (orientation || "portrait").trim(),
                 country: (country || "Remove Filter").trim(),
                 pinurl: pinurl ? pinurl.trim() : ""
             };
         });
     } catch (err) {
-        console.error("Error fetching CSV data:", err);
+        console.error("Error loading gallery CSV:", err);
         return [];
     }
 }
 
 // ============================================================================
-// Gallery Rendering
+// Rendering
 // ============================================================================
 
-/**
- * Renders the gallery with the provided list of images
- */
-function renderGallery(list) {
+function renderGallery() {
     galleryEl.innerHTML = "";
     const fragment = document.createDocumentFragment();
 
-    list.forEach((imgData, index) => {
-        fragment.appendChild(createGalleryItem(imgData, index));
+    const page = pages[currentPageIndex] || [];
+
+    // Calculate absolute index for Lightbox captions
+    const baseIndex = pages
+        .slice(0, currentPageIndex)
+        .flat().length;
+
+    page.forEach((imgData, index) => {
+        fragment.appendChild(
+            createGalleryItem(imgData, baseIndex + index)
+        );
     });
 
     galleryEl.appendChild(fragment);
+    updatePaginationControls();
+}
+
+function updatePaginationControls() {
+    const totalPages = pages.length || 1;
+
+    pageIndicator.textContent = `Page ${currentPageIndex + 1} of ${totalPages}`;
+    prevBtn.disabled = currentPageIndex === 0;
+    nextBtn.disabled = currentPageIndex === totalPages - 1;
 }
 
 // ============================================================================
-// Filter Functionality
+// Filtering
 // ============================================================================
 
-/**
- * Sets the active filter button and removes active class from others
- */
 function setActiveButton(activeBtn) {
-    filterBarEl.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    filterBarEl
+        .querySelectorAll(".filter-btn")
+        .forEach(b => b.classList.remove("active"));
     activeBtn.classList.add("active");
 }
 
-/**
- * Creates and sets up a country filter button
- */
 function createFilterButton(country) {
     const btn = document.createElement("button");
     btn.className = "filter-btn";
-    btn.dataset.country = country;
     btn.textContent = country;
-    
+
     btn.addEventListener("click", () => {
         setActiveButton(btn);
-        const filteredImages = images.filter(img => img.country === country);
-        renderGallery(filteredImages);
+        filteredImages = images.filter(img => img.country === country);
+        pages = buildPages(filteredImages);
+        currentPageIndex = 0;
+        renderGallery();
     });
-    
+
     return btn;
 }
 
-/**
- * Populates the country filter bar with buttons
- */
 function populateCountryFilter() {
     filterBarEl.innerHTML = "";
 
-    // Get unique countries (excluding "all")
-    const countries = [...new Set(images.map(img => img.country).filter(c => c.toLowerCase() !== "all"))];
+    const countries = [
+        ...new Set(
+            images
+                .map(img => img.country)
+                .filter(c => c.toLowerCase() !== "all")
+        )
+    ];
 
-    // Add country filter buttons
     countries.forEach(country => {
         filterBarEl.appendChild(createFilterButton(country));
     });
 
-    // Add "All" button at the end
-    const removeBtn = document.createElement("button");
-    removeBtn.className = "filter-btn active";
-    removeBtn.dataset.country = "all";
-    removeBtn.textContent = "All";
-    removeBtn.addEventListener("click", () => {
-        setActiveButton(removeBtn);
-        renderGallery(images);
+    const allBtn = document.createElement("button");
+    allBtn.className = "filter-btn active";
+    allBtn.textContent = "All";
+
+    allBtn.addEventListener("click", () => {
+        setActiveButton(allBtn);
+        filteredImages = images;
+        pages = buildPages(filteredImages);
+        currentPageIndex = 0;
+        renderGallery();
     });
-    filterBarEl.appendChild(removeBtn);
+
+    filterBarEl.appendChild(allBtn);
 }
+
+// ============================================================================
+// Pagination Events
+// ============================================================================
+
+prevBtn.addEventListener("click", () => {
+    if (currentPageIndex > 0) {
+        currentPageIndex--;
+        renderGallery();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+});
+
+nextBtn.addEventListener("click", () => {
+    if (currentPageIndex < pages.length - 1) {
+        currentPageIndex++;
+        renderGallery();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+});
+
+// Recompute pages on resize
+window.addEventListener("resize", () => {
+    pages = buildPages(filteredImages);
+    currentPageIndex = Math.min(currentPageIndex, pages.length - 1);
+    renderGallery();
+});
 
 // ============================================================================
 // Initialization
 // ============================================================================
 
-/**
- * Initializes the gallery by loading data and setting up filters
- */
 async function loadGallery() {
     images = await fetchCsvData(CSV_PATH);
+    filteredImages = images;
     populateCountryFilter();
-    renderGallery(images);
+    pages = buildPages(filteredImages);
+    renderGallery();
 }
 
-// Start the gallery
 loadGallery();

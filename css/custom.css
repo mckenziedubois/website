@@ -93,6 +93,20 @@ footer { background-color:#fefefe; padding:1rem 0; color:#666; font-size:0.9rem;
 .swiper-img-container img {width: 100%; height: auto; object-fit: cover; display: block; border-radius: 12px;}
 
 /* =============================
+   Gallery Pagination
+============================= */
+
+.pagination-container {display: flex; justify-content: center; align-items: center; gap: 1rem; margin: 3rem 0;}
+.pagination-container button {padding: 0.5rem 1rem; background: white; cursor: pointer;}
+.pagination-container button:disabled {opacity: 0.5; cursor: not-allowed;}
+#pageIndicator {font-weight: 500;}
+.css-arrow {width: 36px; height: 36px; position: relative; background: none; border: none; cursor: pointer;}
+.css-arrow::before {content: ''; position: absolute; top: 50%; left: 50%; width: 10px; height: 10px; border-top: 2px solid currentColor; border-right: 2px solid currentColor; transform-origin: center;}
+.css-arrow.prev::before {transform: translate(-50%, -50%) rotate(-135deg);}
+.css-arrow.next::before {transform: translate(-50%, -50%) rotate(45deg);}
+.css-arrow:disabled {opacity: 0.3; cursor: not-allowed;}
+
+/* =============================
    Filter Bar & Cards
 ============================= */
 .filter-bar{display:flex; flex-wrap:wrap; justify-content:flex-end; margin-right:1rem;}
