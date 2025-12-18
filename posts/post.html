@@ -134,9 +134,9 @@
       // Render Airbnb cards
       if (post.airbnbs?.length) {
         if (post.airbnbs.length === 1) {
-          document.getElementById('airbnb-section-label').innerHTML = `<h3 class="section-label">Airbnb Recommendation</h3>`;
+          document.getElementById('airbnb-section-label').innerHTML = `<h3 class="section-label">Our Airbnb</h3>`;
         } else {
-          document.getElementById('airbnb-section-label').innerHTML = `<h3 class="section-label">Airbnb Recomendations</h3>`;
+          document.getElementById('airbnb-section-label').innerHTML = `<h3 class="section-label">Our Airbnbs</h3>`;
         }
         document.getElementById('airbnb-section').innerHTML = post.airbnbs.map(a => `
           <a class="airbnb-card" href="${a.url}" target="_blank">
