@@ -18,7 +18,7 @@
     "subtitle": "Palace",
     "date": "2025-02-25",
     "image": "https://res.cloudinary.com/dsxlralvu/image/upload/v1761167308/seoul1.jpg",
-    "imagePosition": "50% 35%",
+    "imagePosition": "50% 65%",
     "author": "McKenzie DuBois",
     "tags": ["Korea", "Asia", "Winter"],
     "md_file": "seoul.md",
@@ -44,7 +44,7 @@
     "subtitle": "A perfect weekend",
     "date": "2024-10-20",
     "image": "https://res.cloudinary.com/dsxlralvu/image/upload/v1760309575/mendocino1.jpg",
-    "imagePosition": "50% 35%",
+    "imagePosition": "50% 65%",
     "author": "McKenzie DuBois",
     "tags": ["California", "USA", "West Coast"],
     "md_file": "mendocino.md",
@@ -78,6 +78,29 @@
         "image": "https://res.cloudinary.com/dsxlralvu/image/upload/v1765420254/r5z4xw0tunexheqd3sbr.jpg",
         "title": "Trinidad Redwood Cottage",
         "location": "Trinidad, California",
+        "info": "1 bed/ 1 bath"
+      }
+    ]
+  },
+  {
+    "slug": "hcmcity",
+    "title": "Ho Chi Minh City",
+    "subtitle": "A guide to Saigon",
+    "date": "2025-12-15",
+    "image": "https://res.cloudinary.com/dsxlralvu/image/upload/v1765847278/trdvbpyvvpzwww0mtkny.jpg",
+    "imagePosition": "50% 35%",
+    "author": "McKenzie DuBois",
+    "tags": ["Vietnam", "Asia"],
+    "md_file": "hcmcity.md",
+    "active": true,
+    "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1JUjbFcGltN1qQPeCforvdnpLD0V6YBA&ehbc=2E312F",
+    "airbnbs": [
+      {
+        "label": "hcmcity",
+        "url": "https://www.airbnb.com/rooms/1286612878567237301",
+        "image": "https://res.cloudinary.com/dsxlralvu/image/upload/v1765847281/r1wo0xl7htdixzbnli09.jpg",
+        "title": "De La Sol Apartment",
+        "location": "Ho Chi Minh City, Vietnam",
         "info": "1 bed/ 1 bath"
       }
     ]
