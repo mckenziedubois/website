@@ -1,3 +1,3 @@
-# website
+Building a website to write about my travels and share my photography.
 
-Website accessable via https://mckenziedubois.github.io/website/
+Accessible via https://mckenziedubois.github.io/website/
