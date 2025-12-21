@@ -1,3 +1,2 @@
-Building a website to write about my travels and share my photography.
-
-Accessible via https://mckenziedubois.github.io/website/
+# Website
+Building a website to write about my travels and share my photography: https://mckenziedubois.github.io/website/
