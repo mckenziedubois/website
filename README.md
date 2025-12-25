@@ -1,3 +1,2 @@
-# website
-
-Website accessable via https://mckenziedubois.github.io/website/
+# Website
+Building a website to write about my travels and share my photography. 
