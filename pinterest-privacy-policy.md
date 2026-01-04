@@ -59,4 +59,4 @@ Pinterest access granted to this application can be revoked at any time through 
 
 If you have questions about this Privacy Policy, please contact:
 
-**Email:** your-email@example.com
+**Email:** mckenziedubois@gmail.com
