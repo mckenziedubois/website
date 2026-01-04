@@ -9,7 +9,7 @@
     "author": "McKenzie DuBois",
     "tags": ["Japan", "Asia", "Winter"],
     "md_file": "kyoto.md", 
-    "active": true, 
+    "active": false, 
     "google_maps_embed_link": ""
   },
   {
@@ -22,7 +22,7 @@
     "author": "McKenzie DuBois",
     "tags": ["Korea", "Asia", "Winter"],
     "md_file": "seoul.md",
-    "active": true,
+    "active": false,
     "google_maps_embed_link": ""
   },
   {
@@ -35,7 +35,7 @@
     "author": "McKenzie DuBois",
     "tags": ["Japan", "Asia", "Winter"],
     "md_file": "tokyo.md",
-    "active": true,
+    "active": false,
     "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1DYL1E3ByooR7djoSCZjhl1LjcXpTk5k&ehbc=2E312F"
   },
   {

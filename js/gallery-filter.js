@@ -1,8 +1,9 @@
 /**
  * Gallery Filter, Rendering, and Pagination System
  * - CSV-backed image gallery
- * - Country filtering
+ * - Country → slug sorting
  * - Responsive pagination by portrait-equivalent units
+ * - Cloudinary-responsive images (free-tier safe)
  */
 
 // ============================================================================
@@ -13,6 +14,9 @@ let images = [];
 let filteredImages = [];
 let pages = [];
 let currentPageIndex = 0;
+
+// Cache pages by (image-set + capacity)
+const pageCache = new Map();
 
 const galleryEl = window.galleryEl || document.getElementById("gallery");
 const filterBarEl = document.getElementById("countryFilterBar");
@@ -28,28 +32,42 @@ const pageIndicator = document.getElementById("pageIndicator");
 // ============================================================================
 
 function getPageCapacity() {
-    // Mobile vs desktop breakpoint
     return window.innerWidth < 768 ? 12 : 14;
 }
 
 function getImageWeight(img) {
-    // Landscape / horizontal images count as 2 portraits
     return img.orientation === "landscape" || img.orientation === "horizontal"
         ? 2
         : 1;
 }
 
+// ============================================================================
+// Pagination Builder (with metadata)
+// ============================================================================
+
 function buildPages(imageList) {
-    const pages = [];
+    const capacity = getPageCapacity();
+    const cacheKey =
+        imageList.map(i => i.url).join("|") + `:${capacity}`;
+
+    if (pageCache.has(cacheKey)) {
+        return pageCache.get(cacheKey);
+    }
+
+    const builtPages = [];
     let currentPage = [];
     let currentWeight = 0;
-    const capacity = getPageCapacity();
+    let startIndex = 0;
 
     imageList.forEach(img => {
         const weight = getImageWeight(img);
 
         if (currentWeight + weight > capacity) {
-            pages.push(currentPage);
+            builtPages.push({
+                images: currentPage,
+                startIndex
+            });
+            startIndex += currentPage.length;
             currentPage = [];
             currentWeight = 0;
         }
@@ -59,10 +77,14 @@ function buildPages(imageList) {
     });
 
     if (currentPage.length) {
-        pages.push(currentPage);
+        builtPages.push({
+            images: currentPage,
+            startIndex
+        });
     }
 
-    return pages;
+    pageCache.set(cacheKey, builtPages);
+    return builtPages;
 }
 
 // ============================================================================
@@ -76,6 +98,64 @@ function capitalizeCountry(country) {
     return country.charAt(0).toUpperCase() + country.slice(1).toLowerCase();
 }
 
+// ---------- Slug + Sorting ----------
+
+function getSlugFromUrl(url) {
+    return url
+        .split("/")
+        .pop()
+        .replace(/\.[^/.]+$/, "")
+        .toLowerCase();
+}
+
+function compareByCountryThenSlug(a, b) {
+    const countryDiff = a.country.localeCompare(b.country, undefined, {
+        sensitivity: "base"
+    });
+    if (countryDiff !== 0) return countryDiff;
+
+    const slugA = getSlugFromUrl(a.url);
+    const slugB = getSlugFromUrl(b.url);
+
+    return slugA.localeCompare(slugB, undefined, {
+        numeric: true,
+        sensitivity: "base"
+    });
+}
+
+// ---------- Cloudinary Helpers ----------
+
+function isCloudinaryUrl(url) {
+    return url.includes("res.cloudinary.com");
+}
+
+function cloudinaryTransform(url, width) {
+    if (!isCloudinaryUrl(url)) return url;
+
+    return url.replace(
+        "/upload/",
+        `/upload/f_auto,q_auto,w_${width}/`
+    );
+}
+
+function buildCloudinarySrcSet(url) {
+    if (!isCloudinaryUrl(url)) return "";
+
+    return `
+        ${cloudinaryTransform(url, 400)} 400w,
+        ${cloudinaryTransform(url, 800)} 800w,
+        ${cloudinaryTransform(url, 1600)} 1600w
+    `.trim();
+}
+
+const IMAGE_SIZES = `
+    (max-width: 767px) 50vw,
+    (max-width: 1200px) 33vw,
+    25vw
+`.trim();
+
+// ---------- Pinterest ----------
+
 function createPinterestButton(pinurl) {
     const pinBtn = document.createElement("a");
     pinBtn.href = pinurl;
@@ -86,12 +166,17 @@ function createPinterestButton(pinurl) {
     return pinBtn;
 }
 
-function createGalleryItem(imgData, index) {
-    const { url, orientation, country, pinurl } = imgData;
+// ============================================================================
+// Gallery Item Creation (Cloudinary-aware)
+// ============================================================================
+
+function createGalleryItem(imgData, absoluteIndex) {
+    const { url, orientation, country, pinurl, exclude } = imgData;
 
     const container = document.createElement("div");
     container.className = `gallery-item ${orientation}`;
 
+    // Lightbox always uses original
     const link = document.createElement("a");
     link.href = url;
     link.setAttribute("data-lightbox", "gallery");
@@ -102,10 +187,16 @@ function createGalleryItem(imgData, index) {
     }
 
     const img = document.createElement("img");
-    img.src = url;
-    img.alt = `Image ${index + 1}`;
+
+    // Responsive Cloudinary delivery
+    img.src = cloudinaryTransform(url, 800); // fallback
+    img.srcset = buildCloudinarySrcSet(url);
+    img.sizes = IMAGE_SIZES;
+
+    img.alt = `Image ${absoluteIndex + 1}`;
     img.className = `post-img ${orientation}`;
     img.loading = "lazy";
+    img.decoding = "async";
 
     link.appendChild(img);
     container.appendChild(link);
@@ -152,19 +243,15 @@ async function fetchCsvData(path) {
 // ============================================================================
 
 function renderGallery() {
+    const page = pages[currentPageIndex];
+    if (!page) return;
+
     galleryEl.innerHTML = "";
     const fragment = document.createDocumentFragment();
 
-    const page = pages[currentPageIndex] || [];
-
-    // Calculate absolute index for Lightbox captions
-    const baseIndex = pages
-        .slice(0, currentPageIndex)
-        .flat().length;
-
-    page.forEach((imgData, index) => {
+    page.images.forEach((imgData, index) => {
         fragment.appendChild(
-            createGalleryItem(imgData, baseIndex + index)
+            createGalleryItem(imgData, page.startIndex + index)
         );
     });
 
@@ -174,7 +261,6 @@ function renderGallery() {
 
 function updatePaginationControls() {
     const totalPages = pages.length || 1;
-
     pageIndicator.textContent = `Page ${currentPageIndex + 1} of ${totalPages}`;
     prevBtn.disabled = currentPageIndex === 0;
     nextBtn.disabled = currentPageIndex === totalPages - 1;
@@ -191,6 +277,17 @@ function setActiveButton(activeBtn) {
     activeBtn.classList.add("active");
 }
 
+function applyFilter(country) {
+    filteredImages =
+        country === "All"
+            ? images
+            : images.filter(img => img.country === country);
+
+    pages = buildPages(filteredImages);
+    currentPageIndex = 0;
+    renderGallery();
+}
+
 function createFilterButton(country) {
     const btn = document.createElement("button");
     btn.className = "filter-btn";
@@ -198,10 +295,7 @@ function createFilterButton(country) {
 
     btn.addEventListener("click", () => {
         setActiveButton(btn);
-        filteredImages = images.filter(img => img.country === country);
-        pages = buildPages(filteredImages);
-        currentPageIndex = 0;
-        renderGallery();
+        applyFilter(country);
     });
 
     return btn;
@@ -228,10 +322,7 @@ function populateCountryFilter() {
 
     allBtn.addEventListener("click", () => {
         setActiveButton(allBtn);
-        filteredImages = images;
-        pages = buildPages(filteredImages);
-        currentPageIndex = 0;
-        renderGallery();
+        applyFilter("All");
     });
 
     filterBarEl.appendChild(allBtn);
@@ -257,11 +348,20 @@ nextBtn.addEventListener("click", () => {
     }
 });
 
-// Recompute pages on resize
+// ============================================================================
+// Resize Handling (debounced)
+// ============================================================================
+
+let resizeTimeout;
+
 window.addEventListener("resize", () => {
-    pages = buildPages(filteredImages);
-    currentPageIndex = Math.min(currentPageIndex, pages.length - 1);
-    renderGallery();
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+        pageCache.clear();
+        pages = buildPages(filteredImages);
+        currentPageIndex = Math.min(currentPageIndex, pages.length - 1);
+        renderGallery();
+    }, 150);
 });
 
 // ============================================================================
@@ -270,10 +370,21 @@ window.addEventListener("resize", () => {
 
 async function loadGallery() {
     images = await fetchCsvData(CSV_PATH);
+
+    // Sort once: country → slug
+    images.sort(compareByCountryThenSlug);
+
     filteredImages = images;
+
     populateCountryFilter();
     pages = buildPages(filteredImages);
     renderGallery();
+
+    // Preload first page thumbnails
+    pages[0]?.images.forEach(img => { 
+        const preload = new Image();
+        preload.src = cloudinaryTransform(img.url, 800);
+    });
 }
 
 loadGallery();
