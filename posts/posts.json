@@ -1,4 +1,17 @@
 [
+    {
+    "slug": "2025recap",
+    "title": "2025 Recap",
+    "subtitle": "Asia, Wonderland Trail, 3000 mile roadtrip, and Mexico",
+    "date": "2026-01-21",
+    "image": "https://res.cloudinary.com/dsxlralvu/image/upload/v1761167320/kyoto1.jpg",
+    "imagePosition": "50% 65%",
+    "author": "McKenzie DuBois",
+    "tags": ["Recap"],
+    "md_file": "2025recap.md", 
+    "active": true, 
+    "google_maps_embed_link": ""
+  },
   {
     "slug": "kyoto",
     "title": "Kyoto",
@@ -48,7 +61,7 @@
     "author": "McKenzie DuBois",
     "tags": ["California", "USA", "West Coast"],
     "md_file": "mendocino.md",
-    "active": true,
+    "active": false,
     "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1HTaRwqyEuulYsqfDx-95g-tBqkbiBlc&ehbc=2E312F"
   },
   {
@@ -61,7 +74,7 @@
     "author": "McKenzie DuBois",
     "tags": ["California", "USA", "West Coast", "National Parks"],
     "md_file": "redwood_nationalpark.md",
-    "active": true,
+    "active": false,
     "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1OuOwMe_lMZoObZp8K9PFOyQv8ak-sjI&hl=en&ehbc=2E312F",
     "airbnbs": [
       {
@@ -92,7 +105,7 @@
     "author": "McKenzie DuBois",
     "tags": ["Vietnam", "Asia"],
     "md_file": "hcmcity.md",
-    "active": true,
+    "active": false,
     "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1JUjbFcGltN1qQPeCforvdnpLD0V6YBA&ehbc=2E312F",
     "airbnbs": [
       {
