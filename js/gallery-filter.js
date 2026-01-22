@@ -126,13 +126,21 @@ function compareByCountryThenSlug(a, b) {
 // ---------- Cloudinary Helpers ----------
 
 function isCloudinaryUrl(url) {
+    if (!url) return false;
     return url.includes("res.cloudinary.com");
 }
 
 function cloudinaryTransform(url, width) {
-    if (!isCloudinaryUrl(url)) return url;
+    if (!url) return url;
 
-    return url.replace(
+    // Ensure protocol is HTTPS to avoid mixed-content blocking when the site
+    // is served over HTTPS (GitHub Pages). Also keep non-cloudinary URLs
+    // unchanged except for the protocol normalization.
+    const normalized = url.replace(/^http:\/\//i, "https://");
+
+    if (!isCloudinaryUrl(normalized)) return normalized;
+
+    return normalized.replace(
         "/upload/",
         `/upload/f_auto,q_auto,w_${width}/`
     );
@@ -225,8 +233,12 @@ async function fetchCsvData(path) {
 
         return lines.map(line => {
             const [url, orientation, country, pinurl] = line.split(",");
+            const rawUrl = url?.trim() || "";
+            // Normalize protocol to HTTPS to prevent mixed-content blocking
+            const normalizedUrl = rawUrl.replace(/^http:\/\//i, "https://");
+
             return {
-                url: url?.trim() || "",
+                url: normalizedUrl,
                 orientation: (orientation || "portrait").trim(),
                 country: (country || "Remove Filter").trim(),
                 pinurl: pinurl ? pinurl.trim() : ""
