@@ -1,11 +1,7 @@
-Hey thanks for checking out my page and being interested in what I've been up to this past year. 
+Thanks for being interested in what I’ve been up to this past year.
 
-For some context, in January 2025 I was impacted by layoffs, rather than jumping into my next role I decided to take the year away from San Francisco and do quite a lot of traveling. 
-
-In early February, my partner and I moved out of our Nob Hill apartment in San Francisco. 
-
-Phase 1 started with a one way ticket to Japan. We spent 4.5 months in Asia and visited 9 total countries:
-
+#### Asia (February - June)
+Travel kicked off in early February with a one-way ticket to Japan. Over the next five months, I spent time across Asia and visited nine countries:
 - Japan
 - Korea
 - Vietnam
@@ -16,48 +12,55 @@ Phase 1 started with a one way ticket to Japan. We spent 4.5 months in Asia and 
 - Indonesia
 - Philippines
 
-Hard to summarize 4.5 epic months in one of the most beautiful parts of our world but some of my favorite memories include:
+It’s hard to summarize one of the most beautiful and diverse parts of the world, but a few standout moments include:
+- Getting caught in the snow outside Byodoin Temple in Uji, Japan
+- Watching the sunrise over Angkor Wat in Siem Reap, Cambodia
+- Earning my PADI Open Water certification in Phuket, Thailand, followed by Advanced Open Water certification in Komodo National Park and Gili Air, Indonesia
+- Celebrating Songkran in the streets of Chiang Mai, Thailand
+- Catching Lady Gaga’s Mayhem Ball at Singapore National Stadium
 
-- Getting caught in the snow outside of Byodoin Temple in Uji, Japan
-- Seeing the sunrise over Angkor Wat in Siem Riep, Cambodia
-- Getting PADI Open Water certified in Phuket, Thailand
-- AND PADI <b>Advanced</b> Open Water Certified in Komodo National Park and Gili Air, Indonesia
-- Celebrating Song Kran and playing water in the streets of Chiang Mai, Thailand
-- Catching Lady Gaga's Mayhem Ball at Singapore National Stadium 
+#### Washington State (June - July) 
 
+In June and July, I visited every national park in Washington State; Mount Rainier, North Cascades, and Olympic. Completed the 93-mile Wonderland Trail around Mount Rainier. Highlights included swimming in the cold waters of Diablo Lake, hiking over 30 miles along the Blue Glacier Trail through the Hoh Rainforest, and spending days fully immersed in the mountains.
 
-Phase 2 consisted of visiting every national park in Washington State and most importantly completeing the 93 mile Wonderland Trail around the base of Mount Rainier. 
+#### The Roadtrip (August - September) 
 
-- Mount Rainier National Park
-- North Cascades National Park
-- Olympic National Park
+August marked the start of a 3,000+ mile road trip, with major stops including:
 
-In addition to the Wonderland Trail, we swam in ice cold Lake Diablo in North Cascades and hiked over 30 miles along the Blue Glacier trail through the Hoh Rainforest in Olympic National Park. 
-
-Phase 3 was our 3000 mile roadtrip, major stops included
-
-- Whistler, Canada (Our 10th country of the year)
-- Yoho National Park 
+- Whistler, Canada
+- Yoho National Park
 - Banff National Park
-- Kananaskis 
+- Kananaskis
 - Waterton National Park
-- Glacier National Park 
-- Yellowstone National Park 
+- Glacier National Park
+- Yellowstone National Park
 - Grand Teton National Park
-- Sawtooth Mountain Range in Idaho
+- Twin Falls, Idaho
+- Sawtooth Mountains, Idaho
 - Hood River, Oregon
-- Portland Oregon
+- Portland, Oregon
 
-Phase 4 - Part 1
+Along the way, I hiked the Alice-Toxaway Loop in the Sawtooths, had a very close encounter with a grizzly bear on Glacier’s Highline Trail, and spent nearly two weeks backpacking and exploring Yellowstone.
 
-After nearing 10 months of traveling we spent some time with out Seattle family and then headed back to the east coast to see our families but the travel didn't stop
+#### Family and Final Trips (October - December) 
 
-- Raleigh, North Carolina
-- Asheville, North Carolina
-- Boone, North Carolina
-- Chicago, Illinois
+After almost nine months of continuous travel, I returned briefly to Seattle to spend time with family before heading east to see the rest of ours. The travel didn’t stop there, honorable mentions include:
 
-Phase 5
+- Christmas in Raleigh, North Carolina
+- Snow flurries and 70-degree days in Asheville, North Carolina
+- An App State football game in Boone, North Carolina
+- Thanksgiving in Chicago, Illinois
+- December in Mexico City, Mexico
 
-Our final country of the year was Mexico, we spent 3 weeks in December in Mexico city. 
-Where my partner and I got engaged in hot air balloon
+After more than 11 months away from California, I’m back in San Francisco and picking up where I left off.
+
+#### What This Year Taught Me 
+One of the biggest takeaways from this year was perspective. During months of extended travel, I met remarkably few Americans doing the same. It reinforced how rare it is, especially in the U.S., to step away from work long enough to fully experience the world.
+
+Travel also deepened my appreciation for home. There is real beauty in routine, in familiarity, and in the daily life I often take for granted. Experiencing so many different cultures and ways of living made returning to those routines feel meaningful rather than mundane.
+
+Nearly everyone I met along the way said the same thing: you’re making the right decision. I agree. If you have the time and the means, do it, I promise you will not regret it. 
+
+Thanks for reading. I plan to share more detailed guides from many of these places and my travels prior to 2025. 
+
+Stay tuned.
