@@ -69,6 +69,7 @@
 
   <!-- Load partials -->
   <script src="../js/load-partials.js"></script>
+  <script src="../js/csv-utils.js"></script>
 
   <!-- Swiper JS -->
   <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
@@ -91,16 +92,7 @@
     const urlParams = new URLSearchParams(window.location.search);
     const currentSlug = urlParams.get('slug');
 
-    async function loadCSV(url) {
-      const text = await fetch(url).then(r => r.text());
-      const [headerLine, ...lines] = text.trim().split("\n");
-      const headers = headerLine.split(",");
-
-      return lines.map(line => {
-        const cols = line.split(",");
-        return Object.fromEntries(headers.map((h, i) => [h.trim(), cols[i]?.trim()]));
-      });
-    }
+    // CSV loader provided by ../js/csv-utils.js
 
     function isExcludedImage(img) {
       if (!img) return false;

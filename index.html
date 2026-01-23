@@ -46,48 +46,28 @@
     </div>
   </section>
 
-  <!-- Footer -->
-  <footer class="border-top text-center py-4">
-    <div class="small text-muted fst-italic">Copyright &copy; McKenzie DuBois 2025</div>
-  </footer>
+  <!-- Footer (loaded from partial) -->
+  <div id="footer-placeholder"></div>
 
-  <!-- Bootstrap core JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Common Scripts placeholder (populated by partial) -->
+  <div id="scripts-placeholder"></div>
 
-  <!-- Navbar fetch -->
+  <!-- Load partials and shared utilities -->
+  <script src="js/load-partials.js"></script>
+  <script src="js/csv-utils.js"></script>
   <script>
-    const pathParts = window.location.pathname.split('/');
-    const rootPrefix = '';
-
-    fetch(`${rootPrefix}partials/nav.html`)
-      .then(res => res.text())
-      .then(html => {
-        const htmlWithRoot = html.replace(/{ROOT}/g, rootPrefix);
-        document.getElementById('navbar-placeholder').innerHTML = htmlWithRoot;
-
-        // Highlight current link
-        const currentPage = pathParts.pop() || 'index.html';
-        document.querySelectorAll('#navbar-placeholder .nav-link').forEach(link => {
-          const linkPage = link.getAttribute('href').split('/').pop();
-          if (linkPage === currentPage) link.classList.add('active');
-        });
-      })
-      .catch(err => console.error('Navbar fetch error:', err));
+    // Initialize partials. Keep masthead inline on the homepage for faster render.
+    initPage({
+      pageTitle: '',
+      rootPrefix: '',
+      currentPage: 'index.html',
+      loadMasthead: false
+    });
   </script>
 
   <!-- Fetch latest posts (3 desktop, 2 mobile) -->
   <script>
-    // Helper to load CSV (simple parser matching other pages)
-    async function loadCSV(url) {
-      const text = await fetch(url).then(r => r.text());
-      const [headerLine, ...lines] = text.trim().split("\n");
-      const headers = headerLine.split(",").map(h => h.trim());
-      return lines.map(line => {
-        const cols = line.split(",");
-        return Object.fromEntries(headers.map((h, i) => [h, cols[i]?.trim()]));
-      });
-    }
-
+    // CSV helper provided by js/csv-utils.js
     (async function() {
       try {
         const posts = await fetch('posts/posts.json').then(r => r.json());
