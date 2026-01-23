@@ -231,18 +231,28 @@ async function fetchCsvData(path) {
             .map(l => l.trim())
             .filter(l => l && !l.toLowerCase().startsWith("url"));
 
-        return lines.map(line => {
-            const [url, orientation, country, pinurl] = line.split(",");
-            const rawUrl = url?.trim() || "";
-            // Normalize protocol to HTTPS to prevent mixed-content blocking
+        const parsed = lines.map(line => {
+            // Limit split to 9 columns so captions with commas don't break earlier fields
+            const [url, orientation, country, pinurl, slug, alt, caption, excludeRaw, header] = line.split(",", 9);
+            const rawUrl = (url || '').trim();
             const normalizedUrl = rawUrl.replace(/^http:\/\//i, "https://");
+            const exclude = ['true', '1', 'yes', 'y'].includes((excludeRaw || '').toString().toLowerCase().trim());
 
             return {
                 url: normalizedUrl,
                 orientation: (orientation || "portrait").trim(),
                 country: (country || "Remove Filter").trim(),
-                pinurl: pinurl ? pinurl.trim() : ""
+                pinurl: pinurl ? pinurl.trim() : "",
+                slug: (slug || '').trim(),
+                exclude
             };
+        });
+
+        // Remove explicitly excluded rows and any images belonging to the 2025recap slug
+        return parsed.filter(p => {
+            const slug = (p.slug || '').toString().toLowerCase().trim();
+            if (slug === '2025recap') return false;
+            return !p.exclude;
         });
     } catch (err) {
         console.error("Error loading gallery CSV:", err);
