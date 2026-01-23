@@ -29,12 +29,12 @@ image_metadata = (
 )
 
 # Path to overwrite
-file_path = 'pages/image_metadata.csv'
+file_path = '/Users/mckenzie/Documents/Repos/website/pages/image_metadata.csv'
 
 # Save to CSV (overwrite)
 with open(file_path, 'w', newline='') as csvfile:
     writer = csv.writer(csvfile)
-    writer.writerow(['url', 'orientation', 'country','pinurl', 'slug', 'alt', 'caption'])  # added new column
+    writer.writerow(['url', 'orientation', 'country','pinurl', 'slug', 'alt', 'caption', 'header'])  # added new column
 
     for item in image_metadata['resources']:
         
@@ -54,13 +54,14 @@ with open(file_path, 'w', newline='') as csvfile:
         alt     = custom.get('alt', '')
         caption = custom.get('caption', '')
         exclude = custom.get('exclude', '')
+        header  = custom.get('header', '') 
 
-        writer.writerow([url, orientation, country, pinurl, slug, alt, caption, exclude])
+        writer.writerow([url, orientation, country, pinurl, slug, alt, caption, header])
 
 print(f"SUCCESS: CSV file '{file_path}' overwritten successfully!")
 
 # Pinterest path to overwrite
-pin_path = 'pages/pinterest_metadata.csv'
+pin_path = '/Users/mckenzie/Documents/Repos/website/pages/pinterest_metadata.csv'
 
 # Save to CSV (overwrite)
 with open(pin_path, 'w', newline='') as csvfile:
