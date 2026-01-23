@@ -32,7 +32,19 @@ const pageIndicator = document.getElementById("pageIndicator");
 // ============================================================================
 
 function getPageCapacity() {
-    return window.innerWidth < 768 ? 12 : 14;
+    if (window.innerWidth < 768) return 12;
+
+    const w = window.innerWidth;
+    let columns;
+    if (w < 600) columns = 3;
+    else if (w < 900) columns = 4;
+    else if (w < 1200) columns = 5;
+    else if (w < 1600) columns = 6;
+    else columns = 7;
+
+    const rows = 2;
+
+    return columns * rows; // capacity in weight units (portrait=1, landscape=2)
 }
 
 function getImageWeight(img) {
