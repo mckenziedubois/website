@@ -77,25 +77,41 @@
 
   <!-- Fetch latest posts (3 desktop, 2 mobile) -->
   <script>
-    fetch('posts/posts.json')
-      .then(res => res.json())
-      .then(posts => {
-        
+    // Helper to load CSV (simple parser matching other pages)
+    async function loadCSV(url) {
+      const text = await fetch(url).then(r => r.text());
+      const [headerLine, ...lines] = text.trim().split("\n");
+      const headers = headerLine.split(",").map(h => h.trim());
+      return lines.map(line => {
+        const cols = line.split(",");
+        return Object.fromEntries(headers.map((h, i) => [h, cols[i]?.trim()]));
+      });
+    }
+
+    (async function() {
+      try {
+        const posts = await fetch('posts/posts.json').then(r => r.json());
+        const metadata = await loadCSV('pages/image_metadata.csv');
+
         const publishedPosts = posts.filter(post => post.active);
         publishedPosts.sort((a, b) => new Date(b.date) - new Date(a.date));
-        
-        // Get all posts, will limit display with CSS
+
+        // Get top 3 posts for recent section
         const allPosts = publishedPosts.slice(0, 3);
 
         const container = document.getElementById('recent-posts');
         container.innerHTML = allPosts.map((post, index) => {
+          // Prefer CSV header image for this post (if provided)
+          const headerRec = metadata.find(m => m.slug === post.slug && m.header && String(m.header).toLowerCase().trim() === 'true');
+          const imageSrc = headerRec && headerRec.url ? headerRec.url.replace(/^http:\/\//i, 'https://') : (post.image ? post.image.replace(/^http:\/\//i, 'https://') : '');
+
           // Hide 3rd post on mobile (index 2)
           const hideOnMobile = index === 2 ? 'hide-on-mobile' : '';
           return `
           <div class="col-6 col-md-6 col-lg-4 mb-4 ${hideOnMobile}">
             <article class="card-magazine">
               <a class="card-media" href="posts/post.html?slug=${post.slug}">
-                <img src="${post.image}" alt="${post.title}" loading="lazy" />
+                <img src="${imageSrc}" alt="${post.title}" loading="lazy" />
               </a>
               <div class="card-body">
                 <a href="posts/post.html?slug=${post.slug}" class="card-title">${post.title}</a>
@@ -106,8 +122,10 @@
           </div>
         `;
         }).join('');
-      })
-      .catch(err => console.error('Posts fetch error:', err));
+      } catch (err) {
+        console.error('Posts or metadata fetch error:', err);
+      }
+    })();
   </script>
 
 </body>

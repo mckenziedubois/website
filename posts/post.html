@@ -102,6 +102,12 @@
       });
     }
 
+    function isExcludedImage(img) {
+      if (!img) return false;
+      const ex = (img.exclude || '').toString().toLowerCase().trim();
+      return ['true', '1', 'yes', 'y'].includes(ex);
+    }
+
     async function initPost() {
       const posts = await
       fetch('../posts/posts.json').
@@ -112,16 +118,6 @@
       
       if (!post) return;
 
-      const masthead = document.querySelector('.masthead');
-
-      if (post.image && masthead) {
-        masthead.style.backgroundImage = `url(${post.image})`;
-        masthead.style.backgroundPosition = post.imagePosition || 'center';
-        masthead.style.setProperty(
-          '--masthead-overlay',
-          post.overlay || '0.6'
-        );
-      }
                 
       // Set post header info
       document.getElementById('post-title').textContent = post.title;
@@ -154,17 +150,40 @@
         `).join('');
       }
 
-      // Load gallery images
+      // Load gallery images and image metadata
       const metadata = await loadCSV('../pages/image_metadata.csv');
-      const galleryImages = metadata.filter(img => img.slug === currentSlug);
+  const galleryImages = metadata.filter(img => img.slug === currentSlug && !isExcludedImage(img));
 
-      // Build Swiper slides
+      // Determine masthead/header image: prefer CSV row where `header` is True
+      // (one per slug). Fall back to `post.image` from posts.json. Normalize
+      // to HTTPS to avoid mixed-content issues.
+      const masthead = document.querySelector('.masthead');
+
+      let headerImageUrl = post.image || '';
+      const headerRecord = metadata.find(img =>
+        img.slug === currentSlug && img.header && String(img.header).toLowerCase().trim() === 'true'
+      );
+
+      if (headerRecord && headerRecord.url) {
+        headerImageUrl = headerRecord.url.replace(/^http:\/\//i, 'https://');
+      } else if (headerImageUrl) {
+        headerImageUrl = headerImageUrl.replace(/^http:\/\//i, 'https://');
+      }
+
+      if (headerImageUrl && masthead) {
+        masthead.style.backgroundImage = `url(${headerImageUrl})`;
+        masthead.style.backgroundPosition = post.imagePosition || 'center';
+        masthead.style.setProperty('--masthead-overlay', post.overlay || '0.6');
+      }
+
+      // Build Swiper slides (skip excluded images and normalize URLs)
       const wrapper = document.getElementById('gallery-wrapper');
       galleryImages.forEach(img => {
+        const imgUrl = img.url ? img.url.replace(/^http:\/\//i, 'https://') : '';
         wrapper.innerHTML += `
           <div class="swiper-slide">
             <div class="swiper-img-container">
-              <img src="${img.url}" alt="${img.alt || ''}">
+              <img src="${imgUrl}" alt="${img.alt || ''}">
               ${img.caption ? `<div class="slide-caption">${img.caption}</div>` : ''}
           </div>`;
       });
@@ -217,13 +236,19 @@
       const container = document.getElementById('related-posts');
       // Render related posts using the magazine-style card (same size as bloghome)
       container.innerHTML = related.map((p, index) => {
+        // Prefer CSV header image (if present) for the post card; otherwise fall back to p.image
+        const headerRec = metadata.find(m => m.slug === p.slug && m.header && String(m.header).toLowerCase().trim() === 'true');
+        const imageSrc = headerRec && headerRec.url
+          ? headerRec.url.replace(/^http:\/\//i, 'https://')
+          : (p.image ? p.image.replace(/^http:\/\//i, 'https://') : '');
+
         // Hide 3rd related post on mobile (index 2)
         const hideOnMobile = index === 2 ? 'hide-on-mobile' : '';
         return `
         <div class="col-6 col-md-6 col-lg-4 mb-4 ${hideOnMobile}">
           <article class="card-magazine">
             <a class="card-media" href="post.html?slug=${p.slug}">
-              <img src="${p.image}" alt="${p.title}" loading="lazy">
+              <img src="${imageSrc}" alt="${p.title}" loading="lazy">
             </a>
             <div class="card-body">
               <a href="post.html?slug=${p.slug}" class="card-title">${p.title}</a>

@@ -88,6 +88,17 @@
       currentPage: 'bloghome.html',
       loadMasthead: false  // Already loaded inline for faster rendering
     }).then(() => {
+      // Helper to load CSV (simple header-driven parser)
+      async function loadCSV(url) {
+        const text = await fetch(url).then(r => r.text());
+        const [headerLine, ...lines] = text.trim().split("\n");
+        const headers = headerLine.split(",").map(h => h.trim());
+        return lines.map(line => {
+          const cols = line.split(",");
+          return Object.fromEntries(headers.map((h, i) => [h, cols[i]?.trim()]));
+        });
+      }
+
       // After partials load, fetch and render posts with full filter UI (search + tags)
       const searchInput = document.getElementById('search-input');
       const tagsList = document.getElementById('tags-list');
@@ -110,16 +121,21 @@
       }
 
       let allPosts = [];
+      let metadataAll = [];
       let activeTags = new Set();
       let searchTerm = '';
 
       function renderPostCard(post) {
         const badge = (post.tags && post.tags.length) ? post.tags[0] : '';
+        // Header image from CSV metadata
+        const headerRec = metadataAll.find(m => m.slug === post.slug && m.header && String(m.header).toLowerCase().trim() === 'true');
+        const imageSrc = headerRec && headerRec.url ? headerRec.url.replace(/^http:\/\//i, 'https://') : (post.image ? post.image.replace(/^http:\/\//i, 'https://') : '');
+
         return `
           <div class="col-6 col-md-6 col-lg-4 mb-4">
             <article class="card-magazine">
               <a class="card-media" href="../posts/post.html?slug=${post.slug}">
-                <img src="${post.image}" alt="${post.title}" loading="lazy" />
+                <img src="${imageSrc}" alt="${post.title}" loading="lazy" />
                 ${badge ? `<span class="card-badge">${badge}</span>` : ''}
               </a>
               <div class="card-body">
@@ -195,15 +211,18 @@
         filterAndRender();
       });
 
-      // initial fetch
-      fetch('../posts/posts.json')
-        .then(res => res.json())
-        .then(posts => {
+      // initial fetch: load posts and image metadata so cards can prefer CSV header images
+      (async function initData() {
+        try {
+          const posts = await fetch('../posts/posts.json').then(r => r.json());
+          metadataAll = await loadCSV('../pages/image_metadata.csv');
           allPosts = posts;
           buildTagList(allPosts.filter(p => p.active));
           filterAndRender();
-        })
-        .catch(err => console.error('Posts fetch error:', err));
+        } catch (err) {
+          console.error('Posts or metadata fetch error:', err);
+        }
+      })();
     });
   </script>
 </body>
