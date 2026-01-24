@@ -4,9 +4,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; line-height: 1.6; color: #333; font-weight: 400; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; background-color: #fefefe; }
 :where(p, li, dd, dt, blockquote, address, label, input, textarea, select, button, .lead, .post-subtitle, .card-excerpt, .post-meta, .filter-card-body, .filter-label) { font-family: var(--bs-body-font-family, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif); }
+:root { --masthead-nav-height: 56px; }
 h1,h2,h3,h4,h5,h6 { color: inherit; font-weight: 700; letter-spacing: -0.02em; line-height: 1.2; margin-top: 0; }
 a { text-decoration: none; }
-@media (max-width: 768px) { body { font-size: 0.9rem; } h1 { font-size: 1.6rem; } h2 { font-size: 1.2rem; } p { font-size: 0.85rem; } }
+@media (max-width: 768px) { body { font-size: 0.9rem; } h1 { font-size: 1.6rem; } h2 { font-size: 1.2rem; } }
 
 /* =============================
    Navbar
@@ -26,13 +27,22 @@ a { text-decoration: none; }
 /* =============================
    Header / Masthead
 ============================= */
-.masthead { min-height:50vh; margin-bottom:25px; box-shadow: inset 0 0 0 2000px rgba(0,0,0,0.15); background-size:cover; background-position:center; display:flex; align-items:center; justify-content:center; text-align:center; color:white; position:relative; }
+.masthead { min-height:50vh; box-shadow: inset 0 0 0 2000px rgba(0,0,0,0.15); background-size:cover; background-position:center; display:flex; align-items:center; justify-content:center; text-align:center; color:white; position:relative; }
 .masthead::before { content:''; position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(0,0,0,); z-index:1; }
 .masthead .container { position:relative; z-index:2; }
 .page-heading,.post-heading { text-align:center; padding:3rem 0; margin:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
 .page-heading h1,.post-heading h1 { font-size:3.5rem; font-weight:800; letter-spacing:0.08em; line-height:1.1; margin:0; padding-bottom:0.5rem; white-space:nowrap; color:#fff; opacity:1; text-align:center; }
 .page-heading .subheading,.post-heading .subheading { font-size:1.375rem; font-weight:400; letter-spacing:0.01em; text-shadow:0 1px 5px rgba(0,0,0,0.3); opacity:0.95; color:rgba(255,255,255,0.95); }
 @media (max-width:768px) { .page-heading h1,.post-heading h1 { font-size:2.5rem; } .page-heading,.post-heading { padding:2rem 0; } .post-heading h1 { white-space:normal; line-height:1.2; font-size:1.6rem; word-break:break-word; } }
+.masthead-bg { position:absolute; inset:0; background-size:cover; background-position:center; z-index:0; pointer-events:none; }
+.masthead { position:relative; overflow:hidden; }
+.masthead .masthead-nav { position:absolute; left:0; right:0; top:0; z-index:3; display:flex; justify-content:center; align-items:center; padding:0.75rem 1rem; }
+.masthead .masthead-nav .navbar { background:transparent; border-bottom:none; }
+@media (max-width:991px) {
+   .masthead .masthead-nav { position:relative; padding:0; }
+   .masthead .masthead-nav .navbar { background:#fff; border-bottom:1px solid #e6e6e6; }
+   .masthead .container { padding-top: calc(var(--masthead-nav-height, 56px) + 0.5rem) !important; }
+}
 
 /* =============================
    Blog Post Cards
@@ -109,7 +119,7 @@ footer { background-color:#fefefe; padding:1rem 0; color:#666; font-size:0.9rem;
 /* =============================
    Filter Bar & Cards
 ============================= */
-.filter-bar{display:flex; flex-wrap:wrap; justify-content:flex-end; margin-right:1rem;}
+.filter-bar{display:flex; padding-top: 0.5rem; flex-wrap:wrap; justify-content:flex-end; margin-right:1rem;}
 .filter-btn{background:none;border:none;padding:8px;font:inherit;cursor:pointer;font-size:1rem;text-transform:uppercase;font-weight:700;color:#333;transition:color 0.2s;letter-spacing:0.0625em;}
 .filter-btn:hover{color:hsl(211,10%,40%);} .filter-btn.active{font-weight:bold;color:#007BFF;}
 .filter-card{background:#fff;border:1px solid #e5e7eb;border-radius:8px;box-shadow:0 2px 8px rgba(16,24,40,0.06);overflow:hidden;transition:box-shadow 0.2s ease;}
@@ -201,3 +211,8 @@ footer { background-color:#fefefe; padding:1rem 0; color:#666; font-size:0.9rem;
 .airbnb-image img{width:100%;height:170px;object-fit:cover;}
 .airbnb-info{padding:0.75rem 1rem;} .airbnb-info h3{font-size:1.1rem;margin:0 0 0.25rem;} .airbnb-info p{font-size:0.9rem;margin:0 0 0.35rem;color:#555;}
 #airbnb-section{margin-bottom:2rem;}
+
+/* Map action button (opens map in Google Maps app / new tab) */
+.map-actions { display:flex; gap:0.5rem; }
+.map-save-button { display:inline-block; background:#0085A1; color:#fff; padding:0.5rem 0.75rem; border-radius:6px; text-decoration:none; font-weight:700; font-size:0.95rem; }
+.map-save-button:hover { background:#006c80; }
