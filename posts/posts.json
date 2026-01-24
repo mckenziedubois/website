@@ -9,7 +9,8 @@
     "tags": ["Recap"],
     "md_file": "2025recap.md", 
     "active": true, 
-    "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1LAx6UOfP1ab6aMfUPXZjJmLRk58-RWg&ehbc=2E312F"
+      "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1LAx6UOfP1ab6aMfUPXZjJmLRk58-RWg&ehbc=2E312F",
+      "google_maps_link": "https://maps.app.goo.gl/cJokdsPWKP7jHrgp8"
   },
   {
     "slug": "kyoto",
@@ -21,7 +22,8 @@
     "tags": ["Japan", "Asia", "Winter"],
     "md_file": "kyoto.md", 
     "active": false, 
-    "google_maps_embed_link": ""
+    "google_maps_embed_link": "",
+    "google_maps_link": ""
   },
   {
     "slug": "seoul",
@@ -33,7 +35,8 @@
     "tags": ["Korea", "Asia", "Winter"],
     "md_file": "seoul.md",
     "active": false,
-    "google_maps_embed_link": ""
+    "google_maps_embed_link": "",
+    "google_maps_link": ""
   },
   {
     "slug": "tokyo",
@@ -45,7 +48,8 @@
     "tags": ["Japan", "Asia", "Winter"],
     "md_file": "tokyo.md",
     "active": false,
-    "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1DYL1E3ByooR7djoSCZjhl1LjcXpTk5k&ehbc=2E312F"
+    "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1DYL1E3ByooR7djoSCZjhl1LjcXpTk5k&ehbc=2E312F",
+    "google_maps_link": ""
   },
   {
     "slug": "mendocino",
@@ -57,7 +61,8 @@
     "tags": ["California", "USA", "West Coast"],
     "md_file": "mendocino.md",
     "active": false,
-    "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1HTaRwqyEuulYsqfDx-95g-tBqkbiBlc&ehbc=2E312F"
+    "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1HTaRwqyEuulYsqfDx-95g-tBqkbiBlc&ehbc=2E312F",
+    "google_maps_link": ""
   },
   {
     "slug": "redwood_nationalpark",
@@ -70,6 +75,7 @@
     "md_file": "redwood_nationalpark.md",
     "active": false,
     "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1OuOwMe_lMZoObZp8K9PFOyQv8ak-sjI&hl=en&ehbc=2E312F",
+    "google_maps_link": "",
     "airbnbs": [
       {
         "label": "goldbeach",
@@ -100,6 +106,7 @@
     "md_file": "hcmcity.md",
     "active": false,
     "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1JUjbFcGltN1qQPeCforvdnpLD0V6YBA&ehbc=2E312F",
+    "google_maps_link": "",
     "airbnbs": [
       {
         "label": "hcmcity",
