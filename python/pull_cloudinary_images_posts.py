@@ -47,7 +47,7 @@ file_path = '/Users/mckenzie/Documents/Repos/website/pages/image_metadata.csv'
 # Save to CSV (overwrite)
 with open(file_path, 'w', newline='') as csvfile:
     writer = csv.writer(csvfile)
-    writer.writerow(['url', 'orientation', 'country','pinurl', 'slug', 'alt', 'caption', 'exclude', 'header'])  # added new column
+    writer.writerow(['url', 'orientation', 'country','pinurl', 'slug', 'alt', 'caption', 'exclude', 'header', 'order'])  # added new column
 
     for item in image_metadata['resources']:
         url = item.get('secure_url') or item.get('url')
@@ -55,8 +55,6 @@ with open(file_path, 'w', newline='') as csvfile:
         height = item.get('height', 0)
         orientation = 'landscape' if width > height else 'portrait'
         custom = item.get('context', {})
-
-        print(custom)
 
         asset_folder = item.get("asset_folder", "")
         parts = asset_folder.split("/")
@@ -68,9 +66,10 @@ with open(file_path, 'w', newline='') as csvfile:
         alt     = custom.get('alt', '')
         caption = custom.get('caption', '')
         exclude = custom.get('exclude', '')
-        header  = custom.get('header', '') 
+        header  = custom.get('header', '')
+        order   = custom.get('order', '') 
 
-        writer.writerow([url, orientation, country, pinurl, slug, alt, caption, exclude, header])
+        writer.writerow([url, orientation, country, pinurl, slug, alt, caption, exclude, header, order])
 
 print(f"SUCCESS: CSV file '{file_path}' overwritten successfully!")
 
