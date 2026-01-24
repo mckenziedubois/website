@@ -50,6 +50,23 @@ async function loadPartial(placeholderId, partialPath, replacements = {}) {
   }
 }
 
+let __mastheadNavHeightTimer = null;
+function updateMastheadNavHeight() {
+  try {
+    const nav = document.querySelector('#mainNav.masthead-nav') || document.querySelector('#masthead-nav-placeholder #mainNav') || document.querySelector('#mainNav');
+    if (!nav) return;
+    const rect = nav.getBoundingClientRect();
+    const height = Math.ceil(rect.height) || 0;
+    document.documentElement.style.setProperty('--masthead-nav-height', `${height}px`);
+  } catch (e) {
+  }
+}
+
+function scheduleUpdateMastheadNavHeight(delay = 100) {
+  if (__mastheadNavHeightTimer) clearTimeout(__mastheadNavHeightTimer);
+  __mastheadNavHeightTimer = setTimeout(updateMastheadNavHeight, delay);
+}
+
 /**
  * Initialize common page elements
  * @param {Object} config - Configuration object
@@ -94,6 +111,40 @@ async function initPage(config = {}) {
       ROOT: autoRootPrefix,
       TITLE: pageTitle
     });
+  }
+  // Move or load nav into masthead
+try {
+    const mastheadNavSlot = document.getElementById('masthead-nav-placeholder');
+    const navbarSlot = document.getElementById('navbar-placeholder');
+    if (mastheadNavSlot) {
+      if (navbarSlot && navbarSlot.firstElementChild) {
+        const navNode = navbarSlot.firstElementChild;
+        mastheadNavSlot.appendChild(navNode);
+        const movedNav = mastheadNavSlot.querySelector('#mainNav');
+        if (movedNav) movedNav.classList.add('masthead-nav');
+        navbarSlot.innerHTML = '';
+        scheduleUpdateMastheadNavHeight();
+        const collapseEl = mastheadNavSlot.querySelector('.navbar-collapse');
+        if (collapseEl && typeof bootstrap !== 'undefined' && bootstrap.Collapse) {
+          collapseEl.addEventListener('shown.bs.collapse', () => scheduleUpdateMastheadNavHeight(60));
+          collapseEl.addEventListener('hidden.bs.collapse', () => scheduleUpdateMastheadNavHeight(60));
+        }
+      } else {
+        await loadPartial('masthead-nav-placeholder', `${autoRootPrefix}partials/nav.html`, {
+          ROOT: autoRootPrefix
+        });
+        const loadedNav = mastheadNavSlot.querySelector('#mainNav');
+        if (loadedNav) loadedNav.classList.add('masthead-nav');
+        scheduleUpdateMastheadNavHeight();
+        const collapseEl = mastheadNavSlot.querySelector('.navbar-collapse');
+        if (collapseEl) {
+          collapseEl.addEventListener('shown.bs.collapse', () => scheduleUpdateMastheadNavHeight(60));
+          collapseEl.addEventListener('hidden.bs.collapse', () => scheduleUpdateMastheadNavHeight(60));
+        }
+      }
+    }
+  } catch (e) {
+    console.warn('Could not move or load nav into masthead:', e);
   }
 
   // Load footer

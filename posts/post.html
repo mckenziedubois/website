@@ -144,7 +144,18 @@
 
       // Load gallery images and image metadata
       const metadata = await loadCSV('../pages/image_metadata.csv');
-  const galleryImages = metadata.filter(img => img.slug === currentSlug && !isExcludedImage(img));
+      // Filter images for this post, excluding ones marked in CSV
+      let galleryImages = metadata.filter(img => img.slug === currentSlug && !isExcludedImage(img));
+
+      // If rows include an `order` column, sort by its numeric value (ascending)
+      // Lower numbers appear earlier in the swiper. Missing/non-numeric values go last.
+      galleryImages.sort((a, b) => {
+        const na = parseFloat(a.order);
+        const nb = parseFloat(b.order);
+        const va = Number.isFinite(na) ? na : Number.POSITIVE_INFINITY;
+        const vb = Number.isFinite(nb) ? nb : Number.POSITIVE_INFINITY;
+        return va - vb;
+      });
 
       // Determine masthead/header image: prefer CSV row where `header` is True
       // (one per slug). Fall back to `post.image` from posts.json. Normalize
@@ -188,17 +199,28 @@
       });
 
         // Add Google Map below markdown
-      if (post.google_maps_embed_link) {
-        document.getElementById('post-map').innerHTML = `
-          <div class="map-container">
-            <iframe 
-              src="${post.google_maps_embed_link}"
-              allowfullscreen
-              loading="lazy">
-              </iframe>
-          </div>
-        `;
-      }
+        if (post.google_maps_embed_link) {
+          mapHtml += `
+            <div class="map-container">
+              <iframe 
+                src="${post.google_maps_embed_link}"
+                allowfullscreen
+                loading="lazy">
+                </iframe>
+            </div>
+          `;
+        }
+
+        if (post.google_maps_link) {
+          // External shortlink that opens in Google Maps / Maps app
+          mapHtml += `
+            <div class="map-actions" style="margin-top:0.75rem;">
+              <a class="map-save-button" href="${post.google_maps_link}" target="_blank" rel="noopener">Save Guide</a>
+            </div>
+          `;
+        }
+
+        if (mapHtml) mapSlot.innerHTML = mapHtml;
 
     const currentTags = post.tags || [];
 
