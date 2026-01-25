@@ -3,6 +3,7 @@ todolist.html
 *.log
 .DS_Store
 .env
+ads.txt
 
 # Editor files
 .vscode/
