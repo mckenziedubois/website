@@ -115,6 +115,11 @@ footer { background-color:#fefefe; padding:1rem 0; color:#666; font-size:0.9rem;
 .css-arrow.next::before {transform: translate(-50%, -50%) rotate(45deg);}
 .css-arrow:disabled {opacity: 0.3; cursor: not-allowed;}
 
+/* Page indicator (e.g. "Page 1 of 5") - use a smaller, muted font than body */
+#pageIndicator, .pagination-container #pageIndicator {
+   font-size: 0.9rem;
+}
+
 /* =============================
    Filter Bar & Cards
 ============================= */
