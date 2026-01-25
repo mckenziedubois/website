@@ -16,3 +16,5 @@ ads.txt
 *.tmp
 .cache/
 
+# Pinterest files
+python/pinterest-privacy-policy.md

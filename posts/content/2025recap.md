@@ -1,16 +1,7 @@
 Thanks for being interested in what I’ve been up to this past year.
 
 #### Asia (February - June)
-Travel kicked off in early February with a one-way ticket to Japan. Over the next five months, I spent time across Asia and visited nine countries:
-- Japan
-- Korea
-- Vietnam
-- Cambodia
-- Thailand
-- Malaysia
-- Singapore
-- Indonesia
-- Philippines
+Travel kicked off in early February with a one-way ticket to Japan. Over the next five months, I spent time across Asia and visited nine countries: Japan, Korea, Vietnam, Cambodia, Thailand, Malaysia, Singapore, Indonesia and the Philippines. 
 
 It’s hard to summarize one of the most beautiful and diverse parts of the world, but a few standout moments include:
 
@@ -26,30 +17,15 @@ In June and July, I visited every national park in Washington State; Mount Raini
 
 #### The Roadtrip (August - September) 
 
-August marked the start of a 3,000+ mile road trip, with major stops including:
-
-- Whistler, Canada
-- Yoho National Park
-- Banff National Park
-- Kananaskis
-- Waterton National Park
-- Glacier National Park
-- Kalispell, Montana
-- Yellowstone National Park
-- Grand Teton National Park
-- Twin Falls, Idaho
-- Boise, Idaho
-- Sawtooth Mountains, Idaho
-- Hood River, Oregon
-- Portland, Oregon
+August marked the start of an 8-week, 3,000+ mile road trip, with major stops including: Whistler, Canada, Yoho National Park, Banff National Park, Kananaskis, Waterton National Park, Glacier National Park, Kalispell, Montana, Yellowstone National Park, Grand Teton National Park ,Twin Falls, Idaho, Boise, Idaho, Sawtooth Mountains, Idaho, Hood River, Oregon, Portland, Oregon
 
 Along the way, I hiked the Alice-Toxaway Loop in the Sawtooths, had a very close encounter with a grizzly bear on Glacier’s Highline Trail, and spent nearly two weeks backpacking and exploring Yellowstone.
 
-Between the time in Washington and our road trip we spent 40 nights camping, 25 of which were spent in the backcountry. 
+Between our time in Washington and the road trip we spent 40 nights camping at over 30 different campsites, with 25 nights spent in the backcountry. 
 
 #### Family and Final Trips (October - December) 
 
-After almost nine months of continuous travel, I returned briefly to Seattle to spend time with family before heading east to see the rest of ours. The travel didn’t stop there, honorable mentions include:
+I returned briefly to Seattle in October to spend time with family before heading east to see the rest of ours. The travel didn’t stop there, honorable mentions include:
 
 - Christmas in Raleigh, North Carolina
 - Flurries and 70 degree days in Asheville, North Carolina 
@@ -57,10 +33,10 @@ After almost nine months of continuous travel, I returned briefly to Seattle to 
 - Thanksiving snowstorms in Chicago, Illinois
 - Mexico City apartment for 3 weeks in December
 
-After more than 11 months away from California, I’m back in San Francisco and picking up where I left off.
+After just under a year of travel, I’m back in San Francisco and picking up where I left off.
 
 #### What This Year Taught Me 
-One of the biggest takeaways from this year was perspective. During months of extended travel, I met remarkably few Americans doing the same. It reinforced how rare it is, especially in the U.S., to step away from work long enough to fully experience the world.
+One of the biggest takeaways from this year was perspective. During months of extended travel, I met remarkably few Americans doing the same. 
 
 Travel also deepened my appreciation for home. There is real beauty in routine, in familiarity, and in the daily life I often take for granted. Experiencing so many different cultures and ways of living made returning to those routines feel meaningful rather than mundane.
 
