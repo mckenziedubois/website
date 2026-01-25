@@ -366,21 +366,35 @@ function populateCountryFilter() {
 // Pagination Events
 // ============================================================================
 
-prevBtn.addEventListener("click", () => {
-    if (currentPageIndex > 0) {
-        currentPageIndex--;
-        renderGallery();
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-});
+if (prevBtn) {
+    prevBtn.addEventListener("click", (e) => {
+        // Prevent any default navigation (anchors or form submits)
+        e.preventDefault();
+        if (currentPageIndex > 0) {
+            currentPageIndex--;
+            renderGallery();
+            // Smoothly bring the gallery into view instead of jumping to page top
+            if (galleryEl && typeof galleryEl.scrollIntoView === 'function') {
+                galleryEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    });
+}
 
-nextBtn.addEventListener("click", () => {
-    if (currentPageIndex < pages.length - 1) {
-        currentPageIndex++;
-        renderGallery();
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-});
+if (nextBtn) {
+    nextBtn.addEventListener("click", (e) => {
+        // Prevent any default navigation (anchors or form submits)
+        e.preventDefault();
+        if (currentPageIndex < pages.length - 1) {
+            currentPageIndex++;
+            renderGallery();
+            // Smoothly bring the gallery into view instead of jumping to page top
+            if (galleryEl && typeof galleryEl.scrollIntoView === 'function') {
+                galleryEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    });
+}
 
 // ============================================================================
 // Resize Handling (debounced)
