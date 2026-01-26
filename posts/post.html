@@ -119,7 +119,7 @@
       document.getElementById('page-title').textContent = `${post.title} | McKenzie DuBois`;
 
       // Load markdown content
-      const mdRaw = await fetch(`../posts/content/${post.slug}.md`).then(res => res.text());
+      const mdRaw = await fetch(`../posts/published/${post.slug}.md`).then(res => res.text());
       document.getElementById('markdown-content').innerHTML = marked.parse(mdRaw);
 
       // Render Airbnb cards
