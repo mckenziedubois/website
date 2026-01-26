@@ -191,7 +191,7 @@ function createPinterestButton(pinurl) {
 // ============================================================================
 
 function createGalleryItem(imgData, absoluteIndex) {
-    const { url, orientation, country, pinurl, exclude } = imgData;
+    const { url, orientation, pinurl, caption} = imgData;
 
     const container = document.createElement("div");
     container.className = `gallery-item ${orientation}`;
@@ -200,7 +200,7 @@ function createGalleryItem(imgData, absoluteIndex) {
     const link = document.createElement("a");
     link.href = url;
     link.setAttribute("data-lightbox", "gallery");
-    link.setAttribute("data-title", capitalizeCountry(country));
+    link.setAttribute("data-title", caption);
 
     if (pinurl) {
         link.setAttribute("data-pinurl", pinurl);
@@ -256,7 +256,8 @@ async function fetchCsvData(path) {
                 country: (country || "Remove Filter").trim(),
                 pinurl: pinurl ? pinurl.trim() : "",
                 slug: (slug || '').trim(),
-                exclude
+                exclude,
+                caption: caption ? caption.trim() : "",
             };
         });
 
