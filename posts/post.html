@@ -271,7 +271,7 @@
             <div class="card-body">
               <a href="post.html?slug=${p.slug}" class="card-title">${p.title}</a>
               <p class="card-excerpt">${p.subtitle || ''}</p>
-              <div class="card-meta">${new Date(p.date).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' })}</div>
+              <div class="card-meta">${new Date(p.date).toLocaleDateString('en-US', { timeZone: 'UTC', month:'long', day:'numeric', year:'numeric' })}</div>
             </div>
           </article>
         </div>
