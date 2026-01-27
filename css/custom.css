@@ -169,6 +169,11 @@ footer { background-color:#fefefe; padding:1rem 0; color:#666; font-size:0.9rem;
 /* =============================
    Related Posts
 ============================= */
+
+.related-posts {
+  display: none;
+}
+
 @media(max-width:768px){
   #related-posts{display:flex;flex-wrap:wrap;margin-left:-0.5rem;margin-right:-0.5rem;}
   #related-posts>.col-6{padding-left:0.5rem;padding-right:0.5rem;width:50%;}
