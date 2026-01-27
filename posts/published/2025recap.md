@@ -31,7 +31,7 @@ I returned briefly to Seattle in October to spend time with family before headin
 - Flurries and 70-degree days in Asheville, North Carolina
 - An App State football game in Boone, North Carolina
 - Thanksgiving snowstorms in Chicago, Illinois
-- Living in a Mexico City apartment for three weeks in December
+- Living in Mexico City for three weeks in December and getting engaged in a hot air balloon over Teotihuacán 
 
 After just under a year of travel, I’m back in San Francisco and picking up where I left off.
 
