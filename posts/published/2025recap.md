@@ -17,7 +17,7 @@ In June and July, I visited every national park in Washington State: Mount Raini
 
 #### The Roadtrip (August - September) 
 
-August marked the start of an eight-week, 3,000+ mile road trip that spanned Western Canada and the American West. The route included Whistler and the Canadian Rockies (Yoho, Banff, Kananaskis, and Waterton), continued through Montana and Wyoming (Glacier, Kalispell, Yellowstone, and Grand Teton), and wrapped through Idaho and Oregon, ending in Portland. If you're interested in my full route with all my stops, please check out my Google Maps map below. 
+August marked the start of an eight-week, 3,000+ mile road trip that spanned Western Canada and the American West. The route included Whistler and the Canadian Rockies (Yoho, Banff, Kananaskis, and Waterton), continued through Montana and Wyoming (Glacier, Kalispell, Yellowstone, and Grand Teton), and wrapped through Idaho and Oregon, ending in Portland. If you're interested in my full route with all my stops, please check out my map below. 
 
 Along the way, I hiked the Alice-Toxaway Loop in the Sawtooths, had a very close encounter with a grizzly bear on Glacier’s Highline Trail, and spent nearly two weeks backpacking and exploring Yellowstone.
 
@@ -36,12 +36,12 @@ I returned briefly to Seattle in October to spend time with family before headin
 After just under a year of travel, I’m back in San Francisco and picking up where I left off.
 
 #### What This Year Taught Me 
-During months of extended travel, I met almost no Americans traveling long-term. The few I encountered were typically limited to short trips dictated by PTO. In many other countries, extended time for family and life experience is not an exception but an expectation. 
+During months of extended travel, I met almost no Americans traveling long-term. The few I encountered were typically limited to short trips dictated by PTO. 
 
-In the US not only are we working so much to not be able to step away to accomplish other life goals, there is also an unspoken stigma around stepping away from work for any extended period. Time off is often viewed as a lack of ambition rather than a meaningful investment in life experience. 
+In the US not only are we working so much to not be able to step away to accomplish other life goals, there is also an unspoken stigma around stepping away from work for any extended period. Time off is often viewed as a lack of ambition rather than a meaningful investment in life experience. In many other countries, extended time for family and life experience is not an exception but an expectation. 
 
 Travel also deepened my appreciation for home. There is real beauty in routine, in familiarity, and in the daily life I often take for granted. Experiencing so many different cultures and ways of living made returning to those routines feel meaningful rather than mundane.
 
-Thanks for reading. The Google Maps map below showcases my full Asia itinerary and complete road trip route. I plan to share more detailed guides from these places and from my other travels prior to 2025.
+Thanks for reading. The map below showcases my full Asia itinerary and complete road trip route. I plan to share more detailed guides from these places and from my other travels prior to 2025.
 
 Stay tuned.
