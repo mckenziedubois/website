@@ -13,7 +13,7 @@ It’s hard to summarize one of the most beautiful and diverse parts of the worl
 
 #### Washington State (June - July)
 
-In June and July, I visited every national park in Washington State: Mount Rainier, North Cascades, and Olympic. I also completed the 93-mile Wonderland Trail around Mount Rainier. Some other highlights included swimming in the cold waters of Diablo Lake (pictured in the cover image), hiking over 30 miles along the Blue Glacier Trail through the Hoh Rainforest, and spending days fully immersed in the mountains.
+In June and July, I visited every national park in Washington State: Mount Rainier, North Cascades, and Olympic. I also completed the 93-mile Wonderland Trail around Mount Rainier. Some other highlights included swimming in the ice cold waters of Diablo Lake (pictured in the cover image), hiking over 30 miles along the Blue Glacier Trail through the Hoh Rainforest, and spending days fully immersed in the mountains.
 
 #### The Road Trip (August - September)
 
