@@ -104,7 +104,7 @@
     "author": "McKenzie DuBois",
     "tags": ["Vietnam", "Asia"],
     "md_file": "hcmcity.md",
-    "active": false,
+    "active": true,
     "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1JUjbFcGltN1qQPeCforvdnpLD0V6YBA&ehbc=2E312F",
     "google_maps_link": "",
     "airbnbs": [
