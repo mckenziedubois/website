@@ -42,7 +42,7 @@ image_metadata = {'resources': resources}
 print(f"Fetched {len(resources)} resources from Cloudinary")
 
 # Path to overwrite
-file_path = '/Users/mckenzie/Documents/Repos/website/pages/image_metadata.csv'
+file_path = '/Users/mckenzie/Documents/Repos/website/python/results/image_metadata.csv'
 
 # Save to CSV (overwrite)
 with open(file_path, 'w', newline='') as csvfile:
@@ -74,7 +74,7 @@ with open(file_path, 'w', newline='') as csvfile:
 print(f"SUCCESS: CSV file '{file_path}' overwritten successfully!")
 
 # Pinterest path to overwrite
-pin_path = '/Users/mckenzie/Documents/Repos/website/pages/pinterest_metadata.csv'
+pin_path = '/Users/mckenzie/Documents/Repos/website/python/results/pinterest_metadata.csv'
 
 # Save to CSV (overwrite)
 with open(pin_path, 'w', newline='') as csvfile:
@@ -83,11 +83,12 @@ with open(pin_path, 'w', newline='') as csvfile:
 
     for i, item in enumerate(image_metadata['resources'], start=1):
 
-        # Only include images that are not excluded and that have a pinurl
+        # Only include images that are not excluded and that do NOT already have a pinurl
         ctx = item.get('context', {})
         if ctx.get('exclude') and str(ctx.get('exclude')).lower().strip() in ('true', '1', 'yes', 'y'):
             continue
-        if not ctx.get('pinurl'):
+        if ctx.get('pinurl'):
+            # Skip images that already have a pinurl (already uploaded to Pinterest)
             continue
 
         url = item.get('secure_url') or item.get('url')
