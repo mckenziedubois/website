@@ -103,7 +103,7 @@
 
     async function initPost() {
       const posts = await
-      fetch('../../posts/posts.json').
+      fetch('../../guides/posts.json').
       then(res => res.json());
 
       const publishedPosts = posts.filter(p => p.active);
@@ -120,7 +120,7 @@
       document.getElementById('page-title').textContent = `${post.title} | McKenzie DuBois`;
 
       // Load markdown content
-      const mdRaw = await fetch(`../../posts/published/${post.slug}.md`).then(res => res.text());
+      const mdRaw = await fetch(`../../guides/published/${post.slug}.md`).then(res => res.text());
       document.getElementById('markdown-content').innerHTML = marked.parse(mdRaw);
 
       // Render Airbnb cards
@@ -267,11 +267,11 @@
         return `
         <div class="col-6 col-md-6 col-lg-4 mb-4 ${hideOnMobile}">
           <article class="card-magazine">
-            <a class="card-media" href="/posts/${p.slug}">
+            <a class="card-media" href="/guides/${p.slug}">
               <img src="${imageSrc}" alt="${p.title}" loading="lazy">
             </a>
             <div class="card-body">
-              <a href="/posts/${p.slug}" class="card-title">${p.title}</a>
+              <a href="/guides/${p.slug}" class="card-title">${p.title}</a>
               <p class="card-excerpt">${p.subtitle || ''}</p>
               <div class="card-meta">${new Date(p.date).toLocaleDateString('en-US', { timeZone: 'UTC', month:'long', day:'numeric', year:'numeric' })}</div>
             </div>

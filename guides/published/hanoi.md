@@ -24,7 +24,7 @@ We were picked up in the Old Quarter and driven about three hours to the coast, 
 
 #### Where to Eat in Hanoi
 
-The short answer is everywhere. If you read my [Ho Chi Minh City guide](/posts/hcmcity), you know I believe the smaller the seat, the better the pho, and that definitely holds true in Hanoi. I had pho or bánh mì nearly every day, and I encourage you to do the same. Make sure to try Chin-Su chili sauce and properly douse your bánh mì. It is a game changer.
+The short answer is everywhere. If you read my [Ho Chi Minh City guide](/guides/hcmcity), you know I believe the smaller the seat, the better the pho, and that definitely holds true in Hanoi. I had pho or bánh mì nearly every day, and I encourage you to do the same. Make sure to try Chin-Su chili sauce and properly douse your bánh mì. It is a game changer.
 
 Hanoi is also an exceptional coffee city, with hundreds of cafés. It is especially known for egg coffee, so do not miss trying it at Cafe Giang or at any local café you come across. Our favorite coffee shop was THAIYEN CAFE Quán Thánh, which is included in my Google Maps guide and featured in my photo carousel. Their coconut coffee was outstanding. Unlike the slushier versions we encountered further south in places like Da Nang and Ho Chi Minh City, Thaiyen’s version was creamy, milky, and perfectly balanced. They also have ample seating in the corridor next to the café.
 
