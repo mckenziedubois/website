@@ -120,7 +120,7 @@
     "author": "McKenzie DuBois",
     "tags": ["Vietnam", "Asia"],
     "md_file": "hanoi.md",
-    "active": false,
+    "active": true,
     "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1lYEhd5QMYY80t7eW1ZUoUc4CTbiAQV4&ehbc=2E312F"
   }
 ]
