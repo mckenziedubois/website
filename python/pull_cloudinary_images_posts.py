@@ -79,7 +79,7 @@ pin_path = '/Users/mckenzie/Documents/Repos/website/python/results/pinterest_met
 # Save to CSV (overwrite)
 with open(pin_path, 'w', newline='') as csvfile:
     writer = csv.writer(csvfile)
-    writer.writerow(['Media URL', 'Title', 'Pinterest board','Description','Thumbnail'])  # added new column
+    writer.writerow(['Media URL', 'Title', 'Pinterest board','Description','Thumbnail','Link'])
 
     for i, item in enumerate(image_metadata['resources'], start=1):
 
@@ -118,6 +118,9 @@ with open(pin_path, 'w', newline='') as csvfile:
         else:
             pinboard = 'travel/' + country.lower() if country else 'travel/other'
 
-        writer.writerow([url, title, pinboard, caption, url])
+        # Build guide link
+        guide_link = f"https://www.mckenziedubois.com/guides/{slug}/" if slug else ""
+
+        writer.writerow([url, title, pinboard, caption, url, guide_link])
 
 print(f"SUCCESS: CSV file '{pin_path}' overwritten successfully!")
