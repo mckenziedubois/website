@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
   <title id="page-title">Loading… | McKenzie DuBois</title>
-  <link href="../css/styles.css" rel="stylesheet" />
-  <link href="../css/custom.css" rel="stylesheet" />
+  <link href="../../css/styles.css" rel="stylesheet" />
+  <link href="../../css/custom.css" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
   <!-- Google AdSense -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5519492675847999"crossorigin="anonymous"></script>
@@ -39,7 +39,7 @@
 
       <div class="post-right">
         <div class="return-button-container">
-        <a href="../guides/" class="return-button">← Back to Guides</a>
+        <a href="/guides" class="return-button">← Back to Guides</a>
         </div>
         <div id="airbnb-section-label" class="section-label"></div>
         <div id="airbnb-section" class="airbnb-listings"></div>
@@ -68,8 +68,8 @@
   <div id="scripts-placeholder"></div>
 
   <!-- Load partials -->
-  <script src="../js/load-partials.js"></script>
-  <script src="../js/csv-utils.js"></script>
+  <script src="../../js/load-partials.js"></script>
+  <script src="../../js/csv-utils.js"></script>
 
   <!-- Swiper JS -->
   <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
@@ -81,18 +81,19 @@
   <script>
     initPage({
       pageTitle: document.getElementById('post-title').textContent || 'Post',
-      rootPrefix: '../',
-      currentPage: 'post.html',
+      rootPrefix: '../../',
+      currentPage: 'post',
       loadMasthead: false 
     });
   </script>
 
   <!-- Post data fetch -->
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const currentSlug = urlParams.get('slug');
+    // Extract slug from URL path (e.g., /posts/hcmcity/ → hcmcity)
+    const pathParts = window.location.pathname.split('/').filter(p => p);
+    const currentSlug = pathParts[pathParts.length - 1] || '';
 
-    // CSV loader provided by ../js/csv-utils.js
+    // CSV loader provided by ../../js/csv-utils.js
 
     function isExcludedImage(img) {
       if (!img) return false;
@@ -102,7 +103,7 @@
 
     async function initPost() {
       const posts = await
-      fetch('../posts/posts.json').
+      fetch('../../posts/posts.json').
       then(res => res.json());
 
       const publishedPosts = posts.filter(p => p.active);
@@ -119,7 +120,7 @@
       document.getElementById('page-title').textContent = `${post.title} | McKenzie DuBois`;
 
       // Load markdown content
-      const mdRaw = await fetch(`../posts/published/${post.slug}.md`).then(res => res.text());
+      const mdRaw = await fetch(`../../posts/published/${post.slug}.md`).then(res => res.text());
       document.getElementById('markdown-content').innerHTML = marked.parse(mdRaw);
 
       // Render Airbnb cards
@@ -143,7 +144,7 @@
       }
 
       // Load gallery images and image metadata
-      const metadata = await loadCSV('../python/results/image_metadata.csv');
+      const metadata = await loadCSV('../../python/results/image_metadata.csv');
       // Filter images for this post, excluding ones marked in CSV
       let galleryImages = metadata.filter(img => img.slug === currentSlug && !isExcludedImage(img));
 
@@ -188,6 +189,7 @@
             <div class="swiper-img-container">
               <img src="${imgUrl}" alt="${img.alt || ''}">
               ${img.caption ? `<div class="slide-caption">${img.caption}</div>` : ''}
+            </div>
           </div>`;
       });
 
@@ -265,11 +267,11 @@
         return `
         <div class="col-6 col-md-6 col-lg-4 mb-4 ${hideOnMobile}">
           <article class="card-magazine">
-            <a class="card-media" href="post.html?slug=${p.slug}">
+            <a class="card-media" href="/posts/${p.slug}">
               <img src="${imageSrc}" alt="${p.title}" loading="lazy">
             </a>
             <div class="card-body">
-              <a href="post.html?slug=${p.slug}" class="card-title">${p.title}</a>
+              <a href="/posts/${p.slug}" class="card-title">${p.title}</a>
               <p class="card-excerpt">${p.subtitle || ''}</p>
               <div class="card-meta">${new Date(p.date).toLocaleDateString('en-US', { timeZone: 'UTC', month:'long', day:'numeric', year:'numeric' })}</div>
             </div>
