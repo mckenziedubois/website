@@ -124,12 +124,12 @@
         return `
           <div class="col-6 col-md-6 col-lg-4 mb-4">
             <article class="card-magazine">
-              <a class="card-media" href="../guides/${post.slug}">
+              <a class="card-media" href="/guides/${post.slug}">
                 <img src="${imageSrc}" alt="${post.title}" loading="lazy" />
                 ${badge ? `<span class="card-badge">${badge}</span>` : ''}
               </a>
               <div class="card-body">
-                <a href="../guides/${post.slug}" class="card-title">${post.title}</a>
+                <a href="/guides/${post.slug}" class="card-title">${post.title}</a>
                 <p class="card-excerpt">${post.subtitle || ''}</p>
                 <div class="card-meta">Posted on ${new Date(post.date).toLocaleDateString('en-US', { timeZone: 'UTC', month:'long', day:'numeric', year:'numeric' })}</div>
               </div>
