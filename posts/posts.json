@@ -9,8 +9,7 @@
     "tags": ["Recap"],
     "md_file": "2025recap.md", 
     "active": true, 
-      "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1LAx6UOfP1ab6aMfUPXZjJmLRk58-RWg&ehbc=2E312F",
-      "google_maps_link": ""
+    "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1LAx6UOfP1ab6aMfUPXZjJmLRk58-RWg&ehbc=2E312F"
   },
   {
     "slug": "kyoto",
@@ -22,8 +21,7 @@
     "tags": ["Japan", "Asia", "Winter"],
     "md_file": "kyoto.md", 
     "active": false, 
-    "google_maps_embed_link": "",
-    "google_maps_link": ""
+    "google_maps_embed_link": ""
   },
   {
     "slug": "seoul",
@@ -35,8 +33,7 @@
     "tags": ["Korea", "Asia", "Winter"],
     "md_file": "seoul.md",
     "active": false,
-    "google_maps_embed_link": "",
-    "google_maps_link": ""
+    "google_maps_embed_link": ""
   },
   {
     "slug": "tokyo",
@@ -48,8 +45,7 @@
     "tags": ["Japan", "Asia", "Winter"],
     "md_file": "tokyo.md",
     "active": false,
-    "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1DYL1E3ByooR7djoSCZjhl1LjcXpTk5k&ehbc=2E312F",
-    "google_maps_link": ""
+    "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1DYL1E3ByooR7djoSCZjhl1LjcXpTk5k&ehbc=2E312F"
   },
   {
     "slug": "mendocino",
@@ -61,8 +57,7 @@
     "tags": ["California", "USA", "West Coast"],
     "md_file": "mendocino.md",
     "active": false,
-    "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1HTaRwqyEuulYsqfDx-95g-tBqkbiBlc&ehbc=2E312F",
-    "google_maps_link": ""
+    "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1HTaRwqyEuulYsqfDx-95g-tBqkbiBlc&ehbc=2E312F"
   },
   {
     "slug": "redwood_nationalpark",
@@ -75,7 +70,6 @@
     "md_file": "redwood_nationalpark.md",
     "active": false,
     "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1OuOwMe_lMZoObZp8K9PFOyQv8ak-sjI&hl=en&ehbc=2E312F",
-    "google_maps_link": "",
     "airbnbs": [
       {
         "label": "goldbeach",
@@ -106,7 +100,6 @@
     "md_file": "hcmcity.md",
     "active": true,
     "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1JUjbFcGltN1qQPeCforvdnpLD0V6YBA&ehbc=2E312F",
-    "google_maps_link": "",
     "airbnbs": [
       {
         "label": "hcmcity",
@@ -117,5 +110,17 @@
         "info": "1 bed/ 1 bath"
       }
     ]
+  },
+  {
+    "slug": "hanoi",
+    "title": "Hanoi",
+    "subtitle": "Hanoi - history, coffee, and pho",
+    "date": "2026-02-20",
+    "imagePosition": "80% 55%",
+    "author": "McKenzie DuBois",
+    "tags": ["Vietnam", "Asia"],
+    "md_file": "hanoi.md",
+    "active": false,
+    "google_maps_embed_link": "https://www.google.com/maps/d/embed?mid=1lYEhd5QMYY80t7eW1ZUoUc4CTbiAQV4&ehbc=2E312F"
   }
 ]

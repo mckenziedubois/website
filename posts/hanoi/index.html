@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <title id="page-title">Loading… | McKenzie DuBois</title>
+  <link href="../../css/styles.css" rel="stylesheet" />
+  <link href="../../css/custom.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.css" />
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5519492675847999"crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div id="navbar-placeholder"></div>
+
+  <!-- Masthead -->
+  <header class="masthead">
+    <div class="container position-relative px-4 px-lg-5">
+      <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+          <div class="post-heading text-center text-white">
+            <h1 id="post-title">Loading…</h1>
+            <h2 class="subheading" id="post-subtitle"></h2>
+            <span class="meta" id="post-date"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="container px-4 px-lg-5 my-5">
+
+    <div class="post-layout">
+      <div class="post-left">
+        <div id="markdown-content"></div>
+      </div>
+
+      <div class="post-right">
+        <div class="return-button-container">
+        <a href="/guides" class="return-button">← Back to Guides</a>
+        </div>
+        <div id="airbnb-section-label" class="section-label"></div>
+        <div id="airbnb-section" class="airbnb-listings"></div>
+        <div class="mySwiper swiper">
+          <div class="swiper-wrapper" id="gallery-wrapper"></div>
+          <div class="swiper-pagination"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAP -->
+    <div id="post-map"></div>
+
+    <!-- Related posts -->
+    <section class="related-posts mt-5">
+      <h3 class="section-label">You May Also Like</h3>
+      <div class="row gx-4 gx-lg-5" id="related-posts"></div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <div id="footer-placeholder"></div> 
+
+  <!-- Common Scripts placeholder-->
+  <div id="scripts-placeholder"></div>
+
+  <!-- Load partials -->
+  <script src="../../js/load-partials.js"></script>
+  <script src="../../js/csv-utils.js"></script>
+
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Markdown Parser -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- Init Page -->
+  <script>
+    initPage({
+      pageTitle: document.getElementById('post-title').textContent || 'Post',
+      rootPrefix: '../../',
+      currentPage: 'post',
+      loadMasthead: false 
+    });
+  </script>
+
+  <!-- Post data fetch -->
+  <script>
+    // Extract slug from URL path (e.g., /posts/hanoi/ → hanoi)
+    const pathParts = window.location.pathname.split('/').filter(p => p);
+    const currentSlug = pathParts[pathParts.length - 1] || '';
+
+    // CSV loader provided by ../../js/csv-utils.js
+
+    function isExcludedImage(img) {
+      if (!img) return false;
+      const ex = (img.exclude || '').toString().toLowerCase().trim();
+      return ['true', '1', 'yes', 'y'].includes(ex);
+    }
+
+    async function initPost() {
+      const posts = await
+      fetch('../../posts/posts.json').
+      then(res => res.json());
+
+      const publishedPosts = posts.filter(p => p.active);
+      const post = publishedPosts.find(p => p.slug === currentSlug);
+      
+      if (!post) return;
+
+                
+      // Set post header info
+      document.getElementById('post-title').textContent = post.title;
+      document.getElementById('post-subtitle').textContent = post.subtitle;
+      document.getElementById('post-date').textContent = new Date(post.date)
+        .toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' });
+      document.getElementById('page-title').textContent = `${post.title} | McKenzie DuBois`;
+
+      // Load markdown content
+      const mdRaw = await fetch(`../../posts/published/${post.slug}.md`).then(res => res.text());
+      document.getElementById('markdown-content').innerHTML = marked.parse(mdRaw);
+
+      // Render Airbnb cards
+      if (post.airbnbs?.length) {
+        if (post.airbnbs.length === 1) {
+          document.getElementById('airbnb-section-label').innerHTML = `<h3 class="section-label">Our Airbnb</h3>`;
+        } else {
+          document.getElementById('airbnb-section-label').innerHTML = `<h3 class="section-label">Our Airbnbs</h3>`;
+        }
+        document.getElementById('airbnb-section').innerHTML = post.airbnbs.map(a => `
+          <a class="airbnb-card" href="${a.url}" target="_blank">
+            <div class="airbnb-image">
+              <img src="${a.image}" alt="${a.title}">
+            </div>
+            <div class="airbnb-info">
+              <h3>${a.title}</h3>
+              <p>${a.info}</p>
+            </div>
+          </a>
+        `).join('');
+      }
+
+      // Load gallery images and image metadata
+      const metadata = await loadCSV('../../python/results/image_metadata.csv');
+      // Filter images for this post, excluding ones marked in CSV
+      let galleryImages = metadata.filter(img => img.slug === currentSlug && !isExcludedImage(img));
+
+      // If rows include an `order` column, sort by its numeric value (ascending)
+      // Lower numbers appear earlier in the swiper. Missing/non-numeric values go last.
+      galleryImages.sort((a, b) => {
+        const na = parseFloat(a.order);
+        const nb = parseFloat(b.order);
+        const va = Number.isFinite(na) ? na : Number.POSITIVE_INFINITY;
+        const vb = Number.isFinite(nb) ? nb : Number.POSITIVE_INFINITY;
+        return va - vb;
+      });
+
+      // Determine masthead/header image: prefer CSV row where `header` is True
+      // (one per slug). Fall back to `post.image` from posts.json. Normalize
+      // to HTTPS to avoid mixed-content issues.
+      const masthead = document.querySelector('.masthead');
+
+      let headerImageUrl = post.image || '';
+      const headerRecord = metadata.find(img =>
+        img.slug === currentSlug && img.header && String(img.header).toLowerCase().trim() === 'true'
+      );
+
+      if (headerRecord && headerRecord.url) {
+        headerImageUrl = headerRecord.url.replace(/^http:\/\//i, 'https://');
+      } else if (headerImageUrl) {
+        headerImageUrl = headerImageUrl.replace(/^http:\/\//i, 'https://');
+      }
+
+      if (headerImageUrl && masthead) {
+        masthead.style.backgroundImage = `url(${headerImageUrl})`;
+        masthead.style.backgroundPosition = post.imagePosition || 'center';
+        masthead.style.setProperty('--masthead-overlay', post.overlay || '0.6');
+      }
+
+      // Build Swiper slides (skip excluded images and normalize URLs)
+      const wrapper = document.getElementById('gallery-wrapper');
+      galleryImages.forEach(img => {
+        const imgUrl = img.url ? img.url.replace(/^http:\/\//i, 'https://') : '';
+        wrapper.innerHTML += `
+          <div class="swiper-slide">
+            <div class="swiper-img-container">
+              <img src="${imgUrl}" alt="${img.alt || ''}">
+              ${img.caption ? `<div class="slide-caption">${img.caption}</div>` : ''}
+            </div>
+          </div>`;
+      });
+
+      // Initialize Swiper
+      const swiper = new Swiper(".mySwiper", {
+        pagination: { el: ".swiper-pagination", clickable: true },
+        spaceBetween: 10,
+        keyboard: { enabled: true, onlyInViewport: true }
+      });
+
+        // Add Google Map below markdown
+        const mapSlot = document.getElementById('post-map');
+        let mapHtml = '';
+
+        if (post.google_maps_embed_link) {
+          mapHtml += `
+            <div class="map-container">
+              <iframe
+                src="${post.google_maps_embed_link}"
+                allowfullscreen
+                loading="lazy">
+              </iframe>
+            </div>
+          `;
+        }
+
+        /*
+        if (post.google_maps_link) {
+          // External shortlink that opens in Google Maps / Maps app
+          mapHtml += `
+            <div class="map-actions" style="margin-top:0.75rem;">
+              <a class="map-save-button" href="${post.google_maps_link}" target="_blank" rel="noopener">Save Guide</a>
+            </div>
+          `;
+        }
+        */  
+        if (mapHtml) mapSlot.innerHTML = mapHtml;
+
+    const currentTags = post.tags || [];
+
+    const related = publishedPosts
+      .filter(p => p.slug !== currentSlug)
+      .map(p => {
+        const sharedTags = (p.tags || []).filter(tag =>
+          currentTags.includes(tag)
+        );
+
+        return {
+          ...p,
+          relevanceScore: sharedTags.length
+        };
+      })
+      .sort((a, b) => {
+        // Higher tag overlap first
+        if (b.relevanceScore !== a.relevanceScore) {
+          return b.relevanceScore - a.relevanceScore;
+        }
+
+        // Secondary sort: newest first
+        return new Date(b.date) - new Date(a.date);
+      })
+      .slice(0, 3);
+
+      const container = document.getElementById('related-posts');
+      // Render related posts using the magazine-style card (same size as bloghome)
+      container.innerHTML = related.map((p, index) => {
+        // Prefer CSV header image (if present) for the post card; otherwise fall back to p.image
+        const headerRec = metadata.find(m => m.slug === p.slug && m.header && String(m.header).toLowerCase().trim() === 'true');
+        const imageSrc = headerRec && headerRec.url
+          ? headerRec.url.replace(/^http:\/\//i, 'https://')
+          : (p.image ? p.image.replace(/^http:\/\//i, 'https://') : '');
+
+        // Hide 3rd related post on mobile (index 2)
+        const hideOnMobile = index === 2 ? 'hide-on-mobile' : '';
+        return `
+        <div class="col-6 col-md-6 col-lg-4 mb-4 ${hideOnMobile}">
+          <article class="card-magazine">
+            <a class="card-media" href="/posts/${p.slug}">
+              <img src="${imageSrc}" alt="${p.title}" loading="lazy">
+            </a>
+            <div class="card-body">
+              <a href="/posts/${p.slug}" class="card-title">${p.title}</a>
+              <p class="card-excerpt">${p.subtitle || ''}</p>
+              <div class="card-meta">${new Date(p.date).toLocaleDateString('en-US', { timeZone: 'UTC', month:'long', day:'numeric', year:'numeric' })}</div>
+            </div>
+          </article>
+        </div>
+        `;
+      }).join('');
+    }
+
+    initPost();
+
+  </script>
+
+</body>
+</html>
