@@ -8,13 +8,13 @@ We stayed at the Amira Hotel Hanoi in the Old Quarter, and it was the perfect ho
 
 #### Historical and Cultural Highlights
 
-- Thang Long Water Puppet Theatre. Buy tickets in advance if possible. We arrived early and were able to secure last-minute tickets, but it is very popular.
-- Vietnamese Women's Museum and Hoa Lo Prison. Both were major highlights and conveniently located near each other.
-- Ho Chi Minh Mausoleum and Complex. We did not go inside due to dress code restrictions, but the grounds are impressive.
-- Temple of Literature. Beautiful and historic. It was especially fun to see students visiting on field trips who were eager to practice their English.
-- Tran Quoc Pagoda. Located near the mausoleum, this lakeside pagoda is serene and well worth a visit.
-- Train Street. This narrow alley alongside an active railway track. We waited a few hours to catch the train. Note that regulations have been changing, so do your research before visiting to confirm access and any rules.
-- Long Bien Bridge. I would not recommend walking across it. While there is a sidewalk, it doesn't continue the full length of the bridge and is quite narrow. 
+- **Thang Long Water Puppet Theatre:** Buy tickets in advance if possible. We arrived early and were able to secure last-minute tickets, but it is very popular.
+- **Vietnamese Women's Museum and Hoa Lo Prison**: Both were major highlights and conveniently located near each other.
+- **Ho Chi Minh Mausoleum and Complex**: We did not go inside due to dress code restrictions, but the grounds are impressive.
+- **Temple of Literature**: Beautiful and historic. It was especially fun to see students visiting on field trips who were eager to practice their English.
+- **Tran Quoc Pagoda**: Located near the mausoleum, this lakeside pagoda is serene and well worth a visit.
+- **Train Street**: This narrow alley alongside an active railway track. We waited a few hours to catch the train. Note that regulations have been changing, so do your research before visiting to confirm access and any rules.
+- **Long Bien Bridge**: I would not recommend walking across it. While there is a sidewalk, it doesn't continue the full length of the bridge and is quite narrow. 
 
 #### Overnight Trip to Lan Ha Bay
 
